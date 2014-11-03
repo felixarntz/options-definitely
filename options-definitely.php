@@ -8,7 +8,7 @@ Author: Felix Arntz
 Author URI: http://leaves-and-love.net
 License: GNU General Public License v2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: wpof
+Text Domain: wpod
 Domain Path: /languages/
 Tags: wordpress, plugin, options, admin, backend, ui, customizer, framework
 */

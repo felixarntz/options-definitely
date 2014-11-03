@@ -16,7 +16,7 @@ module.exports = function(grunt) {
                   'Author URI: <%= pkg.author.url %>\n' +
                   'License: <%= pkg.license.name %>\n' +
                   'License URI: <%= pkg.license.url %>\n' +
-                  'Text Domain: wpof\n' +
+                  'Text Domain: wpod\n' +
                   'Domain Path: /languages/\n' +
                   'Tags: wordpress, plugin, options, admin, backend, ui, customizer, framework\n' +
                   '*/',
