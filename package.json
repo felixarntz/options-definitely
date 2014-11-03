@@ -1,0 +1,42 @@
+{
+  "name": "options-definitely",
+  "pluginName": "Options, Definitely",
+  "version": "1.0.0",
+  "description": "This plugin makes adding options to the WordPress admin area and customizer very simple, yet flexible. It all works using a filter and an array.",
+  "keywords": [
+    "wordpress", "plugin", "options", "admin", "backend", "ui", "customizer", "framework"
+  ],
+  "author": {
+    "name": "Felix Arntz",
+    "email": "felix-arntz@leaves-and-love.net",
+    "url": "http://leaves-and-love.net"
+  },
+  "homepage": "http://wordpress.org/plugins/options-definitely/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/felixarntz/options-definitely.git"
+  },
+  "bugs": {
+    "url" : "https://github.com/felixarntz/options-definitely/issues"
+  },
+  "license": {
+    "type": "GPL-2.0",
+    "name": "GNU General Public License v2",
+    "url": "http://www.gnu.org/licenses/gpl-2.0.html"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-less": "~0.11.3",
+    "grunt-autoprefixer": "~0.8.1",
+    "grunt-contrib-cssmin": "~0.10.0",
+    "grunt-banner": "~0.2.3",
+    "grunt-text-replace": "~0.3.12",
+    "grunt-wp-i18n": "~0.4.5"
+  }
+}
