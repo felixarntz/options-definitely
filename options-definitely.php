@@ -18,8 +18,8 @@ Tags: wordpress, plugin, options, admin, backend, ui, customizer, framework
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
-require_once WPOD_PATH . '/functions.php';
 require_once WPOD_PATH . '/vendor/autoload.php';
+require_once WPOD_PATH . '/functions.php';
 
 define( 'WPOD_NAME', __( 'Options, Definitely', 'wpod' ) );
 define( 'WPOD_VERSION', '1.0.0' );
@@ -36,7 +36,7 @@ function wpod_init()
 {
   if( WPOD_RUNNING )
   {
-
+    WPOD\Framework::instance();
   }
   else
   {
