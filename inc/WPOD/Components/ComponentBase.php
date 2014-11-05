@@ -18,7 +18,6 @@ abstract class ComponentBase
     $this->slug = $slug;
     $this->parent = $parent;
     $this->args = $args;
-    $this->validate();
   }
 
   public function __set( $property, $value )
@@ -54,7 +53,7 @@ abstract class ComponentBase
     return null;
   }
 
-  protected function validate()
+  public function validate()
   {
     $this->args = wp_parse_args( $this->args, $this->get_defaults() );
   }

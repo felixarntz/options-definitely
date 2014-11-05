@@ -18,15 +18,15 @@ Tags: wordpress, plugin, options, admin, backend, ui, customizer, framework
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
-define( 'WPOD_NAME', __( 'Options, Definitely', 'wpod' ) );
 define( 'WPOD_VERSION', '1.0.0' );
 define( 'WPOD_REQUIRED_WP', '4.0' );
 define( 'WPOD_REQUIRED_PHP', '5.3.0' );
 
+define( 'WPOD_NAME', 'Options, Definitely' );
 define( 'WPOD_MAINFILE', __FILE__ );
+define( 'WPOD_BASENAME', plugin_basename( WPOD_MAINFILE ) );
 define( 'WPOD_PATH', untrailingslashit( plugin_dir_path( WPOD_MAINFILE ) ) );
 define( 'WPOD_URL', untrailingslashit( plugin_dir_url( WPOD_MAINFILE ) ) );
-define( 'WPOD_BASENAME', plugin_basename( WPOD_MAINFILE ) );
 
 require_once WPOD_PATH . '/inc/functions.php';
 
@@ -34,6 +34,8 @@ define( 'WPOD_RUNNING', wpod_version_check() );
 
 function wpod_init()
 {
+  load_plugin_textdomain( 'wpod', false, dirname( WPOD_BASENAME ) . '/languages/' );
+
   if( WPOD_RUNNING > 0 )
   {
     require_once WPOD_PATH . '/vendor/autoload.php';

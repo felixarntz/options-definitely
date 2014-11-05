@@ -164,8 +164,7 @@ module.exports = function(grunt) {
       version: {
         src: [
           'options-definitely.php',
-          'functions.php',
-          'inc/*.php'
+          'inc/**/*.php'
         ],
         overwrite: true,
         replacements: [{

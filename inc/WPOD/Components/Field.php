@@ -9,7 +9,7 @@ namespace WPOD\Components;
 
 class Field extends ComponentBase
 {
-  protected function validate()
+  public function validate()
   {
     if( isset( $this->args['type'] ) )
     {

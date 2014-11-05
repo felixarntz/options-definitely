@@ -30,7 +30,10 @@ class Framework
 
   private function __construct()
   {
+    \WPOD\Admin::instance();
+
     add_action( 'after_setup_theme', array( $this, 'init' ), 1 );
+    add_action( 'after_setup_theme', array( $this, 'validate' ), 2 );
   }
 
   /*
@@ -39,8 +42,8 @@ class Framework
    * You can either use the filter 'wpod' to create a multidimensional array of nested components 
    * (groups, sets, members, sections and fields).
    * Alternatively, you can use the action 'wpod_oo' which passes this class to the hooked function.
-   * In that function, you should then use the function 'add' (which you see right below) to directly
-   * add components (groups, sets, members, sections and fields).
+   * In that function, you can then use the class methods 'add', 'update' and 'delete' (which you see
+   * right below) to directly modify components (groups, sets, members, sections and fields).
    *
    * Both methods can be used interchangeably and are compatible with each other since the plugin
    * internally runs through the filtered array and then also uses the 'add' method on each component
@@ -50,24 +53,128 @@ class Framework
 
   public function add( $slug, $type, $args, $parent = '' )
   {
-    $type = strtolower( $type );
-    if( $this->is_valid_type( $type ) )
+    if( !$this->initialized )
     {
-      $arrayname = $type . 's';
-      $classname = '\\WPOD\\Components\\' . ucfirst( $type );
-      if( $type == 'group' || !empty( $parent ) )
+      $type = strtolower( $type );
+      if( $this->is_valid_type( $type ) )
       {
-        array_push( $this->$arrayname, new $classname( $slug, $args, $parent ) );
+        if( !empty( $slug ) )
+        {
+          $arrayname = $type . 's';
+          $classname = '\\WPOD\\Components\\' . ucfirst( $type );
+          if( $type == 'group' || !empty( $parent ) )
+          {
+            if( !$this->exists( $slug, $type, $parent ) )
+            {
+              array_push( $this->$arrayname, new $classname( $slug, $args, $parent ) );
+              return true;
+            }
+            else
+            {
+              wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s already exists. If you want to modify it, please use the update method.', 'wpod' ), $type, $slug ), '1.0.0' );
+            }
+          }
+          else
+          {
+            wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s was not provided a parent.', 'wpod' ), $type, $slug ), '1.0.0' );
+          }
+        }
+        else
+        {
+          wpod_doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '1.0.0' );
+        }
       }
       else
       {
-        wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s was not provided a parent.', 'wpod' ), $type, $slug ) );
+        wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
       }
     }
     else
     {
-      wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ) );
+      wpod_doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '1.0.0' );
     }
+    return false;
+  }
+
+  public function update( $slug, $type, $args, $parent = '' )
+  {
+    if( !$this->initialized )
+    {
+      $type = strtolower( $type );
+      if( $this->is_valid_type )
+      {
+        if( !empty( $slug ) )
+        {
+          $key = $this->exists( $slug, $type, $parent, true );
+          if( $key !== false )
+          {
+            $arrayname = $type . 's';
+            $component = $this->$arrayname[ $key ];
+            foreach( $args as $name => $value )
+            {
+              $component->$name = $value;
+            }
+            $this->arrayname[ $key ] = $component;
+            return true;
+          }
+          else
+          {
+            wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s does not exist. You can instead use the add method to add it.', 'wpod' ), $type, $slug ), '1.0.0' );
+          }
+        }
+        else
+        {
+          wpod_doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '1.0.0' );
+        }
+      }
+      else
+      {
+        wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
+      }
+    }
+    else
+    {
+      wpod_doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '1.0.0' );
+    }
+    return false;
+  }
+
+  public function delete( $slug, $type, $parent = '' )
+  {
+    if( !$this->initialized )
+    {
+      $type = strtolower( $type );
+      if( $this->is_valid_type )
+      {
+        if( !empty( $slug ) )
+        {
+          $key = $this->exists( $slug, $type, $parent, true );
+          if( $key !== false )
+          {
+            $arrayname = $type . 's';
+            unset( $this->$arrayname[ $key ] );
+            return true;
+          }
+          else
+          {
+            wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s does not exist, so it does not need to be deleted.', 'wpod' ), $type, $slug ), '1.0.0' );
+          }
+        }
+        else
+        {
+          wpod_doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '1.0.0' );
+        }
+      }
+      else
+      {
+        wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
+      }
+    }
+    else
+    {
+      wpod_doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '1.0.0' );
+    }
+    return false;
   }
 
   /*
@@ -117,6 +224,23 @@ class Framework
       do_action( 'wpod_oo', $this );
 
       $this->initialized = true;
+    }
+    else
+    {
+      wpod_doing_it_wrong( __METHOD__, __( 'This function should never be called manually.', 'wpod' ), '1.0.0' );
+    }
+  }
+
+  public function validate()
+  {
+    $types = $this->get_type_whitelist();
+    foreach( $types as $type )
+    {
+      $arrayname = $type . 's';
+      foreach( $this->$arrayname as &$component )
+      {
+        $component->validate();
+      }
     }
   }
 
@@ -181,7 +305,7 @@ class Framework
     }
     else
     {
-      wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ) );
+      wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
     }
     return $results;
   }
@@ -219,14 +343,46 @@ class Framework
     return $valid_haystack;
   }
 
-  private function is_valid_type( $type )
+  private function exists( $slug, $type, $parent, $return_key = false )
   {
-    return in_array( $type, $this->get_type_whitelist() );
-  }
-
-  private function get_type_whitelist()
-  {
-    return array( 'group', 'set', 'member', 'section', 'field' );
+    $types = $this->get_type_whitelist();
+    $status = array_search( $type, $types );
+    $results = array();
+    if( $status <= 2 )
+    {
+      $results = $this->query( array(
+        'slug'          => $slug,
+        'type'          => $type,
+      ) );
+    }
+    else
+    {
+      $results = $this->query( array(
+        'slug'          => $slug,
+        'type'          => $type,
+        'parent_slug'   => $parent,
+        'parent_type'   => $this->get_next_superior_type( $type ),
+      ) );
+    }
+    if( count( $results ) > 0 )
+    {
+      if( $return_key )
+      {
+        $arrayname = $type . 's';
+        foreach( $this->$arrayname as $key => $component )
+        {
+          if( $component->slug == $slug )
+          {
+            if( $status <= 2 || $component->parent == $parent )
+            {
+              return $key;
+            }
+          }
+        }
+      }
+      return true;
+    }
+    return false;
   }
 
   private function get_next_superior_type( $type )
@@ -249,6 +405,16 @@ class Framework
       return $types[ $type_key + 1 ];
     }
     return false;
+  }
+
+  private function is_valid_type( $type )
+  {
+    return in_array( $type, $this->get_type_whitelist() );
+  }
+
+  private function get_type_whitelist()
+  {
+    return array( 'group', 'set', 'member', 'section', 'field' );
   }
 
   private function get_default_groups()
