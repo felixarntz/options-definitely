@@ -28,7 +28,7 @@ define( 'WPOD_PATH', untrailingslashit( plugin_dir_path( WPOD_MAINFILE ) ) );
 define( 'WPOD_URL', untrailingslashit( plugin_dir_url( WPOD_MAINFILE ) ) );
 define( 'WPOD_BASENAME', plugin_basename( WPOD_MAINFILE ) );
 
-require_once WPOD_PATH . '/functions.php';
+require_once WPOD_PATH . '/inc/functions.php';
 
 define( 'WPOD_RUNNING', wpod_version_check() );
 
