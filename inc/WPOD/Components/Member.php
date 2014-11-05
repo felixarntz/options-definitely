@@ -7,7 +7,7 @@
 
 namespace WPOD\Components;
 
-class Member extends Component_Base
+class Member extends ComponentBase
 {
   protected function get_defaults()
   {
@@ -15,7 +15,7 @@ class Member extends Component_Base
       'title'           => __( 'Member title', 'wpod' ),
       'description'     => '',
       'capability'      => 'manage_options',
-      'type'            => 'default',
+      'mode'            => 'default',
       'callback'        => array( $this, 'default_callback' ),
       'callback_args'   => array(), //TODO: pass automatic args and disable this parameter
     );

@@ -7,7 +7,7 @@
 
 namespace WPOD\Components;
 
-abstract class Component_Base
+abstract class ComponentBase
 {
   protected $slug = '';
   protected $parent = '';

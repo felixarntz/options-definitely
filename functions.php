@@ -51,11 +51,16 @@ function wpod_version_check()
 {
   global $wp_version;
 
+  $ret = 1;
   if( version_compare( $wp_version, WPOD_REQUIRED_WP ) < 0 )
   {
-    return false;
+    $ret -= 1;
   }
-  return true;
+  if( version_compare( phpversion(), WPOD_REQUIRED_PHP ) < 0 )
+  {
+    $ret -= 2;
+  }
+  return $ret;
 }
 
 function wpod_display_version_error_notice()
@@ -63,11 +68,20 @@ function wpod_display_version_error_notice()
   global $wp_version;
 
   echo '<div class="error">';
-  echo '<p>';
-  echo '<strong>' . WPOD_NAME . '</strong> ';
-  printf( __( 'The plugin requires WordPress version %1$s. However, you are currently using version %2$s.', 'wpod' ), WPOD_REQUIRED_WP, $wp_version );
-  echo '</p>';
-  echo '<p>' . __( 'Please update WordPress to run it.', 'wpod' ) . '</p>';
+  echo '<p>' . sprintf( __( 'Fatal problem with %s', 'wpod' ), '<strong>' . WPOD_NAME . ':</strong>' ) . '</p>';
+  if( WPOD_RUNNING != -1 )
+  {
+    echo '<p>';
+    printf( __( 'The plugin requires WordPress version %1$s. However, you are currently using version %2$s.', 'wpod' ), WPOD_REQUIRED_WP, $wp_version );
+    echo '</p>';
+  }
+  if( WPOD_RUNNING != 0 )
+  {
+    echo '<p>';
+    printf( __( 'The plugin requires PHP version %1$s. However, you are currently using version %2$s.', 'wpod' ), WPOD_REQUIRED_PHP, phpversion() );
+    echo '</p>';
+  }
+  echo '<p>' . __( 'Please update the above resources to run it.', 'wpod' ) . '</p>';
   echo '</div>';
 }
 

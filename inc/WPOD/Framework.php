@@ -54,7 +54,7 @@ class Framework
     if( $this->is_valid_type( $type ) )
     {
       $arrayname = $type . 's';
-      $classname = 'Components\\' . ucfirst( $type );
+      $classname = '\\WPOD\\Components\\' . ucfirst( $type );
       if( $type == 'group' || !empty( $parent ) )
       {
         array_push( $this->$arrayname, new $classname( $slug, $args, $parent ) );
@@ -191,7 +191,7 @@ class Framework
     $results = array();
     foreach( $haystack as $component )
     {
-      if( in_array( $component->slug, $slug )
+      if( in_array( $component->slug, $slug ) )
       {
         $results[] = $component;
       }
@@ -208,14 +208,15 @@ class Framework
       $parent_slug = array_map( array( $this, 'component_to_slug_callback' ), $current_haystack );
       $parent_type = $current_type;
     }
-    foreach( $haystack as &$component )
+    $valid_haystack = array();
+    foreach( $haystack as $component )
     {
-      if( !in_array( $component->parent, $parent_slug ) )
+      if( in_array( $component->parent, $parent_slug ) )
       {
-        unset( $component );
+        $valid_haystack[] = $component;
       }
     }
-    return $haystack;
+    return $valid_haystack;
   }
 
   private function is_valid_type( $type )

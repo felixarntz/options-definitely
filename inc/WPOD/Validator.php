@@ -57,7 +57,7 @@ class Validator
     {
       return $validated;
     }
-    return self::error_handler( sprintf( __( 'The values %s are not valid options for this field.', 'wpod' ), implode( ', ', $invalid ) );
+    return self::error_handler( sprintf( __( 'The values %s are not valid options for this field.', 'wpod' ), implode( ', ', $invalid ) ) );
   }
 
   public static function multibox( $value, $field )
@@ -75,7 +75,7 @@ class Validator
     {
       $value = floatval( $value );
     }
-    if( !isset( $field['more_attributes']['step'] || $value % $field['more_attributes']['step'] == 0 )
+    if( !isset( $field['more_attributes']['step'] ) || $value % $field['more_attributes']['step'] == 0 )
     {
       if( !isset( $field['more_attributes']['min'] ) || $value >= $field['more_attributes']['min'] )
       {

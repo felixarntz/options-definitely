@@ -7,7 +7,7 @@
 
 namespace WPOD\Components;
 
-class Field extends Component_Base
+class Field extends ComponentBase
 {
   protected function validate()
   {
@@ -15,9 +15,9 @@ class Field extends Component_Base
     {
       if( !isset( $this->args['validate'] ) )
       {
-        if( method_exists( 'Validator', $this->args['type'] ) )
+        if( method_exists( '\\WPOD\\Validator', $this->args['type'] ) )
         {
-          $this->args['validate'] = array( 'Validator', $this->args['type'] );
+          $this->args['validate'] = array( '\\WPOD\\Validator', $this->args['type'] );
         }
       }
     }

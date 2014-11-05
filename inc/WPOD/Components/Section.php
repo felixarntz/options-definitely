@@ -7,7 +7,7 @@
 
 namespace WPOD\Components;
 
-class Section extends Component_Base
+class Section extends ComponentBase
 {
   protected function get_defaults()
   {

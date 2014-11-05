@@ -7,7 +7,7 @@
 
 namespace WPOD\Components;
 
-class Group extends Component_Base
+class Group extends ComponentBase
 {
   protected function get_defaults()
   {
