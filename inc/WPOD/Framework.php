@@ -30,7 +30,14 @@ class Framework
 
   private function __construct()
   {
-    \WPOD\Admin::instance();
+    if( isset( $_REQUEST['wp_customize'] ) && 'on' == $_REQUEST['wp_customize'] || is_admin() && basename( $_SERVER['PHP_SELF'] ) == 'customize.php' )
+    {
+
+    }
+    if( is_admin() )
+    {
+      \WPOD\Admin::instance();
+    }
 
     add_action( 'after_setup_theme', array( $this, 'init' ), 1 );
     add_action( 'after_setup_theme', array( $this, 'validate' ), 2 );
@@ -329,7 +336,7 @@ class Framework
     {
       $current_arrayname = $current_type .'s';
       $current_haystack = $this->query_by_parent( $parent_slug, $parent_type, $this->$current_arrayname, $current_type );
-      $parent_slug = array_map( array( $this, 'component_to_slug_callback' ), $current_haystack );
+      $parent_slug = array_map( 'wpod_component_to_slug', $current_haystack );
       $parent_type = $current_type;
     }
     $valid_haystack = array();
@@ -432,10 +439,5 @@ class Framework
       'management',
       'options',
     );
-  }
-
-  public function component_to_slug_callback( $component )
-  {
-    return $component->slug;
   }
 }

@@ -135,6 +135,53 @@ function wpod_get_attachment_id( $attachment_url )
   return $attachment_id;
 }
 
+function wpod_make_html_attributes( $atts, $html5 = true, $echo = true )
+{
+  $output = '';
+  foreach( $atts as $key => $value )
+  {
+    if( is_bool( $value ) )
+    {
+      if( $html5 )
+      {
+        $output .= ' ' . $key;
+      }
+      else
+      {
+        $output .= ' ' . $key . '="' . esc_attr( $key ) . '"';
+      }
+    }
+    else
+    {
+      $output .= ' ' . $key . '="' . esc_attr( $value ) . '"';
+    }
+  }
+  if( $echo )
+  {
+    echo $output;
+  }
+  return $output;
+}
+
+/* CALLBACK HELPER FUNCTIONS */
+
+function wpod_component_to_slug( $component )
+{
+  return $component->slug;
+}
+
+function wpod_current_user_can( $component )
+{
+  $cap = $component->capability;
+  if( $cap === null || current_user_can( $cap ) )
+  {
+    return true;
+  }
+  return false;
+}
+
+/* ERROR HANDLING FUNCTIONS */
+
 //TODO: is this necessary?
 function wpod_incorrect_array( $slug, $type, $message, $version )
 {

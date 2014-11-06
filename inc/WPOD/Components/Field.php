@@ -9,6 +9,17 @@ namespace WPOD\Components;
 
 class Field extends ComponentBase
 {
+  public function register( $parent_member, $parent_section )
+  {
+    add_settings_field( $this->slug, $this->args['title'], array( $this, 'render' ), $parent_member->slug, $parent_section->slug );
+  }
+
+  public function render()
+  {
+    //TODO: render
+    echo '<p>' . $this->slug . '</p>';
+  }
+
   public function validate()
   {
     if( isset( $this->args['type'] ) )
@@ -21,6 +32,7 @@ class Field extends ComponentBase
         }
       }
     }
+    //TODO: further validate
     parent::validate();
   }
 

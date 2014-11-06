@@ -7,4 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'WPOD\\' => array($baseDir . '/inc'),
+    'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
+    'ComponentInstaller' => array($vendorDir . '/robloach/component-installer/src'),
+    'Assetic' => array($vendorDir . '/kriswallsmith/assetic/src'),
 );
