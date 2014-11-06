@@ -58,8 +58,7 @@ class Section extends ComponentBase
     $defaults = array(
       'title'           => __( 'Section title', 'wpod' ),
       'description'     => '',
-      'callback'        => false,
-      'callback_args'   => array(), //TODO: pass automatic args and disable this parameter
+      'callback'        => false, //only used if no fields are attached to this section
     );
     return apply_filters( 'wpod_section_defaults', $defaults );
   }
