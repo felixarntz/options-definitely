@@ -22,7 +22,7 @@ class Validator
 
   public static function select( $value, $field )
   {
-    if( isset( $field['options'][ $value ] ) )
+    if( isset( $field->options[ $value ] ) )
     {
       return $value;
     }
@@ -67,7 +67,7 @@ class Validator
 
   public static function number( $value, $field )
   {
-    if( isset( $field['more_attributes']['step'] ) && is_int( $field['more_attributes']['step'] ) )
+    if( isset( $field->more_attributes['step'] ) && is_int( $field->more_attributes['step'] ) )
     {
       $value = intval( $value );
     }
@@ -75,19 +75,19 @@ class Validator
     {
       $value = floatval( $value );
     }
-    if( !isset( $field['more_attributes']['step'] ) || $value % $field['more_attributes']['step'] == 0 )
+    if( !isset( $field->more_attributes['step'] ) || $value % $field->more_attributes['step'] == 0 )
     {
-      if( !isset( $field['more_attributes']['min'] ) || $value >= $field['more_attributes']['min'] )
+      if( !isset( $field->more_attributes['min'] ) || $value >= $field->more_attributes['min'] )
       {
-        if( !isset( $field['more_attributes']['max'] ) || $value <= $field['more_attributes']['max'] )
+        if( !isset( $field->more_attributes['max'] ) || $value <= $field->more_attributes['max'] )
         {
           return $value;
         }
-        return self::error_handler( sprintf( __( 'The number %1$s is invalid. It must be lower than or equal to %2$s.', 'wpod' ), $value, $field['more_attributes']['max'] ) );
+        return self::error_handler( sprintf( __( 'The number %1$s is invalid. It must be lower than or equal to %2$s.', 'wpod' ), $value, $field->more_attributes['max'] ) );
       }
-      return self::error_handler( sprintf( __( 'The number %1$s is invalid. It must be greater than or equal to %2$s.', 'wpod' ), $value, $field['more_attributes']['min'] ) );
+      return self::error_handler( sprintf( __( 'The number %1$s is invalid. It must be greater than or equal to %2$s.', 'wpod' ), $value, $field->more_attributes['min'] ) );
     }
-    return self::error_handler( sprintf( __( 'The number %1$s is invalid since it is not divisible by %2$s.', 'wpod' ), $value, $field['more_attributes']['step'] ) );
+    return self::error_handler( sprintf( __( 'The number %1$s is invalid since it is not divisible by %2$s.', 'wpod' ), $value, $field->more_attributes['step'] ) );
   }
 
   public static function range( $value, $field )
@@ -128,9 +128,9 @@ class Validator
   public static function date( $value, $field )
   {
     $timestamp = mysql2date( 'U', $value );
-    if( !isset( $field['more_attributes']['min'] ) || $timestamp >= ( $timestamp_min = mysql2date( 'U', $field['more_attributes']['min'] ) ) )
+    if( !isset( $field->more_attributes['min'] ) || $timestamp >= ( $timestamp_min = mysql2date( 'U', $field->more_attributes['min'] ) ) )
     {
-      if( !isset( $field['more_attributes']['max'] ) || $timestamp <= ( $timestamp_max = mysql2date( 'U', $field['more_attributes']['max'] ) ) )
+      if( !isset( $field->more_attributes['max'] ) || $timestamp <= ( $timestamp_max = mysql2date( 'U', $field->more_attributes['max'] ) ) )
       {
         return $value;
       }
@@ -142,9 +142,9 @@ class Validator
   public static function datetime( $value, $field )
   {
     $timestamp = mysql2date( 'U', $value );
-    if( !isset( $field['more_attributes']['min'] ) || $timestamp >= ( $timestamp_min = mysql2date( 'U', $field['more_attributes']['min'] ) ) )
+    if( !isset( $field->more_attributes['min'] ) || $timestamp >= ( $timestamp_min = mysql2date( 'U', $field->more_attributes['min'] ) ) )
     {
-      if( !isset( $field['more_attributes']['max'] ) || $timestamp <= ( $timestamp_max = mysql2date( 'U', $field['more_attributes']['max'] ) ) )
+      if( !isset( $field->more_attributes['max'] ) || $timestamp <= ( $timestamp_max = mysql2date( 'U', $field->more_attributes['max'] ) ) )
       {
         return $value;
       }
@@ -162,7 +162,7 @@ class Validator
     return self::error_handler( sprintf( __( '%s is not a valid hexadecimal color.', 'wpod' ), esc_attr( $value ) ) );
   }
 
-  public static function media( $value, $field, $desired_types = 'all' )
+  public static function media( $value, $field, $desired_types = 'all', $errmsg_append = '' )
   {
     $value = esc_url( $value );
     $id = wpod_get_attachment_id( $value );
@@ -189,7 +189,11 @@ class Validator
       {
         return $value;
       }
-      return self::error_handler( sprintf( __( 'The URL %s does not contain media content in any valid format.', 'wpod' ), esc_url( $value ) ) );
+      if( !empty( $errmsg_append ) )
+      {
+        $errmsg_append = ' ' . $errmsg_append;
+      }
+      return self::error_handler( sprintf( __( 'The URL %s does not contain media content in any valid format.', 'wpod' ), esc_url( $value ) ) . $errmsg_append );
     }
     return self::error_handler( sprintf( __( 'The URL %s does not link to a WordPress media file.', 'wpod' ), esc_url( $value ) ) );
   }
@@ -203,7 +207,7 @@ class Validator
       'bmp',
       'tif|tiff',
       'ico',
-    ) );
+    ), __( 'It has to be an image file.', 'wpod' ) );
   }
 
   public static function video( $value, $field )
@@ -222,7 +226,7 @@ class Validator
       'ogv',
       'webm',
       'mkv',
-    ) );
+    ), __( 'It has to be a video file.', 'wpod' ) );
   }
 
   public static function audio( $value, $field )
@@ -236,7 +240,7 @@ class Validator
       'wma',
       'wax',
       'mka',
-    ) );
+    ), __( 'It has to be an audio file.', 'wpod' ) );
   }
 
   public static function archive( $value, $field )
@@ -247,17 +251,46 @@ class Validator
       'gz|gzip',
       'rar',
       '7z',
-    ) );
+    ), __( 'It has to be a file archive.', 'wpod' ) );
   }
 
   public static function favicon( $value, $field )
   {
-    return self::media( $value, $field, 'ico' );
+    return self::media( $value, $field, 'ico', __( 'It has to be a favicon.', 'wpod' ) );
   }
 
   public static function pdf( $value, $field )
   {
-    return self::media( $value, $field, 'pdf' );
+    return self::media( $value, $field, 'pdf', __( 'It has to be a PDF file.', 'wpod' ) );
+  }
+
+  public static function is_valid_empty( $value, $field )
+  {
+    $empty = false;
+    if( $field->type == 'checkbox' )
+    {
+      return $value;
+    }
+    switch( $field->type )
+    {
+      case 'multiselect':
+      case 'multibox':
+        $empty = count( $value );
+        $empty = (bool) $empty;
+        break;
+      default:
+        $empty = empty( $value );
+    }
+    if( !$empty || $empty && ( !isset( $field->more_attributes['required'] ) || !$field->more_attributes['required'] ) )
+    {
+      return $value;
+    }
+    return self::error_handler( __( 'The value must not be empty.', 'wpod' ) );
+  }
+
+  public static function invalid_validation_function()
+  {
+    return self::error_handler( __( 'The validation function specified is invalid. It does not exist.', 'wpod' ) );
   }
 
   private static function error_handler( $message )

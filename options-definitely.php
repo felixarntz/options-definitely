@@ -94,8 +94,14 @@ function wpod_test( $options )
                   'more_attributes'     => array(
                     'min'                 => 100,
                     'max'                 => 300,
-                    'step'                => 1,
+                    'step'                => 2,
                   ),
+                ),
+                'sidebar_file'        => array(
+                  'title'               => 'Sidebar File',
+                  'description'         => 'Upload some test file.',
+                  'type'                => 'media',
+                  'default'             => '',
                 ),
               ),
             ),
@@ -112,11 +118,11 @@ function wpod_test( $options )
     $fields[ $area . '_font' ] = array(
       'title'             => 'Font',
       'description'       => 'Here you can choose the font for the ' . $area . '.',
-      'type'              => 'select',
-      'default'           => 'arial',
+      'type'              => 'radio',
+      'default'           => 'verdana',
       'options'           => array(
-        'arial'             => 'Arial',
-        'calibri'           => 'calibri',
+        'arial'             => array( 'label' => 'Arial', 'color' => '#ff0000' ),
+        'calibri'           => array( 'label' => 'Calibri', 'color' => '#ff00ff' ),
         'comicsans'         => 'Comic Sans',
         'timesnewroman'     => 'Times New Roman',
         'trebuchet'         => 'Trebuchet',
@@ -126,7 +132,7 @@ function wpod_test( $options )
     $fields[ $area . '_font_size'] = array(
       'title'             => 'Font Size',
       'description'       => 'Here you can adjust the font size for the ' . $area . '.',
-      'type'              => 'number',
+      'type'              => 'range',
       'default'           => 14,
       'more_attributes'   => array(
         'min'               => 8,

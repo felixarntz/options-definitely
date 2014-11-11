@@ -9,6 +9,7 @@
   "latedef"  : true,
   "laxbreak" : true,
   "nonbsp"   : true,
+  "predef"   : ["console", "wp"],
   "strict"   : true,
   "undef"    : true,
   "unused"   : false

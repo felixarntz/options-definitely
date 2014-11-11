@@ -90,12 +90,65 @@ class Member extends ComponentBase
 
   public function validate_options( $options )
   {
-    //TODO: validation
+    $options_validated = array();
+    $options_old = get_option( $this->slug );
+    $errors = array();
+    $fields = \WPOD\Framework::instance()->query( array(
+      'type'          => 'field',
+      'parent_slug'   => $this->slug,
+      'parent_type'   => 'member',
+    ) );
+    foreach( $fields as $field )
+    {
+      $option = null;
+      $option_old = $field->default;
+      if( isset( $options[ $field->slug ] ) )
+      {
+        $option = $options[ $field->slug ];
+      }
+      if( isset( $options_old[ $field->slug ] ) )
+      {
+        $option_old = $options_old[ $field->slug ];
+      }
+      list( $option_validated, $error ) = $field->validate_option( $option, $option_old );
+      $options_validated[ $field->slug ] = $option_validated;
+      if( !empty( $error ) )
+      {
+        $errors[] = $error;
+      }
+    }
+    $status_text = __( 'Settings successfully saved.', 'wpod' );
+    if( count( $errors ) > 0 )
+    {
+      $error_text = __( 'Some errors occured while trying to save the following settings:', 'wpod' );
+      add_settings_error( $this->slug, $this->slug . '-error', $error_text . '<br/>' . implode( '<br/>', $errors ), 'error' );
+      $status_text = __( 'All other settings not mentioned above were saved successfully.', 'wpod' );
+    }
+    add_settings_error( $this->slug, $this->slug . '-updated', $status_text, 'updated' );
+    do_action( 'wpod_options_validated', $this, $options_validated );
+    return $options_validated;
   }
 
   public function update_option_defaults()
   {
-    //TODO: update_defaults
+    $options = get_option( $this->slug );
+    if( !is_array( $options ) )
+    {
+      $options = array();
+    }
+    $fields = WPOD\Framework::instance()->query( array(
+      'type'          => 'field',
+      'parent_slug'   => $this->slug,
+      'parent_type'   => 'member',
+    ) );
+    foreach( $fields as $field )
+    {
+      if( !isset( $options[ $field->slug ] ) )
+      {
+        $options[ $field->slug ] = $field->default;
+      }
+    }
+    update_option( $this->slug, $options );
   }
 
   protected function get_defaults()

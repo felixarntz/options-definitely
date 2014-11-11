@@ -135,20 +135,39 @@ function wpod_get_attachment_id( $attachment_url )
   return $attachment_id;
 }
 
+function wpod_is_image( $attachment_url )
+{
+  $filename = explode( '.', $attachment_url );
+  $last = count( $filename ) - 1;
+  if( $last > 0 )
+  {
+    $extension = $filename[ $last ];
+    if( in_array( $extension, array( 'bmp', 'jpg', 'jpeg', 'png', 'gif' ) ) )
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
 function wpod_make_html_attributes( $atts, $html5 = true, $echo = true )
 {
   $output = '';
+  uasort( $atts, 'wpod_sort_attributes' );
   foreach( $atts as $key => $value )
   {
     if( is_bool( $value ) )
     {
-      if( $html5 )
+      if( $value )
       {
-        $output .= ' ' . $key;
-      }
-      else
-      {
-        $output .= ' ' . $key . '="' . esc_attr( $key ) . '"';
+        if( $html5 )
+        {
+          $output .= ' ' . $key;
+        }
+        else
+        {
+          $output .= ' ' . $key . '="' . esc_attr( $key ) . '"';
+        }
       }
     }
     else
@@ -178,6 +197,19 @@ function wpod_current_user_can( $component )
     return true;
   }
   return false;
+}
+
+function wpod_sort_attributes( $a, $b )
+{
+  if( is_bool( $a ) && !is_bool( $b ) )
+  {
+    return 1;
+  }
+  elseif( !is_bool( $a ) && is_bool( $b ) )
+  {
+    return -1;
+  }
+  return 0;
 }
 
 /* ERROR HANDLING FUNCTIONS */
