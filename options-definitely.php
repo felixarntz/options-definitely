@@ -103,6 +103,15 @@ function wpod_test( $options )
                   'type'                => 'media',
                   'default'             => '',
                 ),
+                'sidebar_text'        => array(
+                  'title'               => 'Sidebar Text',
+                  'description'         => 'Write a text in the WP Editor.',
+                  'type'                => 'wysiwyg',
+                  'default'             => '',
+                  'more_attributes'     => array(
+                    'rows'                => 7,
+                  ),
+                ),
               ),
             ),
           ),

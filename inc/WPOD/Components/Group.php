@@ -9,11 +9,22 @@ namespace WPOD\Components;
 
 class Group extends ComponentBase
 {
+  public function is_already_added()
+  {
+    global $admin_page_hooks;
+
+    if( isset( $admin_page_hooks[ $this->slug ] ) )
+    {
+      return true;
+    }
+    return false;
+  }
+
   public function validate()
   {
     parent::validate();
-    $this->args['slug'] = null;
     $this->args['added'] = false;
+    $this->args['subslug'] = $this->slug;
     $this->args['sublabel'] = false;
   }
 

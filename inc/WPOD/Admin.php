@@ -23,7 +23,7 @@ class Admin
   private function __construct()
   {
     add_action( 'admin_init', array( $this, 'register_settings' ) );
-    add_action( 'admin_menu', array( $this, 'create_admin_menu' ) );
+    add_action( 'admin_menu', array( $this, 'create_admin_menu' ), 50 );
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
     add_action( 'wpod_update_option_defaults', array( $this, 'update_option_defaults' ) );
@@ -60,6 +60,21 @@ class Admin
 
   public function create_admin_menu()
   {
+    $groups = \WPOD\Framework::instance()->query( array(
+      'type'        => 'group',
+    ) );
+    foreach( $groups as $group )
+    {
+      if( $group->is_already_added() )
+      {
+        \WPOD\Framework::instance()->update( $group->slug, 'group', array(
+          'added'       => true,
+          'subslug'     => $group->slug,
+          'sublabel'    => true,
+        ) );
+      }
+    }
+
     $sets = \WPOD\Framework::instance()->query( array(
       'type'          => 'set',
     ) );

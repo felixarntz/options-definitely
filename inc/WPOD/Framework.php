@@ -105,10 +105,10 @@ class Framework
 
   public function update( $slug, $type, $args, $parent = '' )
   {
-    if( !$this->initialized )
+    if( !$this->initialized || $type == 'group' )
     {
       $type = strtolower( $type );
-      if( $this->is_valid_type )
+      if( $this->is_valid_type( $type ) )
       {
         if( !empty( $slug ) )
         {
@@ -116,12 +116,14 @@ class Framework
           if( $key !== false )
           {
             $arrayname = $type . 's';
-            $component = $this->$arrayname[ $key ];
+            $array = $this->$arrayname;
+            $component = $array[ $key ];
             foreach( $args as $name => $value )
             {
               $component->$name = $value;
             }
-            $this->arrayname[ $key ] = $component;
+            $array[ $key ] = $component;
+            $this->$arrayname = $array;
             return true;
           }
           else
@@ -151,7 +153,7 @@ class Framework
     if( !$this->initialized )
     {
       $type = strtolower( $type );
-      if( $this->is_valid_type )
+      if( $this->is_valid_type( $type ) )
       {
         if( !empty( $slug ) )
         {
@@ -159,7 +161,9 @@ class Framework
           if( $key !== false )
           {
             $arrayname = $type . 's';
-            unset( $this->$arrayname[ $key ] );
+            $array = $this->$arrayname;
+            unset( $array[ $key ] );
+            $this->$arrayname = $array;
             return true;
           }
           else
@@ -419,7 +423,7 @@ class Framework
     return in_array( $type, $this->get_type_whitelist() );
   }
 
-  private function get_type_whitelist()
+  public function get_type_whitelist()
   {
     return array( 'group', 'set', 'member', 'section', 'field' );
   }

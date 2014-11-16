@@ -56,6 +56,15 @@ abstract class ComponentBase
   public function validate()
   {
     $this->args = wp_parse_args( $this->args, $this->get_defaults() );
+    $types = \WPOD\Framework::instance()->get_type_whitelist();
+    foreach( $types as $type )
+    {
+      $t = $type . 's';
+      if( isset( $this->args[ $t ] ) )
+      {
+        unset( $this->args[ $t ] );
+      }
+    }
   }
 
   protected abstract function get_defaults();

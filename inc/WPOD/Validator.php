@@ -105,6 +105,11 @@ class Validator
     return self::text( $value, $field );
   }
 
+  public static function wysiwyg( $value, $field )
+  {
+    return wp_kses_post( wpautop( $value ) );
+  }
+
   public static function email( $value, $field )
   {
     $old_mail = $value;
@@ -262,6 +267,12 @@ class Validator
   public static function pdf( $value, $field )
   {
     return self::media( $value, $field, 'pdf', __( 'It has to be a PDF file.', 'wpod' ) );
+  }
+
+  public static function repeatable( $value, $field )
+  {
+    //TODO: validate repeatable field value (array)
+    return $value;
   }
 
   public static function is_valid_empty( $value, $field )

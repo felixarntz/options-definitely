@@ -124,7 +124,6 @@ function wpod_get_attachment_id( $attachment_url )
     
     if( false !== strpos( $attachment_url, $upload_dir_paths['baseurl'] ) )
     {
-      //TODO: does this work?
       $attachment_url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
    
       $attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
@@ -213,16 +212,6 @@ function wpod_sort_attributes( $a, $b )
 }
 
 /* ERROR HANDLING FUNCTIONS */
-
-//TODO: is this necessary?
-function wpod_incorrect_array( $slug, $type, $message, $version )
-{
-  if( WP_DEBUG && apply_filters( 'wpod_incorrect_array_trigger_error', true ) )
-  {
-    $version = !empty( $version ) ? sprintf( __( 'This message was added in %1$s version %2$s', 'wpod' ), '&quot;' . WPOD_NAME . '&quot;', $version ) : '';
-    trigger_error( sprintf( __( 'Options error in %1$s <strong>%2$s</strong>: %3$ %4$s', 'wpod' ), $type, $slug, $message, $version ) );
-  }
-}
 
 function wpod_doing_it_wrong( $function, $message, $version )
 {

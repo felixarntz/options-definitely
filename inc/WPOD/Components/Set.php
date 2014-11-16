@@ -25,24 +25,24 @@ class Set extends ComponentBase
     }
     else
     {
-      if( $group->added )
+      if( $group->added === false )
       {
         $this->page_hook = add_menu_page( $this->args['title'], $group->label, $this->args['capability'], $this->slug, array( $this, 'render' ), $group->icon, $group->position );
         \WPOD\Framework::instance()->update( $group->slug, 'group', array(
-          'slug'        => $this->slug,
           'added'       => true,
+          'subslug'     => $this->slug,
           'sublabel'    => $this->args['label'],
         ) );
       }
       else
       {
-        $this->page_hook = add_submenu_page( $group->slug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
+        $this->page_hook = add_submenu_page( $group->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
         if( $group->sublabel !== true )
         {
           global $submenu;
-          if( isset( $submenu[ $group->slug ] ) )
+          if( isset( $submenu[ $group->subslug ] ) )
           {
-            $submenu[ $group->slug ][0][0] = $group->sublabel;
+            $submenu[ $group->subslug ][0][0] = $group->sublabel;
             \WPOD\Framework::instance()->update( $group->slug, 'group', array(
               'sublabel'    => true,
             ) );
