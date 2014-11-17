@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Options, Definitely 1.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/options-definitely/\n"
-"POT-Creation-Date: 2014-11-17 16:49:50+00:00\n"
-"PO-Revision-Date: 2014-11-17 17:50+0100\n"
+"POT-Creation-Date: 2014-11-17 18:49:53+00:00\n"
+"PO-Revision-Date: 2014-11-17 19:50+0100\n"
 "Last-Translator: Felix Arntz <felix-arntz@leaves-and-love.net>\n"
 "Language-Team: Felix Arntz <felix-arntz@leaves-and-love.net>\n"
 "Language: de_DE\n"
@@ -78,7 +78,7 @@ msgstr "Feld-Titel"
 msgid "Group label"
 msgstr "Gruppen-Label"
 
-#: inc/WPOD/Components/Member.php:71
+#: inc/WPOD/Components/Member.php:74
 msgid ""
 "There are no sections to display for member %s. Either add some or provide a "
 "valid callback function instead."
@@ -87,25 +87,25 @@ msgstr ""
 "Sie entweder welche hinzu oder geben Sie eine vorhandene Callback-Funktion "
 "an."
 
-#: inc/WPOD/Components/Member.php:120
+#: inc/WPOD/Components/Member.php:123
 msgid "Settings successfully saved."
 msgstr "Änderungen erfolgreich gespeichert."
 
-#: inc/WPOD/Components/Member.php:123
+#: inc/WPOD/Components/Member.php:126
 msgid "Some errors occured while trying to save the following settings:"
 msgstr "Beim Versuch die Einstellungen zu speichern sind Fehler aufgetreten:"
 
-#: inc/WPOD/Components/Member.php:125
+#: inc/WPOD/Components/Member.php:128
 msgid "All other settings not mentioned above were saved successfully."
 msgstr ""
 "Alle weiteren, oben nicht erwähnten Einstellungen wurden erfolgreich "
 "gespeichert."
 
-#: inc/WPOD/Components/Member.php:157
+#: inc/WPOD/Components/Member.php:160
 msgid "Member title"
 msgstr "Mitglieds-Titel"
 
-#: inc/WPOD/Components/Section.php:52
+#: inc/WPOD/Components/Section.php:55
 msgid ""
 "There are no fields to display for section %s. Either add some or provide a "
 "valid callback function instead."
@@ -114,7 +114,7 @@ msgstr ""
 "Sie entweder welche hinzu oder geben Sie eine vorhandene Callback-Funktion "
 "an."
 
-#: inc/WPOD/Components/Section.php:59
+#: inc/WPOD/Components/Section.php:62
 msgid "Section title"
 msgstr "Abschnitts-Titel"
 
