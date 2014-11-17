@@ -17,23 +17,67 @@
 }
 .form-table .range-viewer,
 .form-table .color-viewer {
-  display: inline-block;
-  float: left;
-  margin-right: 10px;
-  padding-right: 5px;
+  height: 27px;
   text-align: right;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
+}
+.form-table .range-viewer + input,
+.form-table .color-viewer + input {
+  height: 27px;
+  vertical-align: bottom;
 }
 .form-table .range-viewer {
   width: 40px;
+  margin-right: 5px;
 }
 .form-table .color-viewer {
-  width: 60px;
+  width: 70px;
+  margin-right: -1px;
+}
+.form-table .color-viewer + input {
+  margin-left: 0;
+  background-color: #eeeeee;
+}
+.form-table .media-image,
+.form-table .media-link {
+  display: block;
 }
 .form-table .media-image {
   max-width: 300px;
   height: auto;
+}
+.form-table .repeatable > p {
+  margin-bottom: 15px;
+  overflow: hidden;
+  clear: both;
+}
+.form-table .repeatable .repeatable-row .repeatable-col {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.form-table .repeatable .repeatable-row .repeatable-col input,
+.form-table .repeatable .repeatable-row .repeatable-col select,
+.form-table .repeatable .repeatable-row .repeatable-col .select2-container {
+  max-width: 150px !important;
+}
+.form-table .repeatable .repeatable-row .remove-repeatable-button {
+  padding-left: 10px;
+  float: right;
+}
+.form-table .repeatable .media-image,
+.form-table .repeatable .media-link {
+  display: none;
+  margin-left: 5px;
+}
+@media (min-width: 1800px) {
+  .form-table .repeatable .media-image,
+  .form-table .repeatable .media-link {
+    display: inline-block;
+  }
+}
+.form-table .repeatable .media-image {
+  max-height: 27px;
+  width: auto;
+  vertical-align: bottom;
 }
 .form-table input[type="checkbox"],
 .form-table input[type="radio"] {
@@ -84,4 +128,7 @@
 .form-table .checkbox.box div.checked,
 .form-table .radio.box div.checked {
   border-color: #0074a2;
+}
+.repeatable-field-error {
+  margin-left: 20px;
 }

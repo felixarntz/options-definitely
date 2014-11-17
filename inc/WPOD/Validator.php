@@ -169,11 +169,10 @@ class Validator
 
   public static function media( $value, $field, $desired_types = 'all', $errmsg_append = '' )
   {
-    $value = esc_url( $value );
-    $id = wpod_get_attachment_id( $value );
-    if( $id )
+    $value = absint( $value );
+    if( get_post_type( $value ) == 'attachment' )
     {
-      $mime = get_post_mime_type( $id );
+      $mime = get_post_mime_type( $value );
 
       $mime_types = get_allowed_mime_types();
       
@@ -198,9 +197,9 @@ class Validator
       {
         $errmsg_append = ' ' . $errmsg_append;
       }
-      return self::error_handler( sprintf( __( 'The URL %s does not contain media content in any valid format.', 'wpod' ), esc_url( $value ) ) . $errmsg_append );
+      return self::error_handler( sprintf( __( 'The media file with ID %s is neither of the valid formats.', 'wpod' ), $value ) . $errmsg_append );
     }
-    return self::error_handler( sprintf( __( 'The URL %s does not link to a WordPress media file.', 'wpod' ), esc_url( $value ) ) );
+    return self::error_handler( sprintf( __( 'The post with ID %s is not a WordPress media file.', 'wpod' ), $value ) );
   }
 
   public static function image( $value, $field )
@@ -271,8 +270,70 @@ class Validator
 
   public static function repeatable( $value, $field )
   {
-    //TODO: validate repeatable field value (array)
-    return $value;
+    if( is_array( $value ) && count( $value ) > 0 )
+    {
+      $errors = '';
+      if( $field->repeatable['limit'] > 0 && count( $value ) > $field->repeatable['limit'] )
+      {
+        $orig_value = $value;
+        $value = array();
+        $counter = 0;
+        foreach( $orig_value as $key => $options )
+        {
+          $value[ $key ] = $options;
+          $counter++;
+          if( $counter == $field->repeatable['limit'] )
+          {
+            break;
+          }
+        }
+      }
+      foreach( $value as $key => &$options )
+      {
+        foreach( $field->repeatable['fields'] as $slug => $data )
+        {
+          if( !isset( $options[ $slug ] ) )
+          {
+            $options[ $slug ] = $data['default'];
+          }
+
+          $validate_args = (object) $data;
+          $validate_args->slug = $slug;
+
+          $options[ $slug ] = self::is_valid_empty( $options[ $slug ], $validate_args );
+          if( !isset( $options[ $slug ]['errmsg'] ) && $options[ $slug ] != '' )
+          {
+            if( is_callable( $data['validate'] ) )
+            {
+              $options[ $slug ] = call_user_func( $data['validate'], $options[ $slug ], $validate_args );
+            }
+            else
+            {
+              $options[ $slug ] = self::invalid_validation_function();
+            }
+          }
+
+          if( isset( $options[ $slug ]['errmsg'] ) )
+          {
+            $errors .= '<br/><span class="repeatable-field-error">' . $data['title'] . ': ' . $options[ $slug ]['errmsg'] . '</span>';
+            if( isset( $options[ $slug ]['option'] ) )
+            {
+              $options[ $slug ] = $options[ $slug ]['option'];
+            }
+            else
+            {
+              $options[ $slug ] = $data['default'];
+            }
+          }
+        }
+      }
+      if( empty( $errors ) )
+      {
+        return $value;
+      }
+      return self::error_handler( __( 'Some errors occurred during validation the repeatable field:', 'wpod' ) . $errors, $value );
+    }
+    return array();
   }
 
   public static function is_valid_empty( $value, $field )
@@ -286,8 +347,12 @@ class Validator
     {
       case 'multiselect':
       case 'multibox':
+      case 'repeatable':
         $empty = count( $value );
         $empty = (bool) $empty;
+        break;
+      case 'media':
+        $empty = absint( $value ) < 1;
         break;
       default:
         $empty = empty( $value );
@@ -304,8 +369,13 @@ class Validator
     return self::error_handler( __( 'The validation function specified is invalid. It does not exist.', 'wpod' ) );
   }
 
-  private static function error_handler( $message )
+  private static function error_handler( $message, $value = null )
   {
-    return array( 'errmsg' => $message );
+    $ret = array( 'errmsg' => $message );
+    if( isset( $value ) )
+    {
+      $ret['option'] = $value;
+    }
+    return $ret;
   }
 }

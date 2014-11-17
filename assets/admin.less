@@ -20,24 +20,70 @@
 
   .range-viewer,
   .color-viewer {
-    display: inline-block;
-    float: left;
-    margin-right: 10px;
-    padding-right: 5px;
+    height: 27px;
     text-align: right;
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
+    & + input {
+      height: 27px;
+      vertical-align: bottom;
+    }
   }
   .range-viewer {
     width: 40px;
+    margin-right: 5px;
   }
   .color-viewer {
-    width: 60px;
+    width: 70px;
+    margin-right: -1px;
+    & + input {
+      margin-left: 0;
+      background-color: #eeeeee;
+    }
+  }
+
+  .media-image,
+  .media-link {
+    display: block;
   }
 
   .media-image {
     max-width: 300px;
     height: auto;
+  }
+
+  .repeatable {
+    > p {
+      margin-bottom: 15px;
+      overflow: hidden;
+      clear: both;
+    }
+    .repeatable-row {
+      .repeatable-col {
+        padding-right: 10px;
+        padding-left: 10px;
+        input,
+        select,
+        .select2-container {
+          max-width: 150px !important;
+        }
+      }
+      .remove-repeatable-button {
+        padding-left: 10px;
+        float: right;
+      }
+    }
+    .media-image,
+    .media-link {
+      display: none;
+      margin-left: 5px;
+      @media (min-width: 1800px) {
+        display: inline-block;
+      }
+    }
+    .media-image {
+      max-height: 27px;
+      width: auto;
+      vertical-align: bottom;
+    }
   }
 
   input[type="checkbox"],
@@ -84,4 +130,8 @@
       }
     }
   }
+}
+
+.repeatable-field-error {
+  margin-left: 20px;
 }

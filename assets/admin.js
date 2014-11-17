@@ -3,35 +3,6 @@
 
   $(document).ready(function($) {
 
-    // viewer handling for fields without visible output
-    $('.form-table input[type="range"], .form-table input[type="color"]').on('change', function() {
-      $('#' + $(this).attr('id') + '-' + $(this).attr('type') + '-viewer').html($(this).val());
-    });
-
-    // radio handling
-    $('.radio-group .radio div').on('click', function() {
-      var input_id = $(this).attr('id').replace('-asset', '');
-      $(this).parent().parent().find('.radio div').removeClass('checked');
-      $(this).addClass('checked');
-      $('#' + input_id).prop('checked', true);
-    });
-    $('.radio-group .radio input').on('change', function() {
-      $(this).parent().parent().find('.radio div').removeClass('checked');
-    });
-
-    // multibox handling
-    $('.checkbox-group .checkbox div').on('click', function() {
-      var input_id = $(this).attr('id').replace('-asset', '');
-      if($(this).hasClass('checked')) {
-        $(this).removeClass('checked');
-        $('#' + input_id).prop('checked', false);
-      }
-      else {
-        $(this).addClass('checked');
-        $('#' + input_id).prop('checked', true);
-      }
-    });
-
     // select2 setup
     function formatSelect2(option) {
       var $option = $(option.element);
@@ -46,7 +17,7 @@
         return option.text;
       }
     }
-    $('select').select2({
+    var select2_args = {
       containerCss : {
         'width': '100%',
         'max-width': '300px'
@@ -56,6 +27,39 @@
       formatSelection: formatSelect2,
       escapeMarkup: function(m) { return m; },
       minimumResultsForSearch: 8
+    };
+    $('select').select2(select2_args);
+
+    // viewer handling for fields without visible output
+    $('.form-table').on('change', 'input[type="range"], input[type="color"]', function() {
+      $('#' + $(this).attr('id') + '-' + $(this).attr('type') + '-viewer').val($(this).val());
+    });
+    $('.form-table').on('change', 'input[class="range-viewer"], input[class="color-viewer"]', function() {
+      $(this).next('input').val($(this).val());
+    });
+
+    // radio handling
+    $('.form-table').on('click', '.radio-group .radio div', function() {
+      var input_id = $(this).attr('id').replace('-asset', '');
+      $(this).parent().parent().find('.radio div').removeClass('checked');
+      $(this).addClass('checked');
+      $('#' + input_id).prop('checked', true);
+    });
+    $('.form-table').on('change', '.radio-group .radio input', function() {
+      $(this).parent().parent().find('.radio div').removeClass('checked');
+    });
+
+    // multibox handling
+    $('.form-table').on('click', '.checkbox-group .checkbox div', function() {
+      var input_id = $(this).attr('id').replace('-asset', '');
+      if($(this).hasClass('checked')) {
+        $(this).removeClass('checked');
+        $('#' + input_id).prop('checked', false);
+      }
+      else {
+        $(this).addClass('checked');
+        $('#' + input_id).prop('checked', true);
+      }
     });
 
     // media uploader
@@ -64,7 +68,7 @@
       var _custom_media = true;
       var _orig_send_attachment = wp.media.editor.send.attachment;
       
-      $('.form-table .media-button').click(function(e) {
+      $('.form-table').on( 'click', '.media-button', function(e) {
         var send_attachment = wp.media.editor.send.attachment;
         var $button = $(this);
         var search_id = $button.attr('id').replace('-media-button', '');
@@ -72,14 +76,14 @@
         wp.media.editor.send.attachment = function(props,attachment) {
           if(_custom_media)
           {
-            $('#' + search_id).val(attachment.url);
-            var extension = attachment.url.split('.').pop();
-            if($.inArray(extension, ['bmp', 'jpg', 'jpeg', 'png', 'gif']) > -1) {
+            $('#' + search_id).val(attachment.id);
+            $('#' + search_id + '-media-title').val(attachment.title);
+            if(attachment.type === 'image') {
               if($('#' + search_id + '-media-image').length > 0) {
                 $('#' + search_id + '-media-image').attr('src', attachment.url);
               }
               else {
-                $('#' + search_id + '-media-button').after('<br/><img id="' + search_id + '-media-image" class="media-image" src="' + attachment.url + '" />');
+                $('#' + search_id + '-media-button').after('<img id="' + search_id + '-media-image" class="media-image" src="' + attachment.url + '" />');
               }
             }
             else {
@@ -87,7 +91,7 @@
                 $('#' + search_id + '-media-link').attr('href', attachment.url);
               }
               else {
-                $('#' + search_id + '-media-button').after('<br/><a id="' + search_id + '-media-link" class="media-link" href="' + attachment.url + '" target="_blank">Open file</a>');
+                $('#' + search_id + '-media-button').after('<a id="' + search_id + '-media-link" class="media-link" href="' + attachment.url + '" target="_blank">Open file</a>');
               }
             }
           }
@@ -103,6 +107,58 @@
       
       $('.add_media').on('click', function() {
         _custom_media = false;
+      });
+    }
+
+    // repeatable fields
+    if($('.repeatable').length > 0 && _wpod_admin !== undefined) {
+      $('.repeatable').each(function() {
+        $(this).on('click', '.new-repeatable-button', function(e) {
+          e.preventDefault();
+          var $parent = $('#' + e.delegateTarget.id);
+          var data = {
+            action: _wpod_admin.action_add_repeatable,
+            nonce: _wpod_admin.nonce,
+            slug: $parent.data('slug'),
+            parent_slug: $parent.data('parent-slug'),
+            key: $parent.find('.repeatable-row').length
+          };
+          $.post(ajaxurl, data, function(response) {
+            if(response !== '' && $parent.find('.repeatable-row').length === data.key) {
+              $parent.append(response).find('select').select2(select2_args);
+              var limit = parseInt($('#' + e.delegateTarget.id).data('limit'), 10);
+              if(limit > 0 && limit === $('#' + e.delegateTarget.id).find('.repeatable-row').length) {
+                $('#' + e.delegateTarget.id).find('.new-repeatable-button').hide();
+              }
+            }
+          });
+        });
+        $(this).on('click', '.remove-repeatable-button', function(e) {
+          e.preventDefault();
+          var $parent = $('#' + e.delegateTarget.id);
+          var $rows = $parent.find('.repeatable-row');
+          var number = parseInt($(this).data('number'), 10) + 1;
+          $rows.filter(':nth-child(' + (number + 1) + ')').remove();
+          $rows.filter(':gt(' + (number - 1) + ')').each(function() {
+            var $row = $(this);
+            var number = parseInt($row.find('.remove-repeatable-button').data('number'), 10);
+            var target = number - 1;
+            $row.find('span:first').html($row.find('span:first').html().replace((number+1).toString(), (target+1).toString()));
+            $row.find('.repeatable-col input, .repeatable-col select, .repeatable-col img, .repeatable-col a').each(function() {
+              if($(this).attr('id')) {
+                $(this).attr('id', $(this).attr('id').replace(number.toString(), target.toString()));
+              }
+              if($(this).attr('name')) {
+                $(this).attr('name', $(this).attr('name').replace(number.toString(), target.toString()));
+              }
+            });
+            $row.find('.remove-repeatable-button').data('number', target.toString());
+          });
+          var limit = parseInt($('#' + e.delegateTarget.id).data('limit'), 10);
+          if(limit > 0 && limit > $('#' + e.delegateTarget.id).find('.repeatable-row').length) {
+            $('#' + e.delegateTarget.id).find('.new-repeatable-button').show();
+          }
+        });
       });
     }
 

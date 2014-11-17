@@ -113,38 +113,22 @@ function wpod_format_datetime( $formatstring_or_timestamp )
   return date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $formatstring_or_timestamp );
 }
 
-function wpod_get_attachment_id( $attachment_url )
+function wpod_is_image( $attachment_id )
 {
-  global $wpdb;
-  $attachment_id = false;
-  
-  if( !empty( $attachment_url ) )
+  $mime = get_post_mime_type( $attachment_id );
+  $mime_types = get_allowed_mime_types();
+  $image_types = array(
+    'jpg|jpeg|jpe',
+    'gif',
+    'png',
+    'bmp',
+    'tif|tiff',
+    'ico',
+  );
+  $mime_types = array_intersect_key( $mime_types, array_flip( $image_types ) );
+  if( in_array( $mime, $mime_types ) )
   {
-    $upload_dir_paths = wp_upload_dir();
-    
-    if( false !== strpos( $attachment_url, $upload_dir_paths['baseurl'] ) )
-    {
-      $attachment_url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
-   
-      $attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
-   
-      $attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT wposts.ID FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value = '%s' AND wposts.post_type = 'attachment'", $attachment_url ) );
-    }
-  }
-  return $attachment_id;
-}
-
-function wpod_is_image( $attachment_url )
-{
-  $filename = explode( '.', $attachment_url );
-  $last = count( $filename ) - 1;
-  if( $last > 0 )
-  {
-    $extension = $filename[ $last ];
-    if( in_array( $extension, array( 'bmp', 'jpg', 'jpeg', 'png', 'gif' ) ) )
-    {
-      return true;
-    }
+    return true;
   }
   return false;
 }
@@ -155,7 +139,7 @@ function wpod_make_html_attributes( $atts, $html5 = true, $echo = true )
   uasort( $atts, 'wpod_sort_attributes' );
   foreach( $atts as $key => $value )
   {
-    if( is_bool( $value ) )
+    if( is_bool( $value ) || $key == $value )
     {
       if( $value )
       {
@@ -180,6 +164,35 @@ function wpod_make_html_attributes( $atts, $html5 = true, $echo = true )
   }
   return $output;
 }
+
+/* AJAX FUNCTIONS */
+
+function wpod_ajax_insert_repeatable_row()
+{
+  if( wp_verify_nonce( $_POST['nonce'], 'wpod-ajax-request' ) )
+  {
+    $key = absint( $_POST['key'] );
+    $member_slug = esc_attr( $_POST['parent_slug'] );
+    $field_slug = esc_attr( $_POST['slug'] );
+
+    $field = \WPOD\Framework::instance()->query( array(
+      'slug'        => $field_slug,
+      'type'        => 'field',
+      'parent_slug' => $member_slug,
+      'parent_type' => 'member',
+    ), true );
+
+    if( $field )
+    {
+      $id_prefix = $member_slug . '-' . $field_slug;
+      $name_prefix = $member_slug . '[' . $field_slug . ']';
+
+      $field->render_repeatable_row( $key, $id_prefix, $name_prefix );
+    }
+  }
+  die();
+}
+add_action( 'wp_ajax_wpod_insert_repeatable', 'wpod_ajax_insert_repeatable_row' );
 
 /* CALLBACK HELPER FUNCTIONS */
 

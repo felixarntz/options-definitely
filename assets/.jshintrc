@@ -9,7 +9,7 @@
   "latedef"  : true,
   "laxbreak" : true,
   "nonbsp"   : true,
-  "predef"   : ["console", "wp"],
+  "predef"   : ["console", "wp", "_wpod_admin", "ajaxurl"],
   "strict"   : true,
   "undef"    : true,
   "unused"   : false

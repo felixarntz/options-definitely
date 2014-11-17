@@ -97,6 +97,11 @@ class Admin
       wp_enqueue_script( 'select2', WPOD_URL . '/assets/third-party/select2/select2.js', array( 'jquery' ), false, true );
       wp_enqueue_style( 'wpod-admin', WPOD_URL . '/assets/admin.min.css', array(), WPOD_VERSION );
       wp_enqueue_script( 'wpod-admin', WPOD_URL . '/assets/admin.min.js', array( 'select2' ), WPOD_VERSION, true );
+      wp_localize_script( 'wpod-admin', '_wpod_admin', array(
+        'nonce'                   => wp_create_nonce( 'wpod-ajax-request' ),
+        'action_add_repeatable'   => 'wpod_insert_repeatable',
+      ) );
+
       $fields = \WPOD\Framework::instance()->query( array(
         'type'            => 'field',
         'parent_slug'     => $currents['member']->slug,
@@ -104,7 +109,7 @@ class Admin
       ) );
       foreach( $fields as $field )
       {
-        if( $field->type == 'media' )
+        if( $field->type == 'media' || $field->type == 'repeatable' )
         {
           wp_enqueue_media();
           break;

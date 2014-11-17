@@ -179,7 +179,7 @@ module.exports = function(grunt) {
         options: {
           domainPath: '/languages',
           potComments: 'Copyright (c) 2014-<%= grunt.template.today("yyyy") %> <%= pkg.author.name %>',
-          potFilename: 'options-definitely.pot',
+          potFilename: 'wpod.pot',
           potHeaders: {
             'report-msgid-bugs-to': '<%= pkg.homepage %>',
             'x-generator': 'grunt-wp-i18n 0.4.5',
