@@ -217,9 +217,12 @@ class Field extends ComponentBase
 
     echo '<div' . wpod_make_html_attributes( $atts, false, false ) . '>';
     echo '<p><a class="new-repeatable-button button" href="#"' . ( $this->args['repeatable']['limit'] > 0 && $this->args['repeatable']['limit'] == count( $option ) ? ' style="display:none;"' : '' ) . '>' . __( 'Add new', 'wpod' ) . '</a></p>';
-    foreach( $option as $key => $options )
+    if( is_array( $option ) )
     {
-      $this->render_repeatable_row( $key, $label_for, $name_prefix, $options );
+      foreach( $option as $key => $options )
+      {
+        $this->render_repeatable_row( $key, $label_for, $name_prefix, $options );
+      }
     }
     echo '</div>';
     if( !empty( $this->args['description'] ) )
