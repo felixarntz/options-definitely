@@ -56,7 +56,10 @@ class Member extends ComponentBase
       }
       else
       {
-        do_settings_sections( $this->slug );
+        foreach( $sections as $section )
+        {
+          $section->render( false );
+        }
       }
       settings_fields( $this->slug );
       submit_button();

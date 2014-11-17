@@ -13,7 +13,7 @@ class Section extends ComponentBase
   {
     global $wp_settings_sections;
 
-    add_settings_section( $this->slug, $this->args['title'], array( $this, 'render' ), $parent_member->slug );
+    add_settings_section( $this->slug, $this->args['title'], false, $parent_member->slug );
     $wp_settings_sections[ $parent_member->slug ][ $this->slug ]['description'] = $this->args['description'];
     if( $parent_member->mode == 'draggable' )
     {
@@ -21,8 +21,12 @@ class Section extends ComponentBase
     }
   }
 
-  public function render()
+  public function render( $metabox = true )
   {
+    if( $metabox !== null || $metabox === false )
+    {
+      echo '<h3>' . $this->args['title'] . '</h3>';
+    }
     if( !empty( $this->args['description'] ) )
     {
       echo '<p class="description">' . $this->args['description'] . '</p>';
@@ -44,7 +48,6 @@ class Section extends ComponentBase
     }
     elseif( $this->args['callback'] && is_callable( $this->args['callback'] ) )
     {
-      global $wp_settings_sections;
       call_user_func( $this->args['callback'] );
     }
     else
