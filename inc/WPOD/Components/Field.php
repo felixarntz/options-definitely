@@ -530,7 +530,10 @@ class Field extends ComponentBase
 
   protected function validate_repeatable()
   {
-    $this->args['default'] = array();
+    if( !isset( $this->args['default'] ) )
+    {
+      $this->args['default'] = array();
+    }
     $this->args['repeatable'] = wp_parse_args( $this->args['repeatable'], array(
       'limit'           => 0,
       'fields'          => array(),
