@@ -7,7 +7,7 @@
 
 namespace WPOD\Components;
 
-class Field extends ComponentBase
+class Field extends Component_Base
 {
   public function register( $parent_member, $parent_section )
   {
@@ -199,7 +199,7 @@ class Field extends ComponentBase
   public function render_repeatable( $args = array() )
   {
     extract( $args );
-    
+
     $atts = array();
     $atts['id'] = $label_for;
     $atts['class'] = 'repeatable';

@@ -7,7 +7,7 @@
 
 namespace WPOD\Components;
 
-class Group extends ComponentBase
+class Group extends Component_Base
 {
   public function is_already_added()
   {

@@ -7,7 +7,7 @@
 
 namespace WPOD\Components;
 
-class Set extends ComponentBase
+class Set extends Component_Base
 {
   protected $page_hook = '';
   protected $help = array();

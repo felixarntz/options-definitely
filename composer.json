@@ -20,16 +20,7 @@
     "email": "felix-arntz@leaves-and-love.net",
     "issues": "https://github.com/felixarntz/options-definitely/issues"
   },
-  "autoload": {
-    "psr-0": {
-      "WPOD\\": "inc/"
-    }
-  },
   "require": {
-    "php": ">=5.3.0",
-    "ivaynberg/select2": "3.4.*"
-  },
-  "config": {
-    "component-dir": "assets/third-party"
+      "composer/installers": "~1.0"
   }
 }

@@ -32,18 +32,14 @@ require_once WPOD_PATH . '/inc/functions.php';
 
 define( 'WPOD_RUNNING', wpod_version_check() );
 
-function wpod_init()
-{
-  load_plugin_textdomain( 'wpod', false, dirname( WPOD_BASENAME ) . '/languages/' );
+function wpod_init() {
+	load_plugin_textdomain( 'wpod', false, dirname( WPOD_BASENAME ) . '/languages/' );
 
-  if( WPOD_RUNNING > 0 )
-  {
-    require_once WPOD_PATH . '/vendor/autoload.php';
-    \WPOD\Framework::instance();
-  }
-  else
-  {
-    add_action( 'admin_notices', 'wpod_display_version_error_notice' );
-  }
+	if ( WPOD_RUNNING > 0 ) {
+		spl_autoload_register( 'wpod_autoload', true, true );
+		\WPOD\Framework::instance();
+	} else {
+		add_action( 'admin_notices', 'wpod_display_version_error_notice' );
+	}
 }
 add_action( 'plugins_loaded', 'wpod_init' );

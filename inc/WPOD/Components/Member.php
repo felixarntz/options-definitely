@@ -7,7 +7,7 @@
 
 namespace WPOD\Components;
 
-class Member extends ComponentBase
+class Member extends Component_Base
 {
   public function register()
   {
@@ -47,7 +47,7 @@ class Member extends ComponentBase
       {
         wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
         wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
-        
+
         echo '<div class="metabox-holder">';
         echo '<div class="postbox-container">';
         do_meta_boxes( $this->slug, 'normal', null );
