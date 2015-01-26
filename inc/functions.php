@@ -87,20 +87,30 @@ function wpod_format_float( $number, $decimals = 2 ) {
 	return number_format_i18n( $number, $decimals );
 }
 
-function wpod_format_date( $formatstring_or_timestamp ) {
+function wpod_format_date( $formatstring_or_timestamp, $mode = 'datetime' ) {
 	if ( ! is_int( $formatstring_or_timestamp ) ) {
 		$formatstring_or_timestamp = mysql2date( 'U', $formatstring_or_timestamp );
 	}
 
-	return date_i18n( get_option( 'date_format' ), $formatstring_or_timestamp );
-}
+	$format = '';
 
-function wpod_format_datetime( $formatstring_or_timestamp ) {
-	if ( ! is_int( $formatstring_or_timestamp ) ) {
-		$formatstring_or_timestamp = mysql2date( 'U', $formatstring_or_timestamp );
+	switch ( $mode ) {
+		case 'date':
+			$format = get_option( 'date_format' );
+
+			break;
+		case 'time':
+			$format = get_option( 'time_format' );
+
+			break;
+		case 'datetime':
+		default:
+			$format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+
+			break;
 	}
 
-	return date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $formatstring_or_timestamp );
+	return date_i18n( $format, $formatstring_or_timestamp );
 }
 
 function wpod_is_image( $attachment_id ) {

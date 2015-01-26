@@ -185,13 +185,25 @@ class Field extends Component_Base {
 					default:
 						$atts = array_merge( $atts, array( 'value' => $option ) );
 
+						$type = $this->args['type'];
+						if ( in_array( $type, array( 'datetime', 'date', 'time' ) ) ) {
+							if ( ! isset( $atts['class'] ) ) {
+								$atts['class'] = '';
+							} else {
+								$atts['class'] .= ' ';
+							}
+							$atts['class'] .= 'dtp-' . $type;
+
+							$type = 'text';
+						}
+
 						$additional_output = '';
 
 						if ( in_array( $this->args['type'], array( 'range', 'color' ) ) ) {
 							$additional_output = '<input type="text" id="' . $atts['id'] . '-' . $this->args['type'] . '-viewer" class="' . $this->args['type'] . '-viewer" value="' . $option . '" />';
 						}
 
-						echo $additional_output . '<input type="' . $this->args['type'] . '"' . wpod_make_html_attributes( $atts, false, false ) . ' />';
+						echo $additional_output . '<input type="' . $type . '"' . wpod_make_html_attributes( $atts, false, false ) . ' />';
 				}
 
 				if ( ! empty( $this->args['description'] ) ) {
@@ -340,13 +352,25 @@ class Field extends Component_Base {
 							'placeholder'	=> $field['title'],
 						) );
 
+						$type = $field['type'];
+						if ( in_array( $type, array( 'datetime', 'date', 'time' ) ) ) {
+							if ( ! isset( $atts['class'] ) ) {
+								$atts['class'] = '';
+							} else {
+								$atts['class'] .= ' ';
+							}
+							$atts['class'] .= 'dtp-' . $type;
+
+							$type = 'text';
+						}
+
 						$additional_output = '';
 
 						if ( in_array( $field['type'], array( 'range', 'color' ) ) ) {
 							$additional_output = '<input type="text" id="' . $atts['id'] . '-' . $field['type'] . '-viewer" class="' . $field['type'] . '-viewer" value="' . $options[ $slug ] . '" placeholder="' . $field['title'] . '" />';
 						}
 
-						echo $additional_output . '<input type="' . $field['type'] . '"' . wpod_make_html_attributes( $atts, false, false ) . ' />';
+						echo $additional_output . '<input type="' . $type . '"' . wpod_make_html_attributes( $atts, false, false ) . ' />';
 				}
 				echo '</span>';
 			} elseif ( is_callable( $field['type'] ) ) {
@@ -443,7 +467,9 @@ class Field extends Component_Base {
 			'select',
 			'multiselect',
 			'media',
+			'datetime',
 			'date',
+			'time',
 			'color',
 			'range',
 			'number',

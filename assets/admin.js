@@ -27,6 +27,100 @@ jQuery(document).ready(function($) {
 
 	$( 'select' ).select2( select2_args );
 
+	// datetimepicker setup
+	var dtp_datetimepicker_args = {
+		lang: _wpod_admin.language,
+		formatDate: 'Y-m-d',
+		formatTime: 'H:i',
+		dayOfWeekStart: _wpod_admin.start_of_week
+	};
+
+	var dtp_datetime_args = $.extend({
+		format: 'Y-m-d H:i',
+		onShow: function( ct, $input ) {
+			var helper = '';
+			if ( $input.attr( 'min' ) ) {
+				helper = $input.attr( 'min' ).split( ' ' );
+				if ( helper.length === 2 ) {
+					this.setOptions({
+						minDate: helper[0],
+						minTime: helper[1]
+					});
+				} else if( helper.length === 1 ) {
+					this.setOptions({
+						minDate: helper[0]
+					});
+				}
+			}
+
+			if ( $input.attr( 'max' ) ) {
+				helper = $input.attr( 'max' ).split( ' ' );
+				if ( helper.length === 2 ) {
+					this.setOptions({
+						maxDate: helper[0],
+						maxTime: helper[1]
+					});
+				} else if( helper.length === 1 ) {
+					this.setOptions({
+						maxDate: helper[0]
+					});
+				}
+			}
+
+			if ( $input.attr( 'step' ) ) {
+				this.setOptions({
+					step: parseInt( $input.attr( 'step' ) )
+				});
+			}
+		}
+	}, dtp_datetimepicker_args );
+
+	var dtp_date_args = $.extend({
+		format: 'Y-m-d',
+		timepicker: false,
+		onShow: function( ct, $input ) {
+			if ( $input.attr( 'min' ) ) {
+				this.setOptions({
+					minDate: $input.attr('min')
+				});
+			}
+
+			if ( $input.attr( 'max' ) ) {
+				this.setOptions({
+					maxDate: $input.attr('max')
+				});
+			}
+		}
+	}, dtp_datetimepicker_args );
+
+	var dtp_time_args = $.extend({
+		format: 'H:i',
+		datepicker: false,
+		onShow: function( ct, $input ) {
+			if ( $input.attr( 'min' ) ) {
+				this.setOptions({
+					minTime: $input.attr('min')
+				});
+			}
+
+			if ( $input.attr( 'max' ) ) {
+				this.setOptions({
+					maxTime: $input.attr('max')
+				});
+			}
+
+			if ( $input.attr( 'step' ) ) {
+				this.setOptions({
+					step: parseInt( $input.attr( 'step' ) )
+				});
+			}
+		}
+	}, dtp_datetimepicker_args );
+
+	$( 'input.dtp-datetime' ).datetimepicker( dtp_datetime_args );
+	$( 'input.dtp-date' ).datetimepicker( dtp_date_args );
+	$( 'input.dtp-time' ).datetimepicker( dtp_time_args );
+
 	// viewer handling for fields without visible output
 	$( '.form-table' ).on( 'change', 'input[type="range"], input[type="color"]', function() {
 		$( '#' + $(this).attr( 'id' ) + '-' + $( this ).attr( 'type' ) + '-viewer' ).val( $( this ).val() );
@@ -67,7 +161,7 @@ jQuery(document).ready(function($) {
 	});
 
 	// media uploader
-	if ( wp.media !== null ) {
+	if ( typeof wp.media !== 'undefined' ) {
 		var _custom_media = true;
 
 		var _orig_send_attachment = wp.media.editor.send.attachment;
@@ -132,6 +226,9 @@ jQuery(document).ready(function($) {
 						var limit = parseInt( $( '#' + e.delegateTarget.id ).data( 'limit' ));
 
 						$parent.append( response ).find( 'select' ).select2( select2_args );
+						$parent.find( 'input.dtp-datetime' ).datetimepicker( dtp_datetime_args );
+						$parent.find( 'input.dtp-date' ).datetimepicker( dtp_date_args );
+						$parent.find( 'input.dtp-time' ).datetimepicker( dtp_time_args );
 
 						if ( limit > 0 && limit === $( '#' + e.delegateTarget.id ).find( '.repeatable-row' ).length ) {
 							$( '#' + e.delegateTarget.id ).find( '.new-repeatable-button' ).hide();

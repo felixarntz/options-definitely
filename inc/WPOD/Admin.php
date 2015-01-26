@@ -87,8 +87,16 @@ class Admin {
 		$currents = $this->get_current();
 
 		if ( $currents ) {
+			$locale = str_replace( '_', '-', get_locale() );
+			$language = substr( $locale, 0, 2 );
+
 			wp_enqueue_style( 'select2', WPOD_URL . '/assets/third-party/select2/select2.css', array(), false );
 			wp_enqueue_script( 'select2', WPOD_URL . '/assets/third-party/select2/select2.min.js', array( 'jquery' ), false, true );
+			if ( file_exists( WPOD_PATH . '/assets/third-party/select2/select2_locale_' . $locale . '.js' ) ) {
+				wp_enqueue_script( 'select2-locale', WPOD_URL . '/assets/third-party/select2/select2_locale_' . $locale . '.js', array( 'select2' ), false, true );
+			} elseif( file_exists( WPOD_PATH . '/assets/third-party/select2/select2_locale_' . $language . '.js' ) ) {
+				wp_enqueue_script( 'select2-locale', WPOD_URL . '/assets/third-party/select2/select2_locale_' . $language . '.js', array( 'select2' ), false, true );
+			}
 
 			wp_enqueue_style( 'datetimepicker', WPOD_URL . '/assets/third-party/datetimepicker/jquery.datetimepicker.css', array(), false );
 			wp_enqueue_script( 'datetimepicker', WPOD_URL . '/assets/third-party/datetimepicker/jquery.datetimepicker.js', array( 'jquery' ), false, true );
@@ -98,6 +106,11 @@ class Admin {
 			wp_localize_script( 'wpod-admin', '_wpod_admin', array(
 				'nonce'						=> wp_create_nonce( 'wpod-ajax-request' ),
 				'action_add_repeatable'		=> 'wpod_insert_repeatable',
+				'locale'					=> $locale,
+				'language'					=> $language,
+				'date_format'				=> get_option( 'date_format' ),
+				'time_format'				=> get_option( 'time_format' ),
+				'start_of_week'				=> get_option( 'start_of_week' ),
 				'localized_open_file'		=> __( 'Open file', 'wpod' ),
 			) );
 

@@ -38,7 +38,7 @@ module.exports = function(grunt) {
 				'assets/customizer.min.js'
 			],
 			translation: [
-				'languages/options-definitely.pot'
+				'languages/wpod.pot'
 			]
 		},
 

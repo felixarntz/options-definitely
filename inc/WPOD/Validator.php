@@ -114,20 +114,6 @@ class Validator {
 		return self::error_handler( sprintf( __( '%s is not a valid URL.', 'wpof' ), esc_attr( $value ) ) );
 	}
 
-	public static function date( $value, $field ) {
-		$timestamp = mysql2date( 'U', $value );
-
-		if ( ! isset( $field->more_attributes['min'] ) || $timestamp >= ( $timestamp_min = mysql2date( 'U', $field->more_attributes['min'] ) ) ) {
-			if ( ! isset( $field->more_attributes['max'] ) || $timestamp <= ( $timestamp_max = mysql2date( 'U', $field->more_attributes['max'] ) ) ) {
-				return $value;
-			}
-
-			return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur later than %2$s.', 'wpod' ), wpod_format_date( $timestamp ), wpod_format_date( $timestamp_max ) ) );
-		}
-
-		return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur earlier than %2$s.', 'wpod' ), wpod_format_date( $timestamp ), wpod_format_date( $timestamp_min ) ) );
-	}
-
 	public static function datetime( $value, $field ) {
 		$timestamp = mysql2date( 'U', $value );
 
@@ -136,10 +122,38 @@ class Validator {
 				return $value;
 			}
 
-			return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur later than %2$s.', 'wpod' ), wpod_format_datetime( $timestamp ), wpod_format_datetime( $timestamp_max ) ) );
+			return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur later than %2$s.', 'wpod' ), wpod_format_date( $timestamp, 'datetime' ), wpod_format_date( $timestamp_max, 'datetime' ) ) );
 		}
 
-		return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur earlier than %2$s.', 'wpod' ), wpod_format_datetime( $timestamp ), wpod_format_datetime( $timestamp_min ) ) );
+		return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur earlier than %2$s.', 'wpod' ), wpod_format_date( $timestamp, 'datetime' ), wpod_format_date( $timestamp_min, 'datetime' ) ) );
+	}
+
+	public static function date( $value, $field ) {
+		$timestamp = mysql2date( 'U', $value );
+
+		if ( ! isset( $field->more_attributes['min'] ) || $timestamp >= ( $timestamp_min = mysql2date( 'U', $field->more_attributes['min'] ) ) ) {
+			if ( ! isset( $field->more_attributes['max'] ) || $timestamp <= ( $timestamp_max = mysql2date( 'U', $field->more_attributes['max'] ) ) ) {
+				return $value;
+			}
+
+			return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur later than %2$s.', 'wpod' ), wpod_format_date( $timestamp, 'date' ), wpod_format_date( $timestamp_max, 'date' ) ) );
+		}
+
+		return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur earlier than %2$s.', 'wpod' ), wpod_format_date( $timestamp, 'date' ), wpod_format_date( $timestamp_min, 'date' ) ) );
+	}
+
+	public static function time( $value, $field ) {
+		$timestamp = mysql2date( 'U', $value );
+
+		if ( ! isset( $field->more_attributes['min'] ) || $timestamp >= ( $timestamp_min = mysql2date( 'U', $field->more_attributes['min'] ) ) ) {
+			if ( ! isset( $field->more_attributes['max'] ) || $timestamp <= ( $timestamp_max = mysql2date( 'U', $field->more_attributes['max'] ) ) ) {
+				return $value;
+			}
+
+			return self::error_handler( sprintf( __( 'The time %1$s is invalid. It must not occur later than %2$s.', 'wpod' ), wpod_format_date( $timestamp, 'time' ), wpod_format_date( $timestamp_max, 'time' ) ) );
+		}
+
+		return self::error_handler( sprintf( __( 'The time %1$s is invalid. It must not occur earlier than %2$s.', 'wpod' ), wpod_format_date( $timestamp, 'time' ), wpod_format_date( $timestamp_min, 'time' ) ) );
 	}
 
 	public static function color( $value, $field )
