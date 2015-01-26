@@ -55,6 +55,8 @@ class Page extends Component_Base {
 
 		echo '<h1>' . $this->args['title'] . '</h1>';
 
+		do_action( 'wpod_page_before', $this->slug, $this->args, $this->parent );
+
 		if ( ! empty( $this->args['description'] ) ) {
 			echo '<p class="description">' . $this->args['description'] . '</p>';
 		}
@@ -92,6 +94,8 @@ class Page extends Component_Base {
 		} else {
 			wpod_doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the page %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->slug ), '1.0.0' );
 		}
+
+		do_action( 'wpod_page_after', $this->slug, $this->args, $this->parent );
 
 		echo '</div>';
 	}

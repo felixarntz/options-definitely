@@ -24,6 +24,8 @@ class Section extends Component_Base {
 			echo '<h3>' . $this->args['title'] . '</h3>';
 		}
 
+		do_action( 'wpod_section_before', $this->slug, $this->args, $this->parent );
+
 		if ( ! empty( $this->args['description'] ) ) {
 			echo '<p class="description">' . $this->args['description'] . '</p>';
 		}
@@ -50,6 +52,8 @@ class Section extends Component_Base {
 		} else {
 			wpod_doing_it_wrong( __METHOD__, sprintf( __( 'There are no fields to display for section %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
 		}
+
+		do_action( 'wpod_section_after', $this->slug, $this->args, $this->parent );
 	}
 
 	protected function get_defaults()

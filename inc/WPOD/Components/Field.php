@@ -17,6 +17,8 @@ class Field extends Component_Base {
 	}
 
 	public function render( $args = array() ) {
+		do_action( 'wpod_field_before', $this->slug, $this->args, $this->parent, $args['tab_slug'] );
+
 		if( in_array( $this->args['type'], $this->get_supported_types() ) )
 		{
 			if( 'repeatable' == $this->args['type'] )
@@ -177,6 +179,8 @@ class Field extends Component_Base {
 							'tinymce'		=> array( 'plugins' => 'wordpress' ),
 						);
 
+						$wp_editor_args = apply_filters( 'wpod_wp_editor_args', $wp_editor_args, $this->slug, $this->args, $this->parent, $args['parent_tab'] );
+
 						$id = $atts['id'];
 
 						wp_editor( $option, $id, $wp_editor_args );
@@ -219,6 +223,8 @@ class Field extends Component_Base {
 		} else {
 			wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %s is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
 		}
+
+		do_action( 'wpod_field_after', $this->slug, $this->args, $this->parent, $args['tab_slug'] );
 	}
 
 	public function render_repeatable( $args = array() ) {

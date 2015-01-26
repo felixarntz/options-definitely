@@ -21,6 +21,8 @@ class Tab extends Component_Base {
 	}
 
 	public function render() {
+		do_action( 'wpod_tab_before', $this->slug, $this->args, $this->parent );
+
 		if ( ! empty( $this->args['description'] ) ) {
 			echo '<p class="description">' . $this->args['description'] . '</p>';
 		}
@@ -85,6 +87,8 @@ class Tab extends Component_Base {
 			</script>
 			<?php
 		}
+
+		do_action( 'wpod_tab_after', $this->slug, $this->args, $this->parent );
 	}
 
 	public function validate_options( $options ) {
