@@ -44,7 +44,22 @@ module.exports = function(grunt) {
 
 		jshint: {
 			options: {
-				jshintrc: 'assets/.jshintrc'
+				boss: true,
+				curly: true,
+				eqeqeq: true,
+				immed: true,
+				noarg: true,
+				quotmark: "single",
+				undef: true,
+				unused: true,
+				browser: true,
+				globals: {
+					jQuery: false,
+					console: false,
+					wp: false,
+					_wpod_admin: false,
+					ajaxurl: false
+				}
 			},
 			admin: {
 				src: [
@@ -73,19 +88,24 @@ module.exports = function(grunt) {
 			}
 		},
 
-		less: {
+		recess: {
+			options: {
+				compile: true,
+				compress: false,
+				noIDS: true,
+				noJSPrefix: true,
+				noOverqualifying: false,
+				noUnderscores: true,
+				noUniversalSelectors: false,
+				strictPropertyOrder: true,
+				zeroUnits: true
+			},
 			admin: {
-				options: {
-					strictMath: true
-				},
 				files: {
 					'assets/admin.css': 'assets/admin.less'
 				}
 			},
 			customizer: {
-				options: {
-					strictMath: true
-				},
 				files: {
 					'assets/customizer.css': 'assets/customizer.less'
 				}
@@ -202,7 +222,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-recess');
 	grunt.loadNpmTasks('grunt-autoprefixer');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-banner');
@@ -213,7 +233,7 @@ module.exports = function(grunt) {
 		'clean:admin',
 		'jshint:admin',
 		'uglify:admin',
-		'less:admin',
+		'recess:admin',
 		'autoprefixer:admin',
 		'cssmin:admin',
 	]);
@@ -222,7 +242,7 @@ module.exports = function(grunt) {
 		'clean:customizer',
 		'jshint:customizer',
 		'uglify:customizer',
-		'less:customizer',
+		'recess:customizer',
 		'autoprefixer:customizer',
 		'cssmin:customizer',
 	]);

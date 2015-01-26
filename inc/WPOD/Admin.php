@@ -98,6 +98,7 @@ class Admin {
 			wp_localize_script( 'wpod-admin', '_wpod_admin', array(
 				'nonce'						=> wp_create_nonce( 'wpod-ajax-request' ),
 				'action_add_repeatable'		=> 'wpod_insert_repeatable',
+				'localized_open_file'		=> __( 'Open file', 'wpod' ),
 			) );
 
 			$fields = \WPOD\Framework::instance()->query( array(

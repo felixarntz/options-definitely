@@ -7,62 +7,59 @@
 
 namespace WPOD\Components;
 
-class Section extends ComponentBase
-{
-  public function register( $parent_member )
-  {
-    global $wp_settings_sections;
+class Section extends Component_Base {
+	public function register( $parent_member ) {
+		global $wp_settings_sections;
 
-    add_settings_section( $this->slug, $this->args['title'], false, $parent_member->slug );
-    $wp_settings_sections[ $parent_member->slug ][ $this->slug ]['description'] = $this->args['description'];
-    if( $parent_member->mode == 'draggable' )
-    {
-      add_meta_box( $this->slug, $this->args['title'], array( $this, 'render' ), $parent_member->slug, 'normal' );
-    }
-  }
+		add_settings_section( $this->slug, $this->args['title'], false, $parent_member->slug );
+		$wp_settings_sections[ $parent_member->slug ][ $this->slug ]['description'] = $this->args['description'];
 
-  public function render( $metabox = true )
-  {
-    if( $metabox !== null || $metabox === false )
-    {
-      echo '<h3>' . $this->args['title'] . '</h3>';
-    }
-    if( !empty( $this->args['description'] ) )
-    {
-      echo '<p class="description">' . $this->args['description'] . '</p>';
-    }
-    $fields = \WPOD\Framework::instance()->query( array(
-      'type'          => 'field',
-      'parent_slug'   => $this->slug,
-      'parent_type'   => 'section',
-    ) );
-    if( count( $fields ) > 0 )
-    {
-      $table_atts = array(
-        'class'       => 'form-table',
-      );
-      $table_atts = apply_filters( 'wpod_table_atts', $table_atts, $this );
-      echo '<table' . wpod_make_html_attributes( $table_atts, false, false ) . '>';
-      do_settings_fields( $this->parent, $this->slug );
-      echo '</table>';
-    }
-    elseif( $this->args['callback'] && is_callable( $this->args['callback'] ) )
-    {
-      call_user_func( $this->args['callback'] );
-    }
-    else
-    {
-      wpod_doing_it_wrong( __METHOD__, sprintf( __( 'There are no fields to display for section %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
-    }
-  }
+		if ( 'draggable' == $parent_member->mode ) {
+			add_meta_box( $this->slug, $this->args['title'], array( $this, 'render' ), $parent_member->slug, 'normal' );
+		}
+	}
 
-  protected function get_defaults()
-  {
-    $defaults = array(
-      'title'           => __( 'Section title', 'wpod' ),
-      'description'     => '',
-      'callback'        => false, //only used if no fields are attached to this section
-    );
-    return apply_filters( 'wpod_section_defaults', $defaults );
-  }
+	public function render( $metabox = true ) {
+		if ( null !== $metabox || false === $metabox ) {
+			echo '<h3>' . $this->args['title'] . '</h3>';
+		}
+
+		if ( ! empty( $this->args['description'] ) ) {
+			echo '<p class="description">' . $this->args['description'] . '</p>';
+		}
+
+		$fields = \WPOD\Framework::instance()->query( array(
+			'type'			=> 'field',
+			'parent_slug'	=> $this->slug,
+			'parent_type'	=> 'section',
+		) );
+
+		if ( count( $fields ) > 0 ) {
+			$table_atts = array(
+				'class'		=> 'form-table',
+			);
+			$table_atts = apply_filters( 'wpod_table_atts', $table_atts, $this );
+
+			echo '<table' . wpod_make_html_attributes( $table_atts, false, false ) . '>';
+
+			do_settings_fields( $this->parent, $this->slug );
+
+			echo '</table>';
+		} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
+			call_user_func( $this->args['callback'] );
+		} else {
+			wpod_doing_it_wrong( __METHOD__, sprintf( __( 'There are no fields to display for section %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
+		}
+	}
+
+	protected function get_defaults()
+	{
+		$defaults = array(
+			'title'			=> __( 'Section title', 'wpod' ),
+			'description'	=> '',
+			'callback'		=> false, //only used if no fields are attached to this section
+		);
+
+		return apply_filters( 'wpod_section_defaults', $defaults );
+	}
 }
