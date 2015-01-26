@@ -11,9 +11,25 @@ class Menu extends Component_Base {
 	public function is_already_added() {
 		global $admin_page_hooks;
 
+		// check for the exact menu slug
 		if ( isset( $admin_page_hooks[ $this->slug ] ) )
 		{
-			return true;
+			return $this->slug;
+		}
+
+		// check for the sanitized menu title
+		if ( ( $key = array_search( $this->slug, $admin_page_hooks ) ) !== false && strstr( $key, 'separator' ) === false ) {
+			return $key;
+		}
+
+		// check if it is a post type menu
+		if ( isset( $admin_page_hooks[ 'edit.php?post_type=' . $this->slug ] ) ) {
+			return 'edit.php?post_type=' . $this->slug;
+		}
+
+		// special case: post type 'post'
+		if ( 'post' == $this->slug ) {
+			return 'edit.php';
 		}
 
 		return false;

@@ -62,10 +62,10 @@ class Admin {
 		) );
 
 		foreach ( $menus as $menu ) {
-			if ( $menu->is_already_added() ) {
+			if ( ( $menu_slug = $menu->is_already_added() ) ) {
 				\WPOD\Framework::instance()->update( $menu->slug, 'menu', array(
 					'added'			=> true,
-					'subslug'		=> $menu->slug,
+					'subslug'		=> $menu_slug,
 					'sublabel'		=> true,
 				) );
 			}

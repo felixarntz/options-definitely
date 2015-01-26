@@ -161,11 +161,6 @@ class Framework {
 	public function init() {
 		if ( ! $this->initialized ) {
 			$raw = array();
-			foreach ( $this->get_default_menus() as $menu_slug ) {
-				$raw[ $menu_slug ] = array(
-					'pages'				=> array(),
-				);
-			}
 
 			// filter for the components array
 			$raw = apply_filters( 'wpod', $raw );
@@ -301,22 +296,42 @@ class Framework {
 		$results = array();
 
 		if ( $status <= 2 ) {
+			// for menus, pages and tabs the slug has to be globally unique
 			$results = $this->query( array(
 				'slug'			=> $slug,
 				'type'			=> $type,
 			) );
 		} else {
+			// for sections and fields the slug has to be unique inside its tab scope
+			$parent_slug = $parent;
+
+			$parent_type = $this->get_next_superior_type( $type );
+
+			if ( 4 == $status ) {
+				$parent_slug = $this->query( array(
+					'slug'			=> $parent,
+					'type'			=> $this->get_next_superior_type( $type ),
+				), true );
+
+				$parent_slug = $parent_slug->parent;
+
+				$parent_type = $this->get_next_superior_type( $parent_type );
+			}
+
 			$results = $this->query( array(
 				'slug'			=> $slug,
 				'type'			=> $type,
-				'parent_slug'	=> $parent,
-				'parent_type'	=> $this->get_next_superior_type( $type ),
+				'parent_slug'	=> $parent_slug,
+				'parent_type'	=> $parent_type,
 			) );
 		}
 
 		if ( count( $results ) > 0 ) {
 			if ( $return_key ) {
 				$arrayname = $type . 's';
+				if ( 4 == $status ) {
+					$arrayname = $this->get_next_superior_type( $type ) . 's';
+				}
 
 				foreach ( $this->$arrayname as $key => $component ) {
 					if ( $component->slug == $slug ) {
@@ -363,21 +378,5 @@ class Framework {
 
 	public function get_type_whitelist() {
 		return array( 'menu', 'page', 'tab', 'section', 'field' );
-	}
-
-	private function get_default_menus() {
-		return array(
-			'dashboard',
-			'posts',
-			'media',
-			'links',
-			'pages',
-			'comments',
-			'theme',
-			'plugins',
-			'users',
-			'management',
-			'options',
-		);
 	}
 }

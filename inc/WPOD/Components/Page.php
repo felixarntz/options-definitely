@@ -19,30 +19,26 @@ class Page extends Component_Base {
 
 		$function_name = 'add_' . $menu->slug . '_page';
 
-		if ( function_exists( $function_name ) && ! in_array( $menu->slug, array( 'menu', 'submenu' ) ) ) {
-			$this->page_hook = call_user_func( $function_name, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
+		if ( false === $menu->added ) {
+			$this->page_hook = add_menu_page( $this->args['title'], $menu->label, $this->args['capability'], $this->slug, array( $this, 'render' ), $menu->icon, $menu->position );
+
+			\WPOD\Framework::instance()->update( $menu->slug, 'menu', array(
+				'added'			=> true,
+				'subslug'		=> $this->slug,
+				'sublabel'		=> $this->args['label'],
+			) );
 		} else {
-			if ( false === $menu->added ) {
-				$this->page_hook = add_menu_page( $this->args['title'], $menu->label, $this->args['capability'], $this->slug, array( $this, 'render' ), $menu->icon, $menu->position );
+			$this->page_hook = add_submenu_page( $menu->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
 
-				\WPOD\Framework::instance()->update( $menu->slug, 'menu', array(
-					'added'			=> true,
-					'subslug'		=> $this->slug,
-					'sublabel'		=> $this->args['label'],
-				) );
-			} else {
-				$this->page_hook = add_submenu_page( $menu->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
+			if ( $menu->sublabel !== true ) {
+				global $submenu;
 
-				if ( $menu->sublabel !== true ) {
-					global $submenu;
+				if ( isset( $submenu[ $menu->subslug ] ) ) {
+					$submenu[ $menu->subslug ][0][0] = $menu->sublabel;
 
-					if ( isset( $submenu[ $menu->subslug ] ) ) {
-						$submenu[ $menu->subslug ][0][0] = $menu->sublabel;
-
-						\WPOD\Framework::instance()->update( $menu->slug, 'menu', array(
-							'sublabel'		=> true,
-						) );
-					}
+					\WPOD\Framework::instance()->update( $menu->slug, 'menu', array(
+						'sublabel'		=> true,
+					) );
 				}
 			}
 		}
