@@ -8,14 +8,14 @@
 namespace WPOD\Components;
 
 class Section extends Component_Base {
-	public function register( $parent_member ) {
+	public function register( $parent_tab ) {
 		global $wp_settings_sections;
 
-		add_settings_section( $this->slug, $this->args['title'], false, $parent_member->slug );
-		$wp_settings_sections[ $parent_member->slug ][ $this->slug ]['description'] = $this->args['description'];
+		add_settings_section( $this->slug, $this->args['title'], false, $parent_tab->slug );
+		$wp_settings_sections[ $parent_tab->slug ][ $this->slug ]['description'] = $this->args['description'];
 
-		if ( 'draggable' == $parent_member->mode ) {
-			add_meta_box( $this->slug, $this->args['title'], array( $this, 'render' ), $parent_member->slug, 'normal' );
+		if ( 'draggable' == $parent_tab->mode ) {
+			add_meta_box( $this->slug, $this->args['title'], array( $this, 'render' ), $parent_tab->slug, 'normal' );
 		}
 	}
 

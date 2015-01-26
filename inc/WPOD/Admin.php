@@ -27,21 +27,21 @@ class Admin {
 	}
 
 	public function register_settings() {
-		$members = \WPOD\Framework::instance()->query( array(
-			'type'				=> 'member',
+		$tabs = \WPOD\Framework::instance()->query( array(
+			'type'				=> 'tab',
 		) );
 
-		foreach ( $members as $member ) {
-			$member->register();
+		foreach ( $tabs as $tab ) {
+			$tab->register();
 
 			$sections = \WPOD\Framework::instance()->query( array(
 				'type'				=> 'section',
-				'parent_slug'		=> $member->slug,
-				'parent_type'		=> 'member',
+				'parent_slug'		=> $tab->slug,
+				'parent_type'		=> 'tab',
 			) );
 
 			foreach ( $sections as $section ) {
-				$section->register( $member );
+				$section->register( $tab );
 
 				$fields = \WPOD\Framework::instance()->query( array(
 					'type'				=> 'field',
@@ -50,35 +50,35 @@ class Admin {
 				) );
 
 				foreach ( $fields as $field ) {
-					$field->register( $member, $section );
+					$field->register( $tab, $section );
 				}
 			}
 		}
 	}
 
 	public function create_admin_menu() {
-		$groups = \WPOD\Framework::instance()->query( array(
-			'type'				=> 'group',
+		$menus = \WPOD\Framework::instance()->query( array(
+			'type'				=> 'menu',
 		) );
 
-		foreach ( $groups as $group ) {
-			if ( $group->is_already_added() ) {
-				\WPOD\Framework::instance()->update( $group->slug, 'group', array(
+		foreach ( $menus as $menu ) {
+			if ( $menu->is_already_added() ) {
+				\WPOD\Framework::instance()->update( $menu->slug, 'menu', array(
 					'added'			=> true,
-					'subslug'		=> $group->slug,
+					'subslug'		=> $menu->slug,
 					'sublabel'		=> true,
 				) );
 			}
 		}
 
-		$sets = \WPOD\Framework::instance()->query( array(
-			'type'				=> 'set',
+		$pages = \WPOD\Framework::instance()->query( array(
+			'type'				=> 'page',
 		) );
 
-		foreach ( $sets as $set ) {
-			$page_hook = $set->add_to_menu();
-			if ( !empty( $page_hook ) ) {
-				add_action( 'load-' . $page_hook, array( $set, 'render_help' ) );
+		foreach ( $pages as $page ) {
+			$page_hook = $page->add_to_menu();
+			if ( ! empty( $page_hook ) ) {
+				add_action( 'load-' . $page_hook, array( $page, 'render_help' ) );
 			}
 		}
 	}
@@ -116,8 +116,8 @@ class Admin {
 
 			$fields = \WPOD\Framework::instance()->query( array(
 				'type'				=> 'field',
-				'parent_slug'		=> $currents['member']->slug,
-				'parent_type'		=> 'member',
+				'parent_slug'		=> $currents['tab']->slug,
+				'parent_type'		=> 'tab',
 			) );
 
 			foreach ( $fields as $field ) {
@@ -127,7 +127,7 @@ class Admin {
 				}
 			}
 
-			if ( 'draggable' == $currents['member']->mode ) {
+			if ( 'draggable' == $currents['tab']->mode ) {
 				wp_enqueue_script( 'common' );
 				wp_enqueue_script( 'wp-lists' );
 				wp_enqueue_script( 'postbox' );
@@ -136,47 +136,47 @@ class Admin {
 	}
 
 	public function update_option_defaults() {
-		$members = \WPOD\Framework::instance()->query( array(
-			'type'				=> 'member',
+		$tabs = \WPOD\Framework::instance()->query( array(
+			'type'				=> 'tab',
 		) );
 
-		foreach ( $members as $member ) {
-			$member->update_option_defaults();
+		foreach ( $tabs as $tab ) {
+			$tab->update_option_defaults();
 		}
 	}
 
-	public function get_current( $type = '', $set = null ) {
+	public function get_current( $type = '', $page = null ) {
 		if ( isset( $_GET['page'] ) ) {
-			if ( null == $set ) {
-				$set = \WPOD\Framework::instance()->query( array(
+			if ( null == $page ) {
+				$page = \WPOD\Framework::instance()->query( array(
 					'slug'				=> $_GET['page'],
-					'type'				=> 'set',
+					'type'				=> 'page',
 				), true );
 			}
 
-			if ( $set ) {
-				if ( 'set' == $type ) {
-					return $set;
+			if ( $page ) {
+				if ( 'page' == $type ) {
+					return $page;
 				}
 
 				$args = array(
-					'type'				=> 'member',
-					'parent_slug'		=> $set->slug,
-					'parent_type'		=> 'set',
+					'type'				=> 'tab',
+					'parent_slug'		=> $page->slug,
+					'parent_type'		=> 'page',
 				);
 
 				if ( isset( $_GET['tab'] ) ) {
 					$args['slug'] = $_GET['tab'];
 				}
 
-				$member = \WPOD\Framework::instance()->query( $args, true );
+				$tab = \WPOD\Framework::instance()->query( $args, true );
 
-				if ( $member ) {
-					if ( 'member' == $type ) {
-						return $member;
+				if ( $tab ) {
+					if ( 'tab' == $type ) {
+						return $tab;
 					}
 
-					return compact( 'set', 'member' );
+					return compact( 'page', 'tab' );
 				}
 			}
 		}

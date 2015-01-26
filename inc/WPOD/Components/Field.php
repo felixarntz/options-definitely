@@ -8,10 +8,10 @@
 namespace WPOD\Components;
 
 class Field extends Component_Base {
-	public function register( $parent_member, $parent_section ) {
-		add_settings_field( $this->slug, $this->args['title'], array( $this, 'render' ), $parent_member->slug, $parent_section->slug, array(
-			'label_for'		=> $parent_member->slug . '-' . $this->slug,
-			'member_slug'	=> $parent_member->slug,
+	public function register( $parent_tab, $parent_section ) {
+		add_settings_field( $this->slug, $this->args['title'], array( $this, 'render' ), $parent_tab->slug, $parent_section->slug, array(
+			'label_for'		=> $parent_tab->slug . '-' . $this->slug,
+			'tab_slug'	=> $parent_tab->slug,
 			'section_slug'	=> $parent_section->slug,
 		) );
 	}
@@ -37,7 +37,7 @@ class Field extends Component_Base {
 				$atts = array();
 
 				$atts['id'] = $label_for;
-				$atts['name'] = $member_slug . '[' . $this->slug . ']';
+				$atts['name'] = $tab_slug . '[' . $this->slug . ']';
 
 				if ( in_array( $this->args['type'], array( 'multiselect', 'multibox' ) ) ) {
 					$atts['name'] .= '[]';
@@ -55,7 +55,7 @@ class Field extends Component_Base {
 
 				$atts = array_merge( $atts, $this->args['more_attributes'] );
 
-				$option = wpod_get_option( $member_slug, $this->slug );
+				$option = wpod_get_option( $tab_slug, $this->slug );
 
 				switch ( $this->args['type'] ) {
 					case 'checkbox':
@@ -235,13 +235,13 @@ class Field extends Component_Base {
 
 		$atts = array_merge( $atts, $this->args['more_attributes'] );
 
-		$name_prefix = $member_slug . '[' . $this->slug . ']';
+		$name_prefix = $tab_slug . '[' . $this->slug . ']';
 
 		$atts['data-slug'] = $this->slug;
-		$atts['data-parent-slug'] = $member_slug;
+		$atts['data-parent-slug'] = $tab_slug;
 		$atts['data-limit'] = $this->args['repeatable']['limit'];
 
-		$option = wpod_get_option( $member_slug, $this->slug );
+		$option = wpod_get_option( $tab_slug, $this->slug );
 
 		echo '<div' . wpod_make_html_attributes( $atts, false, false ) . '>';
 

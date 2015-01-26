@@ -7,12 +7,12 @@
 
 namespace WPOD\Components;
 
-class Member extends Component_Base {
+class Tab extends Component_Base {
 	public function register() {
 		$sections = \WPOD\Framework::instance()->query( array(
 			'type'			=> 'section',
 			'parent_slug'	=> $this->slug,
-			'parent_type'	=> 'member',
+			'parent_type'	=> 'tab',
 		) );
 
 		if ( count( $sections ) > 0 ) {
@@ -28,7 +28,7 @@ class Member extends Component_Base {
 		$sections = \WPOD\Framework::instance()->query( array(
 			'type'			=> 'section',
 			'parent_slug'	=> $this->slug,
-			'parent_type'	=> 'member',
+			'parent_type'	=> 'tab',
 		) );
 
 		if ( count( $sections ) > 0 ) {
@@ -68,7 +68,7 @@ class Member extends Component_Base {
 		} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
 			call_user_func( $this->args['callback'] );
 		} else {
-			wpod_doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for member %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
+			wpod_doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for tab %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
 		}
 
 		if ( 'draggable' == $this->args['mode'] ) {
@@ -97,7 +97,7 @@ class Member extends Component_Base {
 		$fields = \WPOD\Framework::instance()->query( array(
 			'type'			=> 'field',
 			'parent_slug'	=> $this->slug,
-			'parent_type'	=> 'member',
+			'parent_type'	=> 'tab',
 		) );
 
 		foreach ( $fields as $field ) {
@@ -147,7 +147,7 @@ class Member extends Component_Base {
 		$fields = WPOD\Framework::instance()->query( array(
 			'type'			=> 'field',
 			'parent_slug'	=> $this->slug,
-			'parent_type'	=> 'member',
+			'parent_type'	=> 'tab',
 		) );
 
 		foreach ( $fields as $field ) {
@@ -161,13 +161,13 @@ class Member extends Component_Base {
 
 	protected function get_defaults() {
 		$defaults = array(
-			'title'			=> __( 'Member title', 'wpod' ),
+			'title'			=> __( 'Tab title', 'wpod' ),
 			'description'	=> '',
 			'capability'	=> 'manage_options',
 			'mode'			=> 'default',
-			'callback'		=> false, //only used if no sections are attached to this member
+			'callback'		=> false, //only used if no sections are attached to this tab
 		);
 
-		return apply_filters( 'wpod_member_defaults', $defaults );
+		return apply_filters( 'wpod_tab_defaults', $defaults );
 	}
 }

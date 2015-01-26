@@ -7,7 +7,7 @@
 
 namespace WPOD\Components;
 
-class Group extends Component_Base {
+class Menu extends Component_Base {
 	public function is_already_added() {
 		global $admin_page_hooks;
 
@@ -29,11 +29,11 @@ class Group extends Component_Base {
 
 	protected function get_defaults() {
 		$defaults = array(
-			'label'			=> __( 'Group label', 'wpod' ),
+			'label'			=> __( 'Menu label', 'wpod' ),
 			'icon'			=> '',
 			'position'		=> null,
 		);
 
-		return apply_filters( 'wpod_group_defaults', $defaults );
+		return apply_filters( 'wpod_menu_defaults', $defaults );
 	}
 }

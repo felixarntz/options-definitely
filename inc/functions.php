@@ -5,16 +5,16 @@
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
-function wpod_get_options( $member_slug ) {
-	$options = get_option( $member_slug );
+function wpod_get_options( $tab_slug ) {
+	$options = get_option( $tab_slug );
 	if ( ! $options ) {
 		$options = array();
 	}
 
 	$fields = WPOD\Framework::instance()->query( array(
 		'type'          => 'field',
-		'parent_slug'   => $member_slug,
-		'parent_type'   => 'member',
+		'parent_slug'   => $tab_slug,
+		'parent_type'   => 'tab',
 	) );
 
 	foreach ( $fields as $field ) {
@@ -26,8 +26,8 @@ function wpod_get_options( $member_slug ) {
 	return $options;
 }
 
-function wpod_get_option( $member_slug, $field_slug ) {
-	$options = get_option( $member_slug );
+function wpod_get_option( $tab_slug, $field_slug ) {
+	$options = get_option( $tab_slug );
 	if ( isset( $options[ $field_slug ] ) ) {
 		return $options[ $field_slug ];
 	}
@@ -35,8 +35,8 @@ function wpod_get_option( $member_slug, $field_slug ) {
 	$field = WPOD\Framework::instance()->query( array(
 		'slug'          => $field_slug,
 		'type'          => 'field',
-		'parent_slug'   => $member_slug,
-		'parent_type'   => 'member',
+		'parent_slug'   => $tab_slug,
+		'parent_type'   => 'tab',
 	), true );
 
 	if ( $field ) {
@@ -202,19 +202,19 @@ function wpod_autoload( $class_name ) {
 function wpod_ajax_insert_repeatable_row() {
 	if ( wp_verify_nonce( $_POST['nonce'], 'wpod-ajax-request' ) ) {
 		$key = absint( $_POST['key'] );
-		$member_slug = esc_attr( $_POST['parent_slug'] );
+		$tab_slug = esc_attr( $_POST['parent_slug'] );
 		$field_slug = esc_attr( $_POST['slug'] );
 
 		$field = \WPOD\Framework::instance()->query( array(
 			'slug'        => $field_slug,
 			'type'        => 'field',
-			'parent_slug' => $member_slug,
-			'parent_type' => 'member',
+			'parent_slug' => $tab_slug,
+			'parent_type' => 'tab',
 		), true );
 
 		if( $field ) {
-			$id_prefix = $member_slug . '-' . $field_slug;
-			$name_prefix = $member_slug . '[' . $field_slug . ']';
+			$id_prefix = $tab_slug . '-' . $field_slug;
+			$name_prefix = $tab_slug . '[' . $field_slug . ']';
 
 			$field->render_repeatable_row( $key, $id_prefix, $name_prefix );
 		}

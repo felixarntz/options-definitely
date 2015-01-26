@@ -7,39 +7,39 @@
 
 namespace WPOD\Components;
 
-class Set extends Component_Base {
+class Page extends Component_Base {
 	protected $page_hook = '';
 	protected $help = array();
 
 	public function add_to_menu() {
-		$group = \WPOD\Framework::instance()->query( array(
+		$menu = \WPOD\Framework::instance()->query( array(
 			'slug'			=> $this->parent,
-			'type'			=> 'group',
+			'type'			=> 'menu',
 		), true );
 
-		$function_name = 'add_' . $group->slug . '_page';
+		$function_name = 'add_' . $menu->slug . '_page';
 
-		if ( function_exists( $function_name ) && ! in_array( $group->slug, array( 'menu', 'submenu' ) ) ) {
+		if ( function_exists( $function_name ) && ! in_array( $menu->slug, array( 'menu', 'submenu' ) ) ) {
 			$this->page_hook = call_user_func( $function_name, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
 		} else {
-			if ( false === $group->added ) {
-				$this->page_hook = add_menu_page( $this->args['title'], $group->label, $this->args['capability'], $this->slug, array( $this, 'render' ), $group->icon, $group->position );
+			if ( false === $menu->added ) {
+				$this->page_hook = add_menu_page( $this->args['title'], $menu->label, $this->args['capability'], $this->slug, array( $this, 'render' ), $menu->icon, $menu->position );
 
-				\WPOD\Framework::instance()->update( $group->slug, 'group', array(
+				\WPOD\Framework::instance()->update( $menu->slug, 'menu', array(
 					'added'			=> true,
 					'subslug'		=> $this->slug,
 					'sublabel'		=> $this->args['label'],
 				) );
 			} else {
-				$this->page_hook = add_submenu_page( $group->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
+				$this->page_hook = add_submenu_page( $menu->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
 
-				if ( $group->sublabel !== true ) {
+				if ( $menu->sublabel !== true ) {
 					global $submenu;
 
-					if ( isset( $submenu[ $group->subslug ] ) ) {
-						$submenu[ $group->subslug ][0][0] = $group->sublabel;
+					if ( isset( $submenu[ $menu->subslug ] ) ) {
+						$submenu[ $menu->subslug ][0][0] = $menu->sublabel;
 
-						\WPOD\Framework::instance()->update( $group->slug, 'group', array(
+						\WPOD\Framework::instance()->update( $menu->slug, 'menu', array(
 							'sublabel'		=> true,
 						) );
 					}
@@ -59,38 +59,38 @@ class Set extends Component_Base {
 			echo '<p class="description">' . $this->args['description'] . '</p>';
 		}
 
-		$members = \WPOD\Framework::instance()->query( array(
-			'type'				=> 'member',
+		$tabs = \WPOD\Framework::instance()->query( array(
+			'type'				=> 'tab',
 			'parent_slug'		=> $this->slug,
-			'parent_type'		=> 'set',
+			'parent_type'		=> 'page',
 		) );
-		$members = array_filter( $members, 'wpod_current_user_can' );
+		$tabs = array_filter( $tabs, 'wpod_current_user_can' );
 
-		if ( count( $members ) > 0 ) {
-			$current_member = \WPOD\Admin::instance()->get_current( 'member', $this );
+		if ( count( $tabs ) > 0 ) {
+			$current_tab = \WPOD\Admin::instance()->get_current( 'tab', $this );
 
-			settings_errors( $current_member->slug );
+			settings_errors( $current_tab->slug );
 
-			if ( count( $members ) > 1 ) {
+			if ( count( $tabs ) > 1 ) {
 				$current_url = \WPOD\Admin::instance()->get_current_url();
 
 				echo '<h2 class="nav-tab-wrapper">';
 
-				foreach ( $members as $member ) {
+				foreach ( $tabs as $tab ) {
 					$class = 'nav-tab';
 
-					if ( $member->slug == $current_member->slug ) {
+					if ( $tab->slug == $current_tab->slug ) {
 						$class .= ' nav-tab-active';
 					}
 
-					echo '<a class="' . $class . '" href="' . add_query_arg( 'tab', $member->slug, $current_url ) . '">' . $member->title . '</a>';
+					echo '<a class="' . $class . '" href="' . add_query_arg( 'tab', $tab->slug, $current_url ) . '">' . $tab->title . '</a>';
 				}
 
 				echo '</h2>';
 			}
-			$current_member->render();
+			$current_tab->render();
 		} else {
-			wpod_doing_it_wrong( __METHOD__, sprintf( __( 'There are no members to display for the set %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->slug ), '1.0.0' );
+			wpod_doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the page %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->slug ), '1.0.0' );
 		}
 
 		echo '</div>';
@@ -136,8 +136,8 @@ class Set extends Component_Base {
 
 	protected function get_defaults() {
 		$defaults = array(
-			'title'			=> __( 'Set title', 'wpod' ),
-			'label'			=> __( 'Set label', 'wpod' ),
+			'title'			=> __( 'Page title', 'wpod' ),
+			'label'			=> __( 'Page label', 'wpod' ),
 			'description'	=> '',
 			'capability'	=> 'manage_options',
 			'help'			=> array(
@@ -146,6 +146,6 @@ class Set extends Component_Base {
 			),
 		);
 
-		return apply_filters( 'wpod_set_defaults', $defaults );
+		return apply_filters( 'wpod_page_defaults', $defaults );
 	}
 }

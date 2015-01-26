@@ -20,9 +20,9 @@ class Framework {
 
 	private $initialized = false;
 
-	private $groups = array();
-	private $sets = array();
-	private $members = array();
+	private $menus = array();
+	private $pages = array();
+	private $tabs = array();
 	private $sections = array();
 	private $fields = array();
 
@@ -43,10 +43,10 @@ class Framework {
 	* ===================================================================================================
 	* BASIC USAGE
 	* You can either use the filter 'wpod' to create a multidimensional array of nested components
-	* (groups, sets, members, sections and fields).
+	* (menus, pages, tabs, sections and fields).
 	* Alternatively, you can use the action 'wpod_oo' which passes this class to the hooked function.
 	* In that function, you can then use the class methods 'add', 'update' and 'delete' (which you see
-	* right below) to directly modify components (groups, sets, members, sections and fields).
+	* right below) to directly modify components (menus, pages, tabs, sections and fields).
 	*
 	* Both methods can be used interchangeably and are compatible with each other since the plugin
 	* internally runs through the filtered array and then also uses the 'add' method on each component
@@ -62,7 +62,7 @@ class Framework {
 					$arrayname = $type . 's';
 					$classname = '\\WPOD\\Components\\' . ucfirst( $type );
 
-					if ( 'group' == $type || ! empty( $parent ) ) {
+					if ( 'menu' == $type || ! empty( $parent ) ) {
 						if ( ! $this->exists( $slug, $type, $parent ) ) {
 							array_push( $this->$arrayname, new $classname( $slug, $args, $parent ) );
 
@@ -87,7 +87,7 @@ class Framework {
 	}
 
 	public function update( $slug, $type, $args, $parent = '' ) {
-		if ( ! $this->initialized || 'group' == $type ) {
+		if ( ! $this->initialized || 'menu' == $type ) {
 			$type = strtolower( $type );
 			if ( $this->is_valid_type( $type ) ) {
 				if ( ! empty( $slug ) ) {
@@ -161,26 +161,26 @@ class Framework {
 	public function init() {
 		if ( ! $this->initialized ) {
 			$raw = array();
-			foreach ( $this->get_default_groups() as $group_slug ) {
-				$raw[ $group_slug ] = array(
-					'sets'				=> array(),
+			foreach ( $this->get_default_menus() as $menu_slug ) {
+				$raw[ $menu_slug ] = array(
+					'pages'				=> array(),
 				);
 			}
 
 			// filter for the components array
 			$raw = apply_filters( 'wpod', $raw );
 
-			foreach ( $raw as $group_slug => $group ) {
-				$this->add( $group_slug, 'group', $group );
+			foreach ( $raw as $menu_slug => $menu ) {
+				$this->add( $menu_slug, 'menu', $menu );
 
-				foreach ( $group['sets'] as $set_slug => $set ) {
-					$this->add( $set_slug, 'set', $set, $group_slug );
+				foreach ( $menu['pages'] as $page_slug => $page ) {
+					$this->add( $page_slug, 'page', $page, $menu_slug );
 
-					foreach ( $set['members'] as $member_slug => $member ) {
-						$this->add( $member_slug, 'member', $member, $set_slug );
+					foreach ( $page['tabs'] as $tab_slug => $tab ) {
+						$this->add( $tab_slug, 'tab', $tab, $page_slug );
 
-						foreach ( $member['sections'] as $section_slug => $section ) {
-							$this->add( $section_slug, 'section', $section, $member_slug );
+						foreach ( $tab['sections'] as $section_slug => $section ) {
+							$this->add( $section_slug, 'section', $section, $tab_slug );
 
 							foreach ( $section['fields'] as $field_slug => $field ) {
 								$this->add( $field_slug, 'field', $field, $section_slug );
@@ -245,7 +245,7 @@ class Framework {
 			if ( count( $slug ) > 0 ) {
 				$results = $this->query_by_slug( $slug, $results, $type );
 			}
-			if ( 'group' != $type && $this->is_valid_type( $parent_type ) && count( $parent_slug ) > 0 && count( $results ) > 0 ) {
+			if ( 'menu' != $type && $this->is_valid_type( $parent_type ) && count( $parent_slug ) > 0 && count( $results ) > 0 ) {
 				$results = $this->query_by_parent( $parent_slug, $parent_type, $results, $type );
 			}
 
@@ -362,10 +362,10 @@ class Framework {
 	}
 
 	public function get_type_whitelist() {
-		return array( 'group', 'set', 'member', 'section', 'field' );
+		return array( 'menu', 'page', 'tab', 'section', 'field' );
 	}
 
-	private function get_default_groups() {
+	private function get_default_menus() {
 		return array(
 			'dashboard',
 			'posts',
