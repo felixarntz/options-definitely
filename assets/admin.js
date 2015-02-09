@@ -16,7 +16,7 @@ jQuery(document).ready(function($) {
 	var select2_args = {
 		containerCss : {
 			'width': '100%',
-			'max-width': '300px'
+			'max-width': '500px'
 		},
 		closeOnSelect: false,
 		formatResult: formatSelect2,

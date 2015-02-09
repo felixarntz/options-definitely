@@ -18,6 +18,15 @@
 }
 
 .form-table {
+	td {
+		> input,
+		> textarea,
+		> select {
+			width: 100%;
+			max-width: 500px !important;
+		}
+	}
+
 	.heading {
 		margin-top: -20px;
 	}
@@ -98,6 +107,7 @@
 
 	input[type="checkbox"],
 	input[type="radio"] {
+		width: auto;
 		margin-right: 5px;
 	}
 
