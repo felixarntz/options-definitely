@@ -20,6 +20,9 @@ local.properties
 nbproject/
 node_modules/*
 
+vendor/composer/*
+vendor/autoload.php
+
 ############
 ## OSes
 ############

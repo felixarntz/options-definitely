@@ -19,21 +19,14 @@ class Field extends Component_Base {
 	public function render( $args = array() ) {
 		do_action( 'wpod_field_before', $this->slug, $this->args, $this->parent, $args['tab_slug'] );
 
-		if( in_array( $this->args['type'], $this->get_supported_types() ) )
-		{
-			if( 'repeatable' == $this->args['type'] )
-			{
-				if( isset( $this->args['repeatable'] ) )
-				{
+		if ( in_array( $this->args['type'], $this->get_supported_types() ) ) {
+			if ( 'repeatable' == $this->args['type'] ) {
+				if ( isset( $this->args['repeatable'] ) ) {
 					$this->render_repeatable( $args );
+				} else {
+					\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The field %s has been declared as a repeatable, but it does not contain any fields.', 'wpod' ), $slug ), '1.0.0' );
 				}
-				else
-				{
-					wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The field %s has been declared as a repeatable, but it does not contain any fields.', 'wpod' ), $slug ), '1.0.0' );
-				}
-			}
-			else
-			{
+			} else {
 				extract( $args );
 
 				$atts = array();
@@ -66,12 +59,12 @@ class Field extends Component_Base {
 							'checked'	=> $this->is_value_checked_or_selected( $option, true ),
 						) );
 
-						echo '<input type="checkbox"' . wpod_make_html_attributes( $atts, false, false ) . ' />';
+						echo '<input type="checkbox"' . \LaL_WP_Plugin_Util::make_html_attributes( $atts, false, false ) . ' />';
 
 						break;
 					case 'select':
 					case 'multiselect':
-						echo '<select' . wpod_make_html_attributes( $atts, false, false ) . '>';
+						echo '<select' . \LaL_WP_Plugin_Util::make_html_attributes( $atts, false, false ) . '>';
 
 						foreach ( $this->args['options'] as $value => $data ) {
 							$option_atts = array(
@@ -86,7 +79,7 @@ class Field extends Component_Base {
 								$option_atts['data-color'] = ltrim( $data['color'], '#' );
 							}
 
-							echo '<option' . wpod_make_html_attributes( $option_atts, false, false ) . '>' . $data['label'] . '</option>';
+							echo '<option' . \LaL_WP_Plugin_Util::make_html_attributes( $option_atts, false, false ) . '>' . $data['label'] . '</option>';
 						}
 
 						echo '</select>';
@@ -132,7 +125,7 @@ class Field extends Component_Base {
 
 							echo '<div class="' . $single_class . $additional_class . '">';
 
-							echo '<input type="' . $single_class . '"' . wpod_make_html_attributes( $atts, false, false ) . ' />';
+							echo '<input type="' . $single_class . '"' . \LaL_WP_Plugin_Util::make_html_attributes( $atts, false, false ) . ' />';
 
 							echo $additional_output;
 
@@ -151,7 +144,7 @@ class Field extends Component_Base {
 							'value'		=> $option,
 						) );
 
-						echo '<input type="hidden"' . wpod_make_html_attributes( $atts, false, false ) . ' />';
+						echo '<input type="hidden"' . \LaL_WP_Plugin_Util::make_html_attributes( $atts, false, false ) . ' />';
 
 						echo '<input type="text" id="' . $atts['id'] . '-media-title" value="' . ( $option ? get_the_title( $option ) : '' ) . '" />';
 
@@ -167,7 +160,7 @@ class Field extends Component_Base {
 
 						break;
 					case 'textarea':
-						echo '<textarea' . wpod_make_html_attributes( $atts, false, false ) . '>' . esc_textarea( $option ) . '</textarea>';
+						echo '<textarea' . \LaL_WP_Plugin_Util::make_html_attributes( $atts, false, false ) . '>' . esc_textarea( $option ) . '</textarea>';
 
 						break;
 					case 'wysiwyg':
@@ -207,7 +200,7 @@ class Field extends Component_Base {
 							$additional_output = '<input type="text" id="' . $atts['id'] . '-' . $this->args['type'] . '-viewer" class="' . $this->args['type'] . '-viewer" value="' . $option . '" />';
 						}
 
-						echo $additional_output . '<input type="' . $type . '"' . wpod_make_html_attributes( $atts, false, false ) . ' />';
+						echo $additional_output . '<input type="' . $type . '"' . \LaL_WP_Plugin_Util::make_html_attributes( $atts, false, false ) . ' />';
 				}
 
 				if ( ! empty( $this->args['description'] ) ) {
@@ -221,7 +214,7 @@ class Field extends Component_Base {
 		} elseif ( is_callable( $this->args['type'] ) ) {
 			call_user_func( $this->args['type'], $this, $args );
 		} else {
-			wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %s is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %s is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
 		}
 
 		do_action( 'wpod_field_after', $this->slug, $this->args, $this->parent, $args['tab_slug'] );
@@ -249,7 +242,7 @@ class Field extends Component_Base {
 
 		$option = wpod_get_option( $tab_slug, $this->slug );
 
-		echo '<div' . wpod_make_html_attributes( $atts, false, false ) . '>';
+		echo '<div' . \LaL_WP_Plugin_Util::make_html_attributes( $atts, false, false ) . '>';
 
 		echo '<p><a class="new-repeatable-button button" href="#"' . ( $this->args['repeatable']['limit'] > 0 && count( $option ) == $this->args['repeatable']['limit'] ? ' style="display:none;"' : '' ) . '>' . __( 'Add new', 'wpod' ) . '</a></p>';
 
@@ -303,14 +296,14 @@ class Field extends Component_Base {
 							'checked'	=> $this->is_value_checked_or_selected( $options[ $slug ], true ),
 						) );
 
-						echo '<input type="checkbox"' . wpod_make_html_attributes( $atts, false, false ) . ' />';
+						echo '<input type="checkbox"' . \LaL_WP_Plugin_Util::make_html_attributes( $atts, false, false ) . ' />';
 
 						echo '<span class="description">' . $field['title'] . '</span>';
 
 						break;
 					case 'select':
 					case 'multiselect':
-						echo '<select' . wpod_make_html_attributes( $atts, false, false ) . '>';
+						echo '<select' . \LaL_WP_Plugin_Util::make_html_attributes( $atts, false, false ) . '>';
 
 						echo '<option value="">-- ' . $field['title'] . '</option>';
 
@@ -326,7 +319,7 @@ class Field extends Component_Base {
 								$option_atts['data-color'] = ltrim( $data['color'], '#' );
 							}
 
-							echo '<option' . wpod_make_html_attributes( $option_atts, false, false ) . '>' . $data['label'] . '</option>';
+							echo '<option' . \LaL_WP_Plugin_Util::make_html_attributes( $option_atts, false, false ) . '>' . $data['label'] . '</option>';
 						}
 
 						echo '</select>';
@@ -337,7 +330,7 @@ class Field extends Component_Base {
 							'value'		=> $options[ $slug ],
 						) );
 
-						echo '<input type="hidden"' . wpod_make_html_attributes( $atts, false, false ) . ' />';
+						echo '<input type="hidden"' . \LaL_WP_Plugin_Util::make_html_attributes( $atts, false, false ) . ' />';
 
 						echo '<input type="text" id="' . $atts['id'] . '-media-title" value="' . ( $options[ $slug ] ? get_the_title( $options[ $slug ] ) : '' ) . '" placeholder="' . $field['title'] . '" />';
 
@@ -376,13 +369,13 @@ class Field extends Component_Base {
 							$additional_output = '<input type="text" id="' . $atts['id'] . '-' . $field['type'] . '-viewer" class="' . $field['type'] . '-viewer" value="' . $options[ $slug ] . '" placeholder="' . $field['title'] . '" />';
 						}
 
-						echo $additional_output . '<input type="' . $type . '"' . wpod_make_html_attributes( $atts, false, false ) . ' />';
+						echo $additional_output . '<input type="' . $type . '"' . \LaL_WP_Plugin_Util::make_html_attributes( $atts, false, false ) . ' />';
 				}
 				echo '</span>';
 			} elseif ( is_callable( $field['type'] ) ) {
 				call_user_func( $field['type'], $slug, $field, $key, $id_prefix, $name_prefix, $options );
 			} else {
-				wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %1$s (part of repeatable %2$s) is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $slug, $this->slug ), '1.0.0' );
+				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %1$s (part of repeatable %2$s) is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $slug, $this->slug ), '1.0.0' );
 			}
 		}
 

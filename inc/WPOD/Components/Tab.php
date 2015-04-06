@@ -43,7 +43,7 @@ class Tab extends Component_Base {
 
 			$form_atts = apply_filters( 'wpod_form_atts', $form_atts, $this );
 
-			echo '<form' . wpod_make_html_attributes( $form_atts, false, false ) . '>';
+			echo '<form' . \LaL_WP_Plugin_Util::make_html_attributes( $form_atts, false, false ) . '>';
 
 			if ( 'draggable' == $this->args['mode'] ) {
 				wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
@@ -70,7 +70,7 @@ class Tab extends Component_Base {
 		} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
 			call_user_func( $this->args['callback'] );
 		} else {
-			wpod_doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for tab %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for tab %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
 		}
 
 		if ( 'draggable' == $this->args['mode'] ) {

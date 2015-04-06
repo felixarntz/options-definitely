@@ -21,6 +21,7 @@
     "issues": "https://github.com/felixarntz/options-definitely/issues"
   },
   "require": {
+    "felixarntz/leavesandlove-wp-plugin-util": "dev-master",
     "composer/installers": "~1.0"
   }
 }

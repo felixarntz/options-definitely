@@ -68,19 +68,19 @@ class Framework {
 
 							return true;
 						} else {
-							wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s already exists. If you want to modify it, please use the update method.', 'wpod' ), $type, $slug ), '1.0.0' );
+							\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s already exists. If you want to modify it, please use the update method.', 'wpod' ), $type, $slug ), '1.0.0' );
 						}
 					} else {
-						wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s was not provided a parent.', 'wpod' ), $type, $slug ), '1.0.0' );
+						\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s was not provided a parent.', 'wpod' ), $type, $slug ), '1.0.0' );
 					}
 				} else {
-					wpod_doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '1.0.0' );
+					\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '1.0.0' );
 				}
 			} else {
-				wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
+				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
 			}
 		} else {
-			wpod_doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '1.0.0' );
 		}
 
 		return false;
@@ -106,16 +106,16 @@ class Framework {
 
 						return true;
 					} else {
-						wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s does not exist. You can instead use the add method to add it.', 'wpod' ), $type, $slug ), '1.0.0' );
+						\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s does not exist. You can instead use the add method to add it.', 'wpod' ), $type, $slug ), '1.0.0' );
 					}
 				} else {
-					wpod_doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '1.0.0' );
+					\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '1.0.0' );
 				}
 			} else {
-				wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
+				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
 			}
 		} else {
-			wpod_doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '1.0.0' );
 		}
 
 		return false;
@@ -136,16 +136,16 @@ class Framework {
 
 						return true;
 					} else {
-						wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s does not exist, so it does not need to be deleted.', 'wpod' ), $type, $slug ), '1.0.0' );
+						\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s does not exist, so it does not need to be deleted.', 'wpod' ), $type, $slug ), '1.0.0' );
 					}
 				} else {
-					wpod_doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '1.0.0' );
+					\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '1.0.0' );
 				}
 			} else {
-				wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
+				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
 			}
 		} else {
-			wpod_doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '1.0.0' );
 		}
 
 		return false;
@@ -190,7 +190,7 @@ class Framework {
 
 			$this->initialized = true;
 		} else {
-			wpod_doing_it_wrong( __METHOD__, __( 'This function should never be called manually.', 'wpod' ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'This function should never be called manually.', 'wpod' ), '1.0.0' );
 		}
 	}
 
@@ -252,7 +252,7 @@ class Framework {
 				}
 			}
 		} else {
-			wpod_doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
 		}
 
 		return $results;

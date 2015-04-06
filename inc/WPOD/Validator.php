@@ -9,13 +9,7 @@ namespace WPOD;
 
 class Validator {
 	public static function checkbox( $value, $field ) {
-		$value = absint( $value );
-
-		if ( $value > 0 ) {
-			return true;
-		}
-
-		return false;
+		return \LaL_WP_Plugin_Util::format( $value, 'bool', 'input' );
 	}
 
 	public static function select( $value, $field ) {
@@ -23,7 +17,7 @@ class Validator {
 			return $value;
 		}
 
-		return self::error_handler( sprintf( __( '%s is no valid choice for this field.', 'wpod' ), esc_attr( $value ) ) );
+		return self::error_handler( sprintf( __( '%s is no valid choice for this field.', 'wpod' ), \LaL_WP_Plugin_Util::format( $value, 'string', 'output' ) ) );
 	}
 
 	public static function radio( $value, $field ) {
@@ -42,7 +36,7 @@ class Validator {
 			if ( isset( $field['options'][ $val ] ) ) {
 				$validated[] = $val;
 			} else {
-				$invalid[] = $val;
+				$invalid[] = \LaL_WP_Plugin_Util::format( $val, 'string', 'output' );
 			}
 		}
 
@@ -58,11 +52,14 @@ class Validator {
 	}
 
 	public static function number( $value, $field ) {
+		$type = '';
 		if ( isset( $field->more_attributes['step'] ) && is_int( $field->more_attributes['step'] ) ) {
-			$value = intval( $value );
+			$type = 'int';
 		} else {
-			$value = floatval( $value );
+			$type = 'float';
 		}
+
+		$value = \LaL_WP_Plugin_Util::format( $value, $type, 'input' );
 
 		if ( ! isset( $field->more_attributes['step'] ) || $value % $field->more_attributes['step'] == 0 ) {
 			if ( ! isset( $field->more_attributes['min'] ) || $value >= $field->more_attributes['min'] ) {
@@ -70,13 +67,13 @@ class Validator {
 					return $value;
 				}
 
-				return self::error_handler( sprintf( __( 'The number %1$s is invalid. It must be lower than or equal to %2$s.', 'wpod' ), $value, $field->more_attributes['max'] ) );
+				return self::error_handler( sprintf( __( 'The number %1$s is invalid. It must be lower than or equal to %2$s.', 'wpod' ), \LaL_WP_Plugin_Util::format( $value, $type, 'output' ), \LaL_WP_Plugin_Util::format( $field->more_attributes['max'], $type, 'output' ) ) );
 			}
 
-			return self::error_handler( sprintf( __( 'The number %1$s is invalid. It must be greater than or equal to %2$s.', 'wpod' ), $value, $field->more_attributes['min'] ) );
+			return self::error_handler( sprintf( __( 'The number %1$s is invalid. It must be greater than or equal to %2$s.', 'wpod' ), \LaL_WP_Plugin_Util::format( $value, $type, 'output' ), \LaL_WP_Plugin_Util::format( $field->more_attributes['min'], $type, 'output' ) ) );
 		}
 
-		return self::error_handler( sprintf( __( 'The number %1$s is invalid since it is not divisible by %2$s.', 'wpod' ), $value, $field->more_attributes['step'] ) );
+		return self::error_handler( sprintf( __( 'The number %1$s is invalid since it is not divisible by %2$s.', 'wpod' ), \LaL_WP_Plugin_Util::format( $value, $type, 'output' ), \LaL_WP_Plugin_Util::format( $field->more_attributes['step'], $type, 'output' ) ) );
 	}
 
 	public static function range( $value, $field ) {
@@ -84,7 +81,7 @@ class Validator {
 	}
 
 	public static function text( $value, $field ) {
-		return wp_kses_post( $value );
+		return \LaL_WP_Plugin_Util::format( $value, 'html', 'input' );
 	}
 
 	public static function textarea( $value, $field ) {
@@ -92,7 +89,7 @@ class Validator {
 	}
 
 	public static function wysiwyg( $value, $field ) {
-		return wp_kses_post( wpautop( $value ) );
+		return self::text( wpautop( $value ), $field );
 	}
 
 	public static function email( $value, $field ) {
@@ -103,15 +100,15 @@ class Validator {
 			return $value;
 		}
 
-		return self::error_handler( sprintf( __( '%s is not a valid email address.', 'wpod' ), esc_attr( $old_mail ) ) );
+		return self::error_handler( sprintf( __( '%s is not a valid email address.', 'wpod' ), \LaL_WP_Plugin_Util::format( $old_mail, 'string', 'output' ) ) );
 	}
 
 	public static function url( $value, $field ) {
 		if ( preg_match( '#http(s?)://(.+)#i', $value ) ) {
-			return esc_url_raw( $value );
+			return \LaL_WP_Plugin_Util::format( $value, 'url', 'output' );
 		}
 
-		return self::error_handler( sprintf( __( '%s is not a valid URL.', 'wpof' ), esc_attr( $value ) ) );
+		return self::error_handler( sprintf( __( '%s is not a valid URL.', 'wpof' ), \LaL_WP_Plugin_Util::format( $value, 'url', 'output' ) ) );
 	}
 
 	public static function datetime( $value, $field ) {
@@ -122,10 +119,10 @@ class Validator {
 				return $value;
 			}
 
-			return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur later than %2$s.', 'wpod' ), wpod_format_date( $timestamp, 'datetime' ), wpod_format_date( $timestamp_max, 'datetime' ) ) );
+			return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur later than %2$s.', 'wpod' ), \LaL_WP_Plugin_Util::format( $timestamp, 'datetime', 'output' ), \LaL_WP_Plugin_Util::format( $timestamp_max, 'datetime', 'output' ) ) );
 		}
 
-		return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur earlier than %2$s.', 'wpod' ), wpod_format_date( $timestamp, 'datetime' ), wpod_format_date( $timestamp_min, 'datetime' ) ) );
+		return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur earlier than %2$s.', 'wpod' ), \LaL_WP_Plugin_Util::format( $timestamp, 'datetime', 'output' ), \LaL_WP_Plugin_Util::format( $timestamp_min, 'datetime', 'output' ) ) );
 	}
 
 	public static function date( $value, $field ) {
@@ -136,10 +133,10 @@ class Validator {
 				return $value;
 			}
 
-			return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur later than %2$s.', 'wpod' ), wpod_format_date( $timestamp, 'date' ), wpod_format_date( $timestamp_max, 'date' ) ) );
+			return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur later than %2$s.', 'wpod' ), \LaL_WP_Plugin_Util::format( $timestamp, 'date', 'output' ), \LaL_WP_Plugin_Util::format( $timestamp_max, 'date', 'output' ) ) );
 		}
 
-		return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur earlier than %2$s.', 'wpod' ), wpod_format_date( $timestamp, 'date' ), wpod_format_date( $timestamp_min, 'date' ) ) );
+		return self::error_handler( sprintf( __( 'The date %1$s is invalid. It must not occur earlier than %2$s.', 'wpod' ), \LaL_WP_Plugin_Util::format( $timestamp, 'date', 'output' ), \LaL_WP_Plugin_Util::format( $timestamp_min, 'date', 'output' ) ) );
 	}
 
 	public static function time( $value, $field ) {
@@ -150,10 +147,10 @@ class Validator {
 				return $value;
 			}
 
-			return self::error_handler( sprintf( __( 'The time %1$s is invalid. It must not occur later than %2$s.', 'wpod' ), wpod_format_date( $timestamp, 'time' ), wpod_format_date( $timestamp_max, 'time' ) ) );
+			return self::error_handler( sprintf( __( 'The time %1$s is invalid. It must not occur later than %2$s.', 'wpod' ), \LaL_WP_Plugin_Util::format( $timestamp, 'time', 'output' ), \LaL_WP_Plugin_Util::format( $timestamp_max, 'time', 'output' ) ) );
 		}
 
-		return self::error_handler( sprintf( __( 'The time %1$s is invalid. It must not occur earlier than %2$s.', 'wpod' ), wpod_format_date( $timestamp, 'time' ), wpod_format_date( $timestamp_min, 'time' ) ) );
+		return self::error_handler( sprintf( __( 'The time %1$s is invalid. It must not occur earlier than %2$s.', 'wpod' ), \LaL_WP_Plugin_Util::format( $timestamp, 'time', 'output' ), \LaL_WP_Plugin_Util::format( $timestamp_min, 'time', 'output' ) ) );
 	}
 
 	public static function color( $value, $field )
@@ -162,7 +159,7 @@ class Validator {
 			return $value;
 		}
 
-		return self::error_handler( sprintf( __( '%s is not a valid hexadecimal color.', 'wpod' ), esc_attr( $value ) ) );
+		return self::error_handler( sprintf( __( '%s is not a valid hexadecimal color.', 'wpod' ), \LaL_WP_Plugin_Util::format( $value, 'string', 'output' ) ) );
 	}
 
 	public static function media( $value, $field, $desired_types = 'all', $errmsg_append = '' ) {

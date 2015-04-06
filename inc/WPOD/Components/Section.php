@@ -42,7 +42,7 @@ class Section extends Component_Base {
 			);
 			$table_atts = apply_filters( 'wpod_table_atts', $table_atts, $this );
 
-			echo '<table' . wpod_make_html_attributes( $table_atts, false, false ) . '>';
+			echo '<table' . \LaL_WP_Plugin_Util::make_html_attributes( $table_atts, false, false ) . '>';
 
 			do_settings_fields( $this->parent, $this->slug );
 
@@ -50,7 +50,7 @@ class Section extends Component_Base {
 		} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
 			call_user_func( $this->args['callback'] );
 		} else {
-			wpod_doing_it_wrong( __METHOD__, sprintf( __( 'There are no fields to display for section %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no fields to display for section %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
 		}
 
 		do_action( 'wpod_section_after', $this->slug, $this->args, $this->parent );

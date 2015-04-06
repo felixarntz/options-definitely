@@ -88,7 +88,7 @@ class Page extends Component_Base {
 			}
 			$current_tab->render();
 		} else {
-			wpod_doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the page %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->slug ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the page %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->slug ), '1.0.0' );
 		}
 
 		do_action( 'wpod_page_after', $this->slug, $this->args, $this->parent );

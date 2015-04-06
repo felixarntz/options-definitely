@@ -198,9 +198,13 @@ module.exports = function(grunt) {
 			translation: {
 				options: {
 					domainPath: '/languages',
+					exclude: [ 'vendor/.*' ],
 					potComments: 'Copyright (c) 2014-<%= grunt.template.today("yyyy") %> <%= pkg.author.name %>',
 					potFilename: 'wpod.pot',
 					potHeaders: {
+						'language-team': '<%= pkg.author.name %> <<%= pkg.author.email %>>',
+						'last-translator': '<%= pkg.author.name %> <<%= pkg.author.email %>>',
+						'project-id-version': '<%= pkg.name %> <%= pkg.version %>',
 						'report-msgid-bugs-to': '<%= pkg.homepage %>',
 						'x-generator': 'grunt-wp-i18n 0.4.5',
 						'x-poedit-basepath': '.',

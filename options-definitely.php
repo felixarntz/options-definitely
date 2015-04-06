@@ -18,28 +18,31 @@ Tags: wordpress, plugin, options, admin, backend, ui, customizer, framework
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
-define( 'WPOD_VERSION', '1.0.0' );
-define( 'WPOD_REQUIRED_WP', '4.0' );
-define( 'WPOD_REQUIRED_PHP', '5.3.0' );
-
 define( 'WPOD_NAME', 'Options, Definitely' );
-define( 'WPOD_MAINFILE', __FILE__ );
-define( 'WPOD_BASENAME', plugin_basename( WPOD_MAINFILE ) );
-define( 'WPOD_PATH', untrailingslashit( plugin_dir_path( WPOD_MAINFILE ) ) );
-define( 'WPOD_URL', untrailingslashit( plugin_dir_url( WPOD_MAINFILE ) ) );
+define( 'WPOD_VERSION', '1.0.0' );
+define( 'WPOD_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
+define( 'WPOD_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 
-require_once WPOD_PATH . '/inc/functions.php';
-
-define( 'WPOD_RUNNING', wpod_version_check() );
+require_once WPOD_PATH . '/vendor/felixarntz/leavesandlove-wp-plugin-util/leavesandlove-wp-plugin-util.php';
 
 function wpod_init() {
-	load_plugin_textdomain( 'wpod', false, dirname( WPOD_BASENAME ) . '/languages/' );
+	$plugin = LaL_WP_Plugin_Util::get( 'options-definitely', array(
+		'name'					=> WPOD_NAME,
+		'version'				=> WPOD_VERSION,
+		'required_wp'			=> '4.0',
+		'required_php'			=> '5.3.0',
+		'main_file'				=> __FILE__,
+		'autoload_namespace'	=> 'WPOD',
+		'autoload_path'			=> WPOD_PATH . '/inc/WPOD',
+		'textdomain'			=> 'wpod',
+	) );
 
-	if ( WPOD_RUNNING > 0 ) {
-		spl_autoload_register( 'wpod_autoload', true, true );
+	if ( $plugin->do_version_check() ) {
+		$plugin->load_textdomain();
+
+		require_once WPOD_PATH . '/inc/functions.php';
+
 		\WPOD\Framework::instance();
-	} else {
-		add_action( 'admin_notices', 'wpod_display_version_error_notice' );
 	}
 }
 add_action( 'plugins_loaded', 'wpod_init' );
