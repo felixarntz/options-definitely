@@ -165,20 +165,30 @@ class Framework {
 			// filter for the components array
 			$raw = apply_filters( 'wpod', $raw );
 
-			foreach ( $raw as $menu_slug => $menu ) {
-				$this->add( $menu_slug, 'menu', $menu );
+			if ( is_array( $raw ) ) {
+				foreach ( $raw as $menu_slug => $menu ) {
+					$this->add( $menu_slug, 'menu', $menu );
 
-				foreach ( $menu['pages'] as $page_slug => $page ) {
-					$this->add( $page_slug, 'page', $page, $menu_slug );
+					if ( isset( $menu['pages'] ) && is_array( $menu['pages'] ) ) {
+						foreach ( $menu['pages'] as $page_slug => $page ) {
+							$this->add( $page_slug, 'page', $page, $menu_slug );
 
-					foreach ( $page['tabs'] as $tab_slug => $tab ) {
-						$this->add( $tab_slug, 'tab', $tab, $page_slug );
+							if ( isset( $page['tabs'] ) && is_array( $page['tabs'] ) ) {
+								foreach ( $page['tabs'] as $tab_slug => $tab ) {
+									$this->add( $tab_slug, 'tab', $tab, $page_slug );
 
-						foreach ( $tab['sections'] as $section_slug => $section ) {
-							$this->add( $section_slug, 'section', $section, $tab_slug );
+									if ( isset( $tab['sections'] ) && is_array( $tab['sections'] ) ) {
+										foreach ( $tab['sections'] as $section_slug => $section ) {
+											$this->add( $section_slug, 'section', $section, $tab_slug );
 
-							foreach ( $section['fields'] as $field_slug => $field ) {
-								$this->add( $field_slug, 'field', $field, $section_slug );
+											if ( isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
+												foreach ( $section['fields'] as $field_slug => $field ) {
+													$this->add( $field_slug, 'field', $field, $section_slug );
+												}
+											}
+										}
+									}
+								}
 							}
 						}
 					}
