@@ -20,9 +20,6 @@
     "email": "felix-arntz@leaves-and-love.net",
     "issues": "https://github.com/felixarntz/options-definitely/issues"
   },
-  "config": {
-    "preferred-install": "dist"
-  },
   "require": {
     "felixarntz/leavesandlove-wp-plugin-util": "dev-master",
     "composer/installers": "~1.0"
