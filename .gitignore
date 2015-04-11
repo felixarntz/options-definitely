@@ -21,6 +21,12 @@ nbproject/
 node_modules/*
 
 ############
+## Composer
+############
+
+vendor/
+
+############
 ## OSes
 ############
 
