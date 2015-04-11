@@ -18,31 +18,41 @@ Tags: wordpress, plugin, options, admin, backend, ui, customizer, framework
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
 define( 'WPOD_NAME', 'Options, Definitely' );
 define( 'WPOD_VERSION', '1.0.0' );
 define( 'WPOD_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 define( 'WPOD_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 
-require_once WPOD_PATH . '/vendor/felixarntz/leavesandlove-wp-plugin-util/leavesandlove-wp-plugin-util.php';
-
 function wpod_init() {
-	$plugin = LaL_WP_Plugin_Util::get( 'options-definitely', array(
-		'name'					=> WPOD_NAME,
-		'version'				=> WPOD_VERSION,
-		'required_wp'			=> '4.0',
-		'required_php'			=> '5.3.0',
-		'main_file'				=> __FILE__,
-		'autoload_namespace'	=> 'WPOD',
-		'autoload_path'			=> WPOD_PATH . '/inc/WPOD',
-		'textdomain'			=> 'wpod',
-	) );
+	require_once WPOD_PATH . '/inc/functions.php';
 
-	if ( $plugin->do_version_check() ) {
-		$plugin->load_textdomain();
+	\WPOD\Framework::instance();
+}
 
-		require_once WPOD_PATH . '/inc/functions.php';
+function wpod_maybe_init() {
+	if ( file_exists( WPOD_PATH . '/vendor/autoload_52.php' ) && file_exists( WPOD_PATH . '/vendor/felixarntz/leavesandlove-wp-plugin-util/leavesandlove-wp-plugin-util.php' ) ) {
+		$spl_available = function_exists( 'spl_autoload_register' );
 
-		\WPOD\Framework::instance();
+		if ( $spl_available ) {
+			require_once WPOD_PATH . '/vendor/autoload_52.php';
+		} else {
+			require_once WPOD_PATH . '/vendor/felixarntz/leavesandlove-wp-plugin-util/leavesandlove-wp-plugin-util.php';
+		}
+
+		$plugin = LaL_WP_Plugin_Util::get( 'options-definitely', array(
+			'name'					=> WPOD_NAME,
+			'version'				=> WPOD_VERSION,
+			'required_wp'			=> '4.0',
+			'required_php'			=> '5.3.0',
+			'main_file'				=> __FILE__,
+			'textdomain'			=> 'wpod',
+		) );
+
+		$plugin->maybe_init( 'wpod_init', $spl_available );
 	}
 }
-add_action( 'plugins_loaded', 'wpod_init' );
+wpod_maybe_init();

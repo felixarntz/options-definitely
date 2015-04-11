@@ -7,7 +7,11 @@
 
 namespace WPOD\Components;
 
-class Menu extends Component_Base {
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
+class Menu extends ComponentBase {
 	public function is_already_added() {
 		global $admin_page_hooks;
 

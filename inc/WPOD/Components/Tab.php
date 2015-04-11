@@ -7,7 +7,11 @@
 
 namespace WPOD\Components;
 
-class Tab extends Component_Base {
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
+class Tab extends ComponentBase {
 	public function register() {
 		$sections = \WPOD\Framework::instance()->query( array(
 			'type'			=> 'section',

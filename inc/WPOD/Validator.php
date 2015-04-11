@@ -7,6 +7,10 @@
 
 namespace WPOD;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
 class Validator {
 	public static function checkbox( $value, $field ) {
 		return \LaL_WP_Plugin_Util::format( $value, 'bool', 'input' );

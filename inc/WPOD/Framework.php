@@ -7,6 +7,10 @@
 
 namespace WPOD;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
 class Framework {
 	private static $instance = null;
 
@@ -35,6 +39,7 @@ class Framework {
 			\WPOD\Admin::instance();
 		}
 
+		// use after_setup_theme action so it is initialized as soon as possible, but also so that both plugins and themes can use the filter/action
 		add_action( 'after_setup_theme', array( $this, 'init' ), 1 );
 		add_action( 'after_setup_theme', array( $this, 'validate' ), 2 );
 	}

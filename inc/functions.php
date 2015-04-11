@@ -5,6 +5,10 @@
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
 function wpod_get_options( $tab_slug ) {
 	$options = get_option( $tab_slug );
 	if ( ! $options ) {

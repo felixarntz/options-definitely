@@ -7,7 +7,11 @@
 
 namespace WPOD\Components;
 
-class Section extends Component_Base {
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
+class Section extends ComponentBase {
 	public function register( $parent_tab ) {
 		global $wp_settings_sections;
 

@@ -7,7 +7,11 @@
 
 namespace WPOD\Components;
 
-abstract class Component_Base {
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
+abstract class ComponentBase {
 	protected $slug = '';
 	protected $parent = '';
 	protected $args = array();

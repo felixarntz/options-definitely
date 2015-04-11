@@ -7,6 +7,10 @@
 
 namespace WPOD;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
 class Admin {
 	private static $instance = null;
 

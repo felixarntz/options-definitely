@@ -7,7 +7,11 @@
 
 namespace WPOD\Components;
 
-class Page extends Component_Base {
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
+class Page extends ComponentBase {
 	protected $page_hook = '';
 	protected $help = array();
 
