@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 abstract class ComponentBase {
+
 	protected $slug = '';
 	protected $parent = '';
 	protected $args = array();

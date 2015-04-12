@@ -12,6 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Tab extends ComponentBase {
+
+	public function __construct( $slug, $args, $parent = '' ) {
+		parent::__construct( $slug, $args, $parent );
+
+		add_action( 'wpod_update_' . $parent . '_' . $slug . '_defaults', array( $this, 'update_option_defaults' ) );
+
+		add_action( 'wpod_update_defaults', array( $this, 'update_option_defaults' ) );
+	}
+
 	public function register() {
 		$sections = \WPOD\Framework::instance()->query( array(
 			'type'			=> 'section',

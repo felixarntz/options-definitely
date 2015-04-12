@@ -27,12 +27,36 @@ define( 'WPOD_VERSION', '1.0.0' );
 define( 'WPOD_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 define( 'WPOD_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 
+/**
+ * Initializes the plugin.
+ *
+ * The functions.php file of the plugin is loaded.
+ * Afterwards the WPOD\Framework class is instantiated to initialize the plugin.
+ *
+ * @internal
+ * @since 1.0.0
+ * @return void
+ */
 function wpod_init() {
 	require_once WPOD_PATH . '/inc/functions.php';
 
 	\WPOD\Framework::instance();
 }
 
+/**
+ * Checks plugin requirements and initialized the plugin if possible.
+ *
+ * It is checked whether the Standard PHP Library function spl_autoload_register() is available.
+ * If so, the autoload file is included and the plugin utility class is instantiated.
+ * The utility class will then take care of checking PHP and WordPress version requirements of the plugin
+ * and, if everything is alright, will hook the wpod_init() function into the 'plugins_loaded' action.
+ *
+ * If any requirement is not met, the utility class will deactivate the plugin and show an admin notice.
+ *
+ * @internal
+ * @since 1.0.0
+ * @return void
+ */
 function wpod_maybe_init() {
 	$spl_available = function_exists( 'spl_autoload_register' );
 

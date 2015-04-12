@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Page extends ComponentBase {
+
 	protected $page_hook = '';
 	protected $help = array();
 
@@ -20,8 +21,6 @@ class Page extends ComponentBase {
 			'slug'			=> $this->parent,
 			'type'			=> 'menu',
 		), true );
-
-		$function_name = 'add_' . $menu->slug . '_page';
 
 		if ( false === $menu->added ) {
 			$this->page_hook = add_menu_page( $this->args['title'], $menu->label, $this->args['capability'], $this->slug, array( $this, 'render' ), $menu->icon, $menu->position );

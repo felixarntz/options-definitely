@@ -11,9 +11,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
+/**
+ * This class performs the necessary actions in the WordPress admin.
+ *
+ * This includes both registering and displaying options.
+ *
+ * @internal
+ * @since 1.0.0
+ */
 class Admin {
+
+	/**
+	 * @since 1.0.0
+	 * @var WPOD\Admin|null Holds the instance of this class.
+	 */
 	private static $instance = null;
 
+	/**
+	 * Gets the instance of this class. If it does not exist, it will be created.
+	 *
+	 * @since 1.0.0
+	 * @return WPOD\Admin
+	 */
 	public static function instance() {
 		if ( null == self::$instance ) {
 			self::$instance = new self;
@@ -22,14 +41,31 @@ class Admin {
 		return self::$instance;
 	}
 
+	/**
+	 * Class constructor.
+	 *
+	 * This will hook functions into the 'admin_init', 'admin_menu' and 'admin_enqueue_scripts' actions.
+	 *
+	 * @since 1.0.0
+	 */
 	private function __construct() {
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_menu', array( $this, 'create_admin_menu' ), 50 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-
-		add_action( 'wpod_update_option_defaults', array( $this, 'update_option_defaults' ) );
 	}
 
+	/**
+	 * Registers the settings.
+	 *
+	 * For all tabs, it registers its setting which will actually be an array of settings.
+	 * It also registers settings sections and settings fields.
+	 *
+	 * @see WPOD\Components\Tab
+	 * @see WPOD\Components\Section
+	 * @see WPOD\Components\Field
+	 * @since 1.0.0
+	 * @return void
+	 */
 	public function register_settings() {
 		$tabs = \WPOD\Framework::instance()->query( array(
 			'type'				=> 'tab',
@@ -60,6 +96,20 @@ class Admin {
 		}
 	}
 
+	/**
+	 * Adds pages to the WordPress admin menu.
+	 *
+	 * For each menu, it is checked whether this menu has already been added.
+	 * If so, the menu slug is updated accordingly.
+	 *
+	 * Every page will be added to the menu it has been assigned to.
+	 * Furthermore the function to add a help tab is hooked into the page loading action.
+	 *
+	 * @see WPOD\Components\Menu
+	 * @see WPOD\Components\Page
+	 * @since 1.0.0
+	 * @return void
+	 */
 	public function create_admin_menu() {
 		$menus = \WPOD\Framework::instance()->query( array(
 			'type'				=> 'menu',
@@ -87,6 +137,17 @@ class Admin {
 		}
 	}
 
+	/**
+	 * Enqueues necessary stylesheets and scripts.
+	 *
+	 * All assets are only enqueued if we are on a settings page created by the plugin.
+	 * Besides adding the plugin stylesheets and scripts, this function might also enqueue
+	 * the WordPress media scripts and the WordPress meta box scripts, both depending on
+	 * whether they are needed on the current page.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
 	public function enqueue_scripts() {
 		$currents = $this->get_current();
 
@@ -157,16 +218,22 @@ class Admin {
 		}
 	}
 
-	public function update_option_defaults() {
-		$tabs = \WPOD\Framework::instance()->query( array(
-			'type'				=> 'tab',
-		) );
-
-		foreach ( $tabs as $tab ) {
-			$tab->update_option_defaults();
-		}
-	}
-
+	/**
+	 * Gets the currently active page and tab.
+	 *
+	 * The function checks the currently loaded admin page.
+	 * If it is not created by the plugin, the function will return false.
+	 * Otherwise the output depends on the $type parameter:
+	 * The function may return the page object, the tab object or an array of both objects.
+	 *
+	 * The second parameter may be used to omit the retrieving process by specifying a page object.
+	 * In that case, only the current tab as part of this page will be looked for.
+	 *
+	 * @since 1.0.0
+	 * @param string $type the type to get the current component for; must be either 'page', 'tab' or an empty string to get an array of both
+	 * @param WPOD\Components\Page|null $page a page object to override the retrieving process or null
+	 * @return WPOD\Components\Page|WPOD\Components\Tab|array|false either the page or tab object, an array of both objects or false if no plugin component is currently active
+	 */
 	public function get_current( $type = '', $page = null ) {
 		if ( isset( $_GET['page'] ) ) {
 			if ( null == $page ) {
@@ -206,9 +273,18 @@ class Admin {
 		return false;
 	}
 
+	/**
+	 * Gets the current URL in the WordPress backend.
+	 *
+	 * @since 1.0.0
+	 * @return string the current URL
+	 */
 	public function get_current_url() {
 		global $pagenow;
 
-		return add_query_arg( $_GET, get_admin_url( null, $pagenow ) );
+		if ( isset( $_GET ) && is_array( $_GET ) ) {
+			return add_query_arg( $_GET, get_admin_url( null, $pagenow ) );
+		}
+		return get_admin_url( null, $pagenow );
 	}
 }

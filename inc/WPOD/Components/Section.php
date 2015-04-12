@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Section extends ComponentBase {
+
 	public function register( $parent_tab ) {
 		global $wp_settings_sections;
 

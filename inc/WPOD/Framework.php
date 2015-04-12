@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Framework {
+
 	private static $instance = null;
 
 	public static function instance() {
@@ -31,10 +32,6 @@ class Framework {
 	private $fields = array();
 
 	private function __construct() {
-		if ( isset( $_REQUEST['wp_customize'] ) && 'on' == $_REQUEST['wp_customize'] || is_admin() && basename( $_SERVER['PHP_SELF'] ) == 'customize.php' ) {
-
-		}
-
 		if ( is_admin() ) {
 			\WPOD\Admin::instance();
 		}

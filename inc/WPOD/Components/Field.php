@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Field extends ComponentBase {
+
 	public function register( $parent_tab, $parent_section ) {
 		add_settings_field( $this->slug, $this->args['title'], array( $this, 'render' ), $parent_tab->slug, $parent_section->slug, array(
 			'label_for'		=> $parent_tab->slug . '-' . $this->slug,

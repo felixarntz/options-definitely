@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Menu extends ComponentBase {
+
 	public function is_already_added() {
 		global $admin_page_hooks;
 
