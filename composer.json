@@ -1,11 +1,11 @@
 {
   "name": "felixarntz/options-definitely",
-  "description": "This plugin makes adding options to the WordPress admin area and customizer very simple, yet flexible. It all works using a filter and an array.",
+  "description": "This plugin makes adding options to the WordPress admin area very simple, yet flexible. It all works using a filter and an array.",
   "version": "1.0.0",
   "license": "GPL-2.0",
   "type": "wordpress-plugin",
   "keywords": [
-    "wordpress", "plugin", "options", "admin", "backend", "ui", "customizer", "framework"
+    "wordpress", "plugin", "options", "admin", "backend", "ui", "framework"
   ],
   "homepage": "http://wordpress.org/plugins/options-definitely/",
   "authors": [

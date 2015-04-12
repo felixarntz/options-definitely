@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Options, Definitely 1.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/options-definitely/\n"
-"POT-Creation-Date: 2015-04-12 15:04:17+00:00\n"
-"PO-Revision-Date: 2015-04-12 17:05+0100\n"
+"POT-Creation-Date: 2015-04-12 15:13:59+00:00\n"
+"PO-Revision-Date: 2015-04-12 17:15+0100\n"
 "Last-Translator: Felix Arntz <felix-arntz@leaves-and-love.net>\n"
 "Language-Team: Felix Arntz <felix-arntz@leaves-and-love.net>\n"
 "Language: de_DE\n"
@@ -289,12 +289,12 @@ msgstr "http://wordpress.org/plugins/options-definitely/"
 
 #. Description of the plugin/theme
 msgid ""
-"This plugin makes adding options to the WordPress admin area and customizer "
-"very simple, yet flexible. It all works using a filter and an array."
+"This plugin makes adding options to the WordPress admin area very simple, "
+"yet flexible. It all works using a filter and an array."
 msgstr ""
 "Dieses Plugin erleichtert das Hinzufügen von Optionen zum WordPress Admin-"
-"Bereich und Customizer und ist dennoch flexibel. Es funktioniert durch nur "
-"einen Filter und ein Array."
+"Bereich und ist dennoch flexibel. Es funktioniert mithilfe eines einzigen "
+"Filters und eines Arrays."
 
 #. Author of the plugin/theme
 msgid "Felix Arntz"
@@ -305,8 +305,8 @@ msgid "http://leaves-and-love.net"
 msgstr "http://leaves-and-love.net"
 
 #. Tags of the plugin/theme
-msgid "wordpress, plugin, options, admin, backend, ui, customizer, framework"
-msgstr "wordpress, plugin, options, admin, backend, ui, customizer, framework"
+msgid "wordpress, plugin, options, admin, backend, ui, framework"
+msgstr "wordpress, plugin, options, admin, backend, ui, framework"
 
 #~ msgid "Group label"
 #~ msgstr "Gruppen-Label"

@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 						'License URI: <%= pkg.license.url %>\n' +
 						'Text Domain: wpod\n' +
 						'Domain Path: /languages/\n' +
-						'Tags: wordpress, plugin, options, admin, backend, ui, customizer, framework\n' +
+						'Tags: wordpress, plugin, options, admin, backend, ui, framework\n' +
 						'*/',
 		fileheader: '/**\n' +
 					' * @package WPOD\n' +
@@ -31,11 +31,6 @@ module.exports = function(grunt) {
 				'assets/admin.css',
 				'assets/admin.min.css',
 				'assets/admin.min.js'
-			],
-			customizer: [
-				'assets/customizer.css',
-				'assets/customizer.min.css',
-				'assets/customizer.min.js'
 			],
 			translation: [
 				'languages/wpod.pot'
@@ -65,11 +60,6 @@ module.exports = function(grunt) {
 				src: [
 					'assets/admin.js'
 				]
-			},
-			customizer: {
-				src: [
-					'assets/customizer.js'
-				]
 			}
 		},
 
@@ -81,10 +71,6 @@ module.exports = function(grunt) {
 			admin: {
 				src: 'assets/admin.js',
 				dest: 'assets/admin.min.js'
-			},
-			customizer: {
-				src: 'assets/customizer.js',
-				dest: 'assets/customizer.min.js'
 			}
 		},
 
@@ -104,11 +90,6 @@ module.exports = function(grunt) {
 				files: {
 					'assets/admin.css': 'assets/admin.less'
 				}
-			},
-			customizer: {
-				files: {
-					'assets/customizer.css': 'assets/customizer.less'
-				}
 			}
 		},
 
@@ -127,9 +108,6 @@ module.exports = function(grunt) {
 			},
 			admin: {
 				src: 'assets/admin.css'
-			},
-			customizer: {
-				src: 'assets/customizer.css'
 			}
     	},
 
@@ -143,11 +121,6 @@ module.exports = function(grunt) {
 				files: {
 					'assets/admin.min.css': 'assets/admin.css'
 				}
-			},
-			customizer: {
-				files: {
-					'assets/customizer.min.css': 'assets/customizer.css'
-				}
 			}
 		},
 
@@ -160,12 +133,6 @@ module.exports = function(grunt) {
 				src: [
 					'assets/admin.min.css',
 					'assets/admin.min.js'
-				]
-			},
-			customizer: {
-				src: [
-					'assets/customizer.min.css',
-					'assets/customizer.min.js'
 				]
 			}
 		},
@@ -242,15 +209,6 @@ module.exports = function(grunt) {
 		'cssmin:admin',
 	]);
 
-	grunt.registerTask('customizer', [
-		'clean:customizer',
-		'jshint:customizer',
-		'uglify:customizer',
-		'recess:customizer',
-		'autoprefixer:customizer',
-		'cssmin:customizer',
-	]);
-
 	grunt.registerTask('translation', [
 		'clean:translation',
 		'makepot:translation'
@@ -263,13 +221,11 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask('default', [
-		'admin',
-		'customizer'
+		'admin'
 	]);
 
 	grunt.registerTask('build', [
 		'admin',
-		'customizer',
 		'translation',
 		'plugin'
 	]);

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: options-definitely 1.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/options-definitely/\n"
-"POT-Creation-Date: 2015-04-12 15:04:17+00:00\n"
+"POT-Creation-Date: 2015-04-12 15:13:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -264,8 +264,8 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"This plugin makes adding options to the WordPress admin area and customizer "
-"very simple, yet flexible. It all works using a filter and an array."
+"This plugin makes adding options to the WordPress admin area very simple, "
+"yet flexible. It all works using a filter and an array."
 msgstr ""
 
 #. Author of the plugin/theme
@@ -277,5 +277,5 @@ msgid "http://leaves-and-love.net"
 msgstr ""
 
 #. Tags of the plugin/theme
-msgid "wordpress, plugin, options, admin, backend, ui, customizer, framework"
+msgid "wordpress, plugin, options, admin, backend, ui, framework"
 msgstr ""
