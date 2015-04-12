@@ -94,6 +94,44 @@ class Admin {
 			$locale = str_replace( '_', '-', get_locale() );
 			$language = substr( $locale, 0, 2 );
 
+			$fields = \WPOD\Framework::instance()->query( array(
+				'type'				=> 'field',
+				'parent_slug'		=> $currents['tab']->slug,
+				'parent_type'		=> 'tab',
+			) );
+
+			$repeatable_field_templates = array();
+
+			$media_enqueued = false;
+			foreach ( $fields as $field ) {
+				if ( 'repeatable' == $field->type ) {
+					$id_prefix = $currents['tab']->slug . '-' . $field->slug;
+					$name_prefix = $currents['tab']->slug . '[' . $field->slug . ']';
+					ob_start();
+					$field->render_repeatable_row( '{{' . 'KEY' . '}}', $id_prefix, $name_prefix );
+					$repeatable_field_templates[ $id_prefix ] = ob_get_clean();
+
+					$repeatable = $field->repeatable;
+					if ( ! $media_enqueued ) {
+						foreach ( $repeatable['fields'] as $repeatable_field ) {
+							if ( 'media' == $repeatable_field['type'] ) {
+								wp_enqueue_media();
+								$media_enqueued = true;
+							}
+						}
+					}
+				} elseif ( 'media' == $field->type && ! $media_enqueued ) {
+					wp_enqueue_media();
+					$media_enqueued = true;
+				}
+			}
+
+			if ( 'draggable' == $currents['tab']->mode ) {
+				wp_enqueue_script( 'common' );
+				wp_enqueue_script( 'wp-lists' );
+				wp_enqueue_script( 'postbox' );
+			}
+
 			wp_enqueue_style( 'select2', WPOD_URL . '/assets/third-party/select2/select2.css', array(), false );
 			wp_enqueue_script( 'select2', WPOD_URL . '/assets/third-party/select2/select2.min.js', array( 'jquery' ), false, true );
 			if ( file_exists( WPOD_PATH . '/assets/third-party/select2/select2_locale_' . $locale . '.js' ) ) {
@@ -108,34 +146,14 @@ class Admin {
 			wp_enqueue_style( 'wpod-admin', WPOD_URL . '/assets/admin.min.css', array(), WPOD_VERSION );
 			wp_enqueue_script( 'wpod-admin', WPOD_URL . '/assets/admin.min.js', array( 'select2', 'datetimepicker' ), WPOD_VERSION, true );
 			wp_localize_script( 'wpod-admin', '_wpod_admin', array(
-				'nonce'						=> wp_create_nonce( 'wpod-ajax-request' ),
-				'action_add_repeatable'		=> 'wpod_insert_repeatable',
-				'locale'					=> $locale,
-				'language'					=> $language,
-				'date_format'				=> get_option( 'date_format' ),
-				'time_format'				=> get_option( 'time_format' ),
-				'start_of_week'				=> get_option( 'start_of_week' ),
-				'localized_open_file'		=> __( 'Open file', 'wpod' ),
+				'locale'						=> $locale,
+				'language'						=> $language,
+				'date_format'					=> get_option( 'date_format' ),
+				'time_format'					=> get_option( 'time_format' ),
+				'start_of_week'					=> get_option( 'start_of_week' ),
+				'localized_open_file'			=> __( 'Open file', 'wpod' ),
+				'repeatable_field_templates'	=> $repeatable_field_templates,
 			) );
-
-			$fields = \WPOD\Framework::instance()->query( array(
-				'type'				=> 'field',
-				'parent_slug'		=> $currents['tab']->slug,
-				'parent_type'		=> 'tab',
-			) );
-
-			foreach ( $fields as $field ) {
-				if ( 'media' == $field->type || 'repeatable' == $field->type ) {
-					wp_enqueue_media();
-					break;
-				}
-			}
-
-			if ( 'draggable' == $currents['tab']->mode ) {
-				wp_enqueue_script( 'common' );
-				wp_enqueue_script( 'wp-lists' );
-				wp_enqueue_script( 'postbox' );
-			}
 		}
 	}
 

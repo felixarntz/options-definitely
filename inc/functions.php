@@ -71,32 +71,6 @@ function wpod_is_image( $attachment_id ) {
 	return false;
 }
 
-/* AJAX FUNCTIONS */
-
-function wpod_ajax_insert_repeatable_row() {
-	if ( wp_verify_nonce( $_POST['nonce'], 'wpod-ajax-request' ) ) {
-		$key = absint( $_POST['key'] );
-		$tab_slug = esc_attr( $_POST['parent_slug'] );
-		$field_slug = esc_attr( $_POST['slug'] );
-
-		$field = \WPOD\Framework::instance()->query( array(
-			'slug'        => $field_slug,
-			'type'        => 'field',
-			'parent_slug' => $tab_slug,
-			'parent_type' => 'tab',
-		), true );
-
-		if( $field ) {
-			$id_prefix = $tab_slug . '-' . $field_slug;
-			$name_prefix = $tab_slug . '[' . $field_slug . ']';
-
-			$field->render_repeatable_row( $key, $id_prefix, $name_prefix );
-		}
-	}
-	die();
-}
-add_action( 'wp_ajax_wpod_insert_repeatable', 'wpod_ajax_insert_repeatable_row' );
-
 /* CALLBACK HELPER FUNCTIONS */
 
 function wpod_component_to_slug( $component ) {

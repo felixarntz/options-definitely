@@ -266,7 +266,12 @@ class Field extends ComponentBase {
 	public function render_repeatable_row( $key, $id_prefix, $name_prefix, $options = array() ) {
 		echo '<p class="repeatable-row">';
 
-		echo '<span>' . sprintf( __( '%d.', 'wpod' ), $key + 1 ) . '</span>';
+		if ( '{{' . 'KEY' . '}}' === $key ) {
+			echo '<span>' . sprintf( __( '%s.', 'wpod' ), '{{' . 'KEY_PLUSONE' . '}}' ) . '</span>';
+		} else {
+			$key = absint( $key );
+			echo '<span>' . sprintf( __( '%s.', 'wpod' ), $key + 1 ) . '</span>';
+		}
 
 		foreach ( $this->args['repeatable']['fields'] as $slug => $field ) {
 			if ( in_array( $field['type'], $this->get_supported_types( true ) ) ) {
@@ -386,20 +391,6 @@ class Field extends ComponentBase {
 		echo '<a data-number="' . $key . '" class="remove-repeatable-button button" href="#">' . __( 'Remove', 'wpod' ) . '</a>';
 
 		echo '</p>';
-	}
-
-	public function insert_repeatable_row_ajax() {
-		if ( wp_verify_nonce( $_POST['nonce'], 'wpod-ajax-request' ) ) {
-			$key = absint( $_POST['key'] );
-
-			$id_prefix = esc_attr( $_POST['id_prefix'] );
-
-			$name_prefix = esc_attr( $_POST['name_prefix'] );
-
-			$this->render_repeatable_row( $key, $id_prefix, $name_prefix );
-		}
-
-		die();
 	}
 
 	public function validate_option( $option = null, $option_old = null ) {

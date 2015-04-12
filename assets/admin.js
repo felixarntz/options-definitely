@@ -210,31 +210,24 @@ jQuery(document).ready(function($) {
 		$( '.repeatable' ).each(function() {
 			$( this ).on( 'click', '.new-repeatable-button', function( e ) {
 				var $parent = $( '#' + e.delegateTarget.id );
+				var limit = parseInt( $parent.data( 'limit' ));
+				var id_prefix = $parent.data( 'parent-slug' ) + '-' + $parent.data( 'slug' );
+				var key = $parent.find( '.repeatable-row' ).length;
 
-				var data = {
-					action: _wpod_admin.action_add_repeatable,
-					nonce: _wpod_admin.nonce,
-					slug: $parent.data( 'slug' ),
-					parent_slug: $parent.data( 'parent-slug' ),
-					key: $parent.find( '.repeatable-row' ).length
-				};
+				if ( typeof _wpod_admin.repeatable_field_templates[ id_prefix ] !== 'undefined' ) {
+					var output = _wpod_admin.repeatable_field_templates[ id_prefix ].replace( /{{KEY}}/g, key ).replace( /{{KEY_PLUSONE}}/g, key + 1 );
+
+					$parent.append( output ).find( 'select' ).select2( select2_args );
+					$parent.find( 'input.dtp-datetime' ).datetimepicker( dtp_datetime_args );
+					$parent.find( 'input.dtp-date' ).datetimepicker( dtp_date_args );
+					$parent.find( 'input.dtp-time' ).datetimepicker( dtp_time_args );
+
+					if ( limit > 0 && limit === key + 1 ) {
+						$parent.find( '.new-repeatable-button' ).hide();
+					}
+				}
 
 				e.preventDefault();
-
-				$.post( ajaxurl, data, function( response ) {
-					if ( response !== '' && $parent.find( '.repeatable-row' ).length === data.key ) {
-						var limit = parseInt( $( '#' + e.delegateTarget.id ).data( 'limit' ));
-
-						$parent.append( response ).find( 'select' ).select2( select2_args );
-						$parent.find( 'input.dtp-datetime' ).datetimepicker( dtp_datetime_args );
-						$parent.find( 'input.dtp-date' ).datetimepicker( dtp_date_args );
-						$parent.find( 'input.dtp-time' ).datetimepicker( dtp_time_args );
-
-						if ( limit > 0 && limit === $( '#' + e.delegateTarget.id ).find( '.repeatable-row' ).length ) {
-							$( '#' + e.delegateTarget.id ).find( '.new-repeatable-button' ).hide();
-						}
-					}
-				});
 			});
 			$( this ).on( 'click', '.remove-repeatable-button', function( e ) {
 				var $parent = $( '#' + e.delegateTarget.id );
