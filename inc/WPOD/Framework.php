@@ -11,10 +11,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
+/**
+ * This class initializes the plugin.
+ *
+ * It also triggers the action and filter to hook into and contains all API functions of the plugin.
+ *
+ * @since 1.0.0
+ */
 class Framework {
 
+	/**
+	 * @since 1.0.0
+	 * @var WPOD\Admin|null Holds the instance of this class.
+	 */
 	private static $instance = null;
 
+	/**
+	 * Gets the instance of this class. If it does not exist, it will be created.
+	 *
+	 * @since 1.0.0
+	 * @return WPOD\Admin
+	 */
 	public static function instance() {
 		if ( null == self::$instance ) {
 			self::$instance = new self;
@@ -23,14 +40,50 @@ class Framework {
 		return self::$instance;
 	}
 
+	/**
+	 * @since 1.0.0
+	 * @var boolean Holds the status whether the app has been initialized yet.
+	 */
 	private $initialized = false;
 
+	/**
+	 * @since 1.0.0
+	 * @var array Holds all menu component objects added by using the plugin.
+	 */
 	private $menus = array();
+
+	/**
+	 * @since 1.0.0
+	 * @var array Holds all page component objects added by using the plugin.
+	 */
 	private $pages = array();
+
+	/**
+	 * @since 1.0.0
+	 * @var array Holds all tab component objects added by using the plugin.
+	 */
 	private $tabs = array();
+
+	/**
+	 * @since 1.0.0
+	 * @var array Holds all section component objects added by using the plugin.
+	 */
 	private $sections = array();
+
+	/**
+	 * @since 1.0.0
+	 * @var array Holds all field component objects added by using the plugin.
+	 */
 	private $fields = array();
 
+	/**
+	 * Class constructor.
+	 *
+	 * This will initialize the plugin on the 'after_setup_theme' action.
+	 * If we are currently in the WordPress admin area, the WPOD\Admin class will be instantiated.
+	 *
+	 * @since 1.0.0
+	 */
 	private function __construct() {
 		if ( is_admin() ) {
 			\WPOD\Admin::instance();
