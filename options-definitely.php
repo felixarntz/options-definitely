@@ -35,7 +35,6 @@ define( 'WPOD_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
  *
  * @internal
  * @since 1.0.0
- * @return void
  */
 function wpod_init() {
 	require_once WPOD_PATH . '/inc/functions.php';
@@ -55,7 +54,6 @@ function wpod_init() {
  *
  * @internal
  * @since 1.0.0
- * @return void
  */
 function wpod_maybe_init() {
 	$spl_available = function_exists( 'spl_autoload_register' );

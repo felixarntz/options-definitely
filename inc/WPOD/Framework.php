@@ -109,6 +109,21 @@ class Framework {
 	* ===================================================================================================
 	*/
 
+	/**
+	 * Adds a component.
+	 *
+	 * This function should be used on the 'wpod_oo' action.
+	 * It is also used internally if you use the 'wpod' filter instead.
+	 *
+	 * For more information on the arguments array, check the `get_defaults()` method of the respective component class.
+	 *
+	 * @since 1.0.0
+	 * @param string $slug slug of the component to be added
+	 * @param string $type type of the component (either 'menu', 'page', 'tab' or 'field')
+	 * @param array $args additional arguments for the component
+	 * @param string $parent parent slug of the component (only if it's not a 'menu')
+	 * @return bool true if the component was added successfully, otherwise false
+	 */
 	public function add( $slug, $type, $args, $parent = '' ) {
 		if ( ! $this->initialized ) {
 			$type = strtolower( $type );
@@ -141,6 +156,20 @@ class Framework {
 		return false;
 	}
 
+	/**
+	 * Updates/modifies a component.
+	 *
+	 * This function should be used on the 'wpod_oo' action.
+	 *
+	 * For more information on the arguments array, check the `get_defaults()` method of the respective component class.
+	 *
+	 * @since 1.0.0
+	 * @param string $slug slug of the component to be updated
+	 * @param string $type type of the component to be updated (either 'menu', 'page', 'tab' or 'field')
+	 * @param array $args arguments to update for the component
+	 * @param string $parent parent slug of the component (only if it's not a 'menu')
+	 * @return bool true if the component was updated successfully, otherwise false
+	 */
 	public function update( $slug, $type, $args, $parent = '' ) {
 		if ( ! $this->initialized || 'menu' == $type ) {
 			$type = strtolower( $type );
@@ -176,6 +205,17 @@ class Framework {
 		return false;
 	}
 
+	/**
+	 * Deletes a component.
+	 *
+	 * This function should be used on the 'wpod_oo' action.
+	 *
+	 * @since 1.0.0
+	 * @param string $slug slug of the component to be deleted
+	 * @param string $type type of the component to be deleted (either 'menu', 'page', 'tab' or 'field')
+	 * @param string $parent parent slug of the component (only if it's not a 'menu')
+	 * @return bool true if the component was deleted successfully, otherwise false
+	 */
 	public function delete( $slug, $type, $parent = '' ) {
 		if ( ! $this->initialized ) {
 			$type = strtolower( $type );

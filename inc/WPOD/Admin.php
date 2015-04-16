@@ -64,7 +64,6 @@ class Admin {
 	 * @see WPOD\Components\Section
 	 * @see WPOD\Components\Field
 	 * @since 1.0.0
-	 * @return void
 	 */
 	public function register_settings() {
 		$tabs = \WPOD\Framework::instance()->query( array(
@@ -108,7 +107,6 @@ class Admin {
 	 * @see WPOD\Components\Menu
 	 * @see WPOD\Components\Page
 	 * @since 1.0.0
-	 * @return void
 	 */
 	public function create_admin_menu() {
 		$menus = \WPOD\Framework::instance()->query( array(
@@ -146,7 +144,6 @@ class Admin {
 	 * whether they are needed on the current page.
 	 *
 	 * @since 1.0.0
-	 * @return void
 	 */
 	public function enqueue_scripts() {
 		$currents = $this->get_current();
