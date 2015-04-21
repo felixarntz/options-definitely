@@ -22,7 +22,7 @@ class Framework {
 
 	/**
 	 * @since 1.0.0
-	 * @var WPOD\Admin|null Holds the instance of this class.
+	 * @var WPOD\Framework|null Holds the instance of this class.
 	 */
 	private static $instance = null;
 
@@ -30,7 +30,7 @@ class Framework {
 	 * Gets the instance of this class. If it does not exist, it will be created.
 	 *
 	 * @since 1.0.0
-	 * @return WPOD\Admin
+	 * @return WPOD\Framework
 	 */
 	public static function instance() {
 		if ( null == self::$instance ) {
@@ -39,6 +39,12 @@ class Framework {
 
 		return self::$instance;
 	}
+
+	/**
+	 * @since 1.0.0
+	 * @var boolean Holds the status whether the initialization function has been called yet.
+	 */
+	private $initialization_triggered = false;
 
 	/**
 	 * @since 1.0.0
@@ -246,18 +252,36 @@ class Framework {
 		return false;
 	}
 
-	/*
-	* ===================================================================================================
-	* INTERNAL FUNCTIONS
-	* The following functions should never be used outside the actual Options, Definitely plugin.
-	* ===================================================================================================
-	*/
-
+	/**
+	 * Initializes the plugin framework.
+	 *
+	 * This function adds all components to the plugin. It is executed on the 'after_setup_theme' hook with priority 1.
+	 * There are two ways to add components: Either the filter 'wpod' can be used to specify a nested hiearchical array of components
+	 * or, alternatively, the action 'wpod_oo' can be used to interact directly with this class.
+	 *
+	 * This function first applies the 'wpod' filter, then iterates through the array to add the components to the plugin.
+	 * To do that it utilizes the add() method of this class which can also be utilized by the developer when using the 'wpod_oo' action.
+	 * This action is triggered after the filter. This means that whatever is included in the filter will be added first.
+	 *
+	 * @internal
+	 * @see WPOD\Framework::add()
+	 * @since 1.0.0
+	 */
 	public function init() {
-		if ( ! $this->initialized ) {
+		if ( ! $this->initialization_triggered ) {
+			$this->initialization_triggered = true;
+
 			$raw = array();
 
-			// filter for the components array
+			/**
+			 * This filter can be utilized by the developer to add components to this plugin.
+			 * The components must be nested in the hierarchical array provided by the filter.
+			 *
+			 * Read the plugin guide for more information.
+			 *
+			 * @since 1.0.0
+			 * @param array the array of components (initially empty)
+			 */
 			$raw = apply_filters( 'wpod', $raw );
 
 			if ( is_array( $raw ) ) {
@@ -290,7 +314,19 @@ class Framework {
 				}
 			}
 
-			// action for the object-oriented alternative
+			/**
+			 * This action can be utilized by the developer to add, update or delete components in the plugin.
+			 * This action provides an alternative to using the filter with a huge array so that this class can be directly interacted with.
+			 *
+			 * If you need more flexibility or you want to work object-oriented, this action is the way to go.
+			 *
+			 * The fields supported by each component type are the same like when using the filter (except for the sub type field obviously).
+			 *
+			 * Read the plugin guide for more information.
+			 *
+			 * @since 1.0.0
+			 * @param WPOD\Framework instance of this class
+			 */
 			do_action( 'wpod_oo', $this );
 
 			$this->initialized = true;
@@ -299,6 +335,15 @@ class Framework {
 		}
 	}
 
+	/**
+	 * Validates all components.
+	 *
+	 * This function checks if all components contain the required fields.
+	 * It is executed after the plugin has been initialized, on the 'after_setup_theme' hook with priority 2.
+	 *
+	 * @internal
+	 * @since 1.0.0
+	 */
 	public function validate() {
 		$types = $this->get_type_whitelist();
 
@@ -311,6 +356,31 @@ class Framework {
 		}
 	}
 
+	/**
+	 * Queries one or more components.
+	 *
+	 * This function is used to query components. It will either return an array of component objects or a single component object.
+	 * The function is only used to get a component, so it is recommended to be used internally, only by the plugin itself.
+	 * However, there might be use-cases where another plugin or a theme might need this function.
+	 *
+	 * The function should be used with an array of arguments being provided as the $args parameter.
+	 * This array can have the following fields:
+	 * - 'slug': a single component slug or an array of component slugs to look for (optional)
+	 * - 'type': the component type to look for (must be either 'menu', 'page', 'tab', 'section' or 'field', default is 'field')
+	 * - 'parent_slug': a single parent component slug or an array of parent component slugs; if this field is used, the function will only look for components which are nested in these parent components (optional)
+	 * - 'parent_type': the parent component type to look for (must be either 'menu', 'page', 'tab', 'section' or 'field', default is 'section')
+	 *
+	 * Note that you can either search for a specific slug OR for sub components of a parent slug.
+	 * The 'slug' field has a higher priority there, so if you specify a slug, the parent fields will be ignored.
+	 *
+	 * Also be aware that this function will always return components of one specific type.
+	 * It cannot be used to get components of different types at the same time.
+	 *
+	 * @since 1.0.0
+	 * @param array $args an array of query arguments (for details read the function description above)
+	 * @param boolean $single if this is set to true, the function will always return a single object only (or false if the query did not produce any results)
+	 * @return \WPOD\Components\ComponentBase|array|false return value depends on the parameters
+	 */
 	public function query( $args = array(), $single = false ) {
 		$args = wp_parse_args( $args, array(
 		  'slug'			=> array(),
@@ -363,6 +433,19 @@ class Framework {
 		return $results;
 	}
 
+	/**
+	 * Extracts components of a specific type and slug from the array of all components of this type.
+	 *
+	 * The function is used internally by the query() method of this class.
+	 *
+	 * @internal
+	 * @see WPOD\Framework::query()
+	 * @since 1.0.0
+	 * @param array $slug array of slugs to look for
+	 * @param array $haystack array of components to find the slugs in
+	 * @param string $haystack_type type of the components array
+	 * @return array components with the slug or an emtpy array if none were found
+	 */
 	private function query_by_slug( $slug, $haystack, $haystack_type ) {
 		$results = array();
 
@@ -375,6 +458,20 @@ class Framework {
 		return $results;
 	}
 
+	/**
+	 * Queries sub components of one or more specific parent slugs and a specific type from the array of all components of this type.
+	 *
+	 * The function is used internally by the query() method of this class.
+	 *
+	 * @internal
+	 * @see WPOD\Framework::query()
+	 * @since 1.0.0
+	 * @param array $parent_slug array of parent slugs to query components for
+	 * @param string $parent_type type of the parent component slugs
+	 * @param array $haystack array of components to find the components in
+	 * @param string $haystack_type type of the components array
+	 * @return array sub components of this parent slug and of the specified type or an empty array if none were found
+	 */
 	private function query_by_parent( $parent_slug, $parent_type, $haystack, $haystack_type ) {
 		while ( ( $current_type = $this->get_next_inferior_type( $parent_type ) ) != $haystack_type ) {
 			$current_arrayname = $current_type .'s';
@@ -394,6 +491,20 @@ class Framework {
 		return $valid_haystack;
 	}
 
+	/**
+	 * Checks if a specific component exists or not.
+	 *
+	 * This function uses the query() method to find out the status.
+	 *
+	 * @internal
+	 * @see WPOD\Framework::query()
+	 * @since 1.0.0
+	 * @param string $slug the slug of the component to check
+	 * @param string $type the type of the component to check; must be either 'menu', 'page', 'tab', 'section' or 'field'
+	 * @param string $parent the slug of the components parent (only used if the searched type is 'section' or 'field', otherwise an empty string should be provided)
+	 * @param boolean $return_key if true, the function will return the slug of the component if found, otherwise it will return true if found
+	 * @return boolean|string if the component exists, either true or the component slug will be returned (depending on $return_key parameter); if it is not found, false is returned
+	 */
 	private function exists( $slug, $type, $parent, $return_key = false ) {
 		$types = $this->get_type_whitelist();
 		$status = array_search( $type, $types );
@@ -453,6 +564,14 @@ class Framework {
 		return false;
 	}
 
+	/**
+	 * Gets the next superior type in the hierarchy for a specific type.
+	 *
+	 * @internal
+	 * @since 1.0.0
+	 * @param string $type type to get the next superior type for
+	 * @return string|boolean either returns the superior type or false if there is no superior type or if the specified type was invalid
+	 */
 	private function get_next_superior_type( $type ) {
 		$types = $this->get_type_whitelist();
 
@@ -465,6 +584,14 @@ class Framework {
 		return false;
 	}
 
+	/**
+	 * Gets the next inferior type in the hierarchy for a specific type.
+	 *
+	 * @internal
+	 * @since 1.0.0
+	 * @param string $type type to get the next inferior type for
+	 * @return string|boolean either returns the inferior type or false if there is no inferior type or if the specified type was invalid
+	 */
 	private function get_next_inferior_type( $type ) {
 		$types = $this->get_type_whitelist();
 
@@ -477,10 +604,27 @@ class Framework {
 		return false;
 	}
 
+	/**
+	 * Checks if a type is valid.
+	 *
+	 * @internal
+	 * @since 1.0.0
+	 * @param string $type the type to check if it is a valid one
+	 * @return boolean true if the type is valid, otherwise false
+	 */
 	private function is_valid_type( $type ) {
 		return in_array( $type, $this->get_type_whitelist() );
 	}
 
+	/**
+	 * Returns the array of valid component types, in their hierarchical order.
+	 *
+	 * The types are 'menu', 'page', 'tab', 'section' and 'field'.
+	 *
+	 * @internal
+	 * @since 1.0.0
+	 * @return array the array of valid types
+	 */
 	public function get_type_whitelist() {
 		return array( 'menu', 'page', 'tab', 'section', 'field' );
 	}
