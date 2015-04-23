@@ -129,11 +129,11 @@ class Page extends ComponentBase {
 		}
 
 		foreach ( $this->args['help']['tabs'] as $slug => &$tab ) {
-			$tab = wp_parse_args( $tab, array(
+			$tab = \LaL_WP_Plugin_Util::parse_args( $tab, array(
 				'title'			=> __( 'Help tab title', 'wpod' ),
 				'content'		=> '',
 				'callback'		=> false,
-			) );
+			), true );
 		}
 	}
 

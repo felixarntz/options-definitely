@@ -46,7 +46,7 @@ abstract class ComponentBase {
 	}
 
 	public function validate() {
-		$this->args = wp_parse_args( $this->args, $this->get_defaults() );
+		$this->args = \LaL_WP_Plugin_Util::parse_args( $this->args, $this->get_defaults(), true );
 		$types = \WPOD\Framework::instance()->get_type_whitelist();
 
 		foreach ( $types as $type ) {

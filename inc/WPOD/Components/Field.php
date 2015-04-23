@@ -547,11 +547,11 @@ class Field extends ComponentBase {
 				$data = array( 'label' => (string) $data );
 			}
 
-			$data = wp_parse_args( $data, array(
+			$data = \LaL_WP_Plugin_Util::parse_args( $data, array(
 				'label'		=> '',
 				'image'		=> '',
 				'color'		=> '',
-			) );
+			), true );
 		}
 
 		if ( ! is_array( $this->args['more_attributes'] ) ) {
@@ -566,10 +566,10 @@ class Field extends ComponentBase {
 	}
 
 	protected function validate_repeatable() {
-		$this->args['repeatable'] = wp_parse_args( $this->args['repeatable'], array(
+		$this->args['repeatable'] = \LaL_WP_Plugin_Util::parse_args( $this->args['repeatable'], array(
 			'limit'           => 0,
 			'fields'          => array(),
-		) );
+		), true );
 
 		foreach ( $this->args['repeatable']['fields'] as $slug => &$field ) {
 			if ( isset( $field['type'] ) ) {
@@ -606,7 +606,7 @@ class Field extends ComponentBase {
 				}
 			}
 
-			$field = wp_parse_args( $field, array(
+			$field = \LaL_WP_Plugin_Util::parse_args( $field, array(
 				'title'				=> __( 'Field placeholder', 'wpod' ),
 				'type'				=> 'text',
 				'default'			=> '',
@@ -614,7 +614,7 @@ class Field extends ComponentBase {
 				'validate'			=> 'esc_html',
 				'class'				=> '',
 				'more_attributes'	=> array(),
-			) );
+			), true );
 
 			if ( is_array( $field['class'] ) ) {
 				$field['class'] = implode( ' ', $field['class'] );
@@ -629,11 +629,11 @@ class Field extends ComponentBase {
 					$data = array( 'label' => (string) $data );
 				}
 
-				$data = wp_parse_args( $data, array(
+				$data = \LaL_WP_Plugin_Util::parse_args( $data, array(
 					'label'		=> '',
 					'image'		=> '',
 					'color'		=> '',
-				) );
+				), true );
 			}
 
 			if ( ! is_array( $field['more_attributes'] ) ) {

@@ -382,7 +382,7 @@ class Framework {
 	 * @return \WPOD\Components\ComponentBase|array|false return value depends on the parameters
 	 */
 	public function query( $args = array(), $single = false ) {
-		$args = wp_parse_args( $args, array(
+		$args = \LaL_WP_Plugin_Util::parse_args( $args, array(
 		  'slug'			=> array(),
 		  'type'			=> 'field',
 		  'parent_slug'		=> array(),
