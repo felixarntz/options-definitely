@@ -100,21 +100,6 @@ class Framework {
 		add_action( 'after_setup_theme', array( $this, 'validate' ), 2 );
 	}
 
-	/*
-	* ===================================================================================================
-	* BASIC USAGE
-	* You can either use the filter 'wpod' to create a multidimensional array of nested components
-	* (menus, pages, tabs, sections and fields).
-	* Alternatively, you can use the action 'wpod_oo' which passes this class to the hooked function.
-	* In that function, you can then use the class methods 'add', 'update' and 'delete' (which you see
-	* right below) to directly modify components (menus, pages, tabs, sections and fields).
-	*
-	* Both methods can be used interchangeably and are compatible with each other since the plugin
-	* internally runs through the filtered array and then also uses the 'add' method on each component
-	* in there. The action is executed after that process.
-	* ===================================================================================================
-	*/
-
 	/**
 	 * Adds a component.
 	 *
@@ -379,7 +364,7 @@ class Framework {
 	 * @since 1.0.0
 	 * @param array $args an array of query arguments (for details read the function description above)
 	 * @param boolean $single if this is set to true, the function will always return a single object only (or false if the query did not produce any results)
-	 * @return \WPOD\Components\ComponentBase|array|false return value depends on the parameters
+	 * @return WPOD\Components\ComponentBase|array|false return value depends on the parameters
 	 */
 	public function query( $args = array(), $single = false ) {
 		$args = \LaL_WP_Plugin_Util::parse_args( $args, array(
