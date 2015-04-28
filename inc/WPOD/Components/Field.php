@@ -430,8 +430,8 @@ class Field extends ComponentBase {
 		$error = $this->get_validation_error( $option );
 
 		if ( $this->is_validation_error( $option ) ) {
-			if ( isset( $option['option'] ) ) {
-				$option = $option['option'];
+			if ( isset( $option['value'] ) ) {
+				$option = $option['value'];
 			} else {
 				if ( $option_old == null ) {
 					$option_old = $this->args['default'];

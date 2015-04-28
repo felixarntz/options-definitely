@@ -11,11 +11,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
+/**
+ * Class for a page component.
+ *
+ * A page denotes an options page in the WordPress admin.
+ *
+ * @internal
+ * @since 1.0.0
+ */
 class Page extends ComponentBase {
 
+	/**
+	 * @since 1.0.0
+	 * @var string Holds the page hook for this page (used in the WordPress action `'load-' . $page_hook`).
+	 */
 	protected $page_hook = '';
-	protected $help = array();
 
+	/**
+	 * Adds the page to the WordPress admin menu.
+	 *
+	 * If the parent menu has not been added yet, the page will be added as the top level item of this menu.
+	 * If it has been added, the page will be added as a submenu item to this menu.
+	 *
+	 * By adding the page to the menu, a page hook is assigned to it.
+	 *
+	 * This function is called by the WPOD\Admin class.
+	 *
+	 * @since 1.0.0
+	 * @see WPOD\Admin::create_admin_menu()
+	 * @return string the page hook of this page
+	 */
 	public function add_to_menu() {
 		$menu = \WPOD\Framework::instance()->query( array(
 			'slug'			=> $this->parent,
@@ -49,6 +74,14 @@ class Page extends ComponentBase {
 		return $this->page_hook;
 	}
 
+	/**
+	 * Renders the page.
+	 *
+	 * It displays the title and (optionally) description of the page.
+	 * Then it displays the tabs that belong to the page.
+	 *
+	 * @since 1.0.0
+	 */
 	public function render() {
 		echo '<div class="wrap">';
 
@@ -99,6 +132,14 @@ class Page extends ComponentBase {
 		echo '</div>';
 	}
 
+	/**
+	 * Adds help tabs and help sidebar to the page if they are specified.
+	 *
+	 * This function is called by the WPOD\Admin class.
+	 *
+	 * @since 1.0.0
+	 * @see WPOD\Admin::create_admin_menu()
+	 */
 	public function render_help() {
 		$screen = get_current_screen();
 
@@ -113,6 +154,11 @@ class Page extends ComponentBase {
 		}
 	}
 
+	/**
+	 * Validates the arguments array.
+	 *
+	 * @since 1.0.0
+	 */
 	public function validate() {
 		parent::validate();
 
@@ -137,6 +183,14 @@ class Page extends ComponentBase {
 		}
 	}
 
+	/**
+	 * Returns the keys of the arguments array and their default values.
+	 *
+	 * Read the plugin guide for more information about the page arguments.
+	 *
+	 * @since 1.0.0
+	 * @return array
+	 */
 	protected function get_defaults() {
 		$defaults = array(
 			'title'			=> __( 'Page title', 'wpod' ),
@@ -149,6 +203,12 @@ class Page extends ComponentBase {
 			),
 		);
 
+		/**
+		 * This filter can be used by the developer to modify the default values for each page component.
+		 *
+		 * @since 1.0.0
+		 * @param array the associative array of default values
+		 */
 		return apply_filters( 'wpod_page_defaults', $defaults );
 	}
 }

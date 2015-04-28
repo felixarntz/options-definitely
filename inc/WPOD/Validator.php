@@ -555,10 +555,36 @@ class Validator {
 	}
 
 	/**
+	 * Error handling function for the validation.
+	 *
+	 * Whenever a validation function needs to return an error, it must call this function.
+	 *
+	 * This function returns an error array.
+	 * It always contains a 'errmsg' key holding the error message.
+	 * If specified, it also holds an 'value' key with the new value to use for the field.
+	 * If this is not specified, the old field value will be used by the plugin.
+	 *
+	 * @since 1.0.0
+	 * @param string $message the error message to display
+	 * @param mixed $value the value to use for the field (optional)
+	 * @return array the error array
+	 */
+	public static function error_handler( $message, $value = null ) {
+		$ret = array( 'errmsg' => $message );
+
+		if ( isset( $value ) ) {
+			$ret['value'] = $value;
+		}
+
+		return $ret;
+	}
+
+	/**
 	 * Validates if a required field is not empty.
 	 *
 	 * If the field is not required, the function just returns the original value.
 	 *
+	 * @internal
 	 * @since 1.0.0
 	 * @param mixed $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
@@ -598,35 +624,11 @@ class Validator {
 	 * If a validation function for a field is invalid, this function is executed instead.
 	 * It just returns an error array telling the user that there is no valid function specified.
 	 *
+	 * @internal
 	 * @since 1.0.0
 	 * @return array the error array
 	 */
 	public static function invalid_validation_function() {
 		return self::error_handler( __( 'The validation function specified is invalid. It does not exist.', 'wpod' ) );
-	}
-
-	/**
-	 * Error handling function for the validation.
-	 *
-	 * Whenever a validation function needs to return an array, it must call this function.
-	 *
-	 * This function returns an error array.
-	 * It always contains a 'errmsg' key holding the error message.
-	 * If specified, it also holds an 'option' key with the new value to use for the field.
-	 * If this is not specified, the old field value will be used by the plugin.
-	 *
-	 * @since 1.0.0
-	 * @param string $message the error message to display
-	 * @param mixed $value the value to use for the field (optional)
-	 * @return array the error array
-	 */
-	private static function error_handler( $message, $value = null ) {
-		$ret = array( 'errmsg' => $message );
-
-		if ( isset( $value ) ) {
-			$ret['option'] = $value;
-		}
-
-		return $ret;
 	}
 }
