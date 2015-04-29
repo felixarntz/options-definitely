@@ -11,12 +11,35 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
+/**
+ * Class for a tab component.
+ *
+ * A tab denotes a tab inside an options page in the WordPress admin.
+ * The slug of a tab, at the same time, is the slug of the option (or rather array of options) stored in WordPress.
+ *
+ * @internal
+ * @since 1.0.0
+ */
 class Tab extends ComponentBase {
 
+	/**
+	 * Class constructor.
+	 *
+	 * In addition to calling the parent constructor, the tab also adds an action to update the default values for an option.
+	 * Those actions are not run anywhere in the plugin, but can be triggered by any other plugin or theme, for example to initialize the options during the installation.
+	 * The actions are:
+	 * * 'wpod_update_TABSLUG_defaults' (will update option defaults for TABSLUG; when running the action, replace TABSLUG by the slug of the tab)
+	 * * 'wpod_update_defaults' (will update option defaults for all options added by the plugin; usage is not recommended)
+	 *
+	 * @since 1.0.0
+	 * @param string $slug slug of this component
+	 * @param array $args array of arguments
+	 * @param string $parent slug of this component's parent component or an empty string
+	 */
 	public function __construct( $slug, $args, $parent = '' ) {
 		parent::__construct( $slug, $args, $parent );
 
-		add_action( 'wpod_update_' . $parent . '_' . $slug . '_defaults', array( $this, 'update_option_defaults' ) );
+		add_action( 'wpod_update_' . $slug . '_defaults', array( $this, 'update_option_defaults' ) );
 
 		add_action( 'wpod_update_defaults', array( $this, 'update_option_defaults' ) );
 	}
