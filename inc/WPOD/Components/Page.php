@@ -78,7 +78,7 @@ class Page extends ComponentBase {
 	 * Renders the page.
 	 *
 	 * It displays the title and (optionally) description of the page.
-	 * Then it displays the tabs that belong to the page.
+	 * Then it iterates through the tabs that belong to the page and calls each one's `render()` function.
 	 *
 	 * @since 1.0.0
 	 */

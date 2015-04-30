@@ -44,6 +44,11 @@ class Tab extends ComponentBase {
 		add_action( 'wpod_update_defaults', array( $this, 'update_option_defaults' ) );
 	}
 
+	/**
+	 * Registers the setting for this tab.
+	 *
+	 * @since 1.0.0
+	 */
 	public function register() {
 		$sections = \WPOD\Framework::instance()->query( array(
 			'type'			=> 'section',
@@ -56,7 +61,25 @@ class Tab extends ComponentBase {
 		}
 	}
 
+	/**
+	 * Renders the tab.
+	 *
+	 * It displays the tab description (if available) and renders the form tag.
+	 * Inside the form tag, it iterates through all the sections belonging to this tab and calls each one's `render()` function.
+	 *
+	 * If the tab is draggable (i.e. uses meta boxes), the meta boxes are handled in here as well.
+	 *
+	 * @since 1.0.0
+	 */
 	public function render() {
+		/**
+		 * This action can be used to display additional content on top of this tab.
+		 *
+		 * @since 1.0.0
+		 * @param string the slug of the current tab
+		 * @param array the arguments array for the current tab
+		 * @param string the slug of the current page
+		 */
 		do_action( 'wpod_tab_before', $this->slug, $this->args, $this->parent );
 
 		if ( ! empty( $this->args['description'] ) ) {
@@ -124,13 +147,33 @@ class Tab extends ComponentBase {
 			<?php
 		}
 
+		/**
+		 * This action can be used to display additional content at the bottom of this tab.
+		 *
+		 * @since 1.0.0
+		 * @param string the slug of the current tab
+		 * @param array the arguments array for the current tab
+		 * @param string the slug of the current page
+		 */
 		do_action( 'wpod_tab_after', $this->slug, $this->args, $this->parent );
 	}
 
+	/**
+	 * Validates the options for this tab's setting.
+	 *
+	 * It iterates through all the fields (i.e. options) of this tab and validates each one's value.
+	 * If a field is not set for some reason, its default value is saved.
+	 *
+	 * Furthermore this function adds settings errors if any occur.
+	 *
+	 * @since 1.0.0
+	 * @param array $options the unvalidated options
+	 * @return array the validated options
+	 */
 	public function validate_options( $options ) {
 		$options_validated = array();
 
-		$options_old = get_option( $this->slug );
+		$options_old = get_option( $this->slug, array() );
 
 		$errors = array();
 
@@ -172,11 +215,27 @@ class Tab extends ComponentBase {
 
 		add_settings_error( $this->slug, $this->slug . '-updated', $status_text, 'updated' );
 
+		/**
+		 * This action can be used to perform specific actions whenever a setting is validated.
+		 *
+		 * @since 1.0.0
+		 * @param WPOD\Components\Tab the tab object for which the setting is currently being updated
+		 * @param array the validated options
+		 */
 		do_action( 'wpod_options_validated', $this, $options_validated );
 
 		return $options_validated;
 	}
 
+	/**
+	 * Updates the saved setting for this tab with the default values (if required).
+	 *
+	 * This function will fill all options that are not set yet with their default value.
+	 * A valid use-case may be, for example, a plugin installation where the plugin requires the options to be set.
+	 * Whenever this function should be run, it is recommended to trigger it by executing the action 'wpod_update_TABSLUG_defaults' or 'wpod_update_defaults'.
+	 *
+	 * @since 1.0.0
+	 */
 	public function update_option_defaults() {
 		$options = get_option( $this->slug );
 
@@ -199,6 +258,14 @@ class Tab extends ComponentBase {
 		update_option( $this->slug, $options );
 	}
 
+	/**
+	 * Returns the keys of the arguments array and their default values.
+	 *
+	 * Read the plugin guide for more information about the tab arguments.
+	 *
+	 * @since 1.0.0
+	 * @return array
+	 */
 	protected function get_defaults() {
 		$defaults = array(
 			'title'			=> __( 'Tab title', 'wpod' ),
@@ -208,6 +275,12 @@ class Tab extends ComponentBase {
 			'callback'		=> false, //only used if no sections are attached to this tab
 		);
 
+		/**
+		 * This filter can be used by the developer to modify the default values for each tab component.
+		 *
+		 * @since 1.0.0
+		 * @param array the associative array of default values
+		 */
 		return apply_filters( 'wpod_tab_defaults', $defaults );
 	}
 }
