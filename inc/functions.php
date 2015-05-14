@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WPOD
- * @version 1.0.0
+ * @version 0.5.0
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * however this function will automatically populate each option with its default value
  * if the option is not available.
  *
- * @since 1.0.0
+ * @since 0.5.0
  * @param string $tab_slug the tab slug to get the options for
  * @return array the options as an associative array
  */
@@ -47,7 +47,7 @@ function wpod_get_options( $tab_slug ) {
  * This function uses the WordPress core function get_option() to get the options array for the tab.
  * If the required field option is not available, this function will automatically return its default value.
  *
- * @since 1.0.0
+ * @since 0.5.0
  * @param string $tab_slug the tab slug to get the option for
  * @param string $field_slug the field slug to get the option for
  * @return mixed the option
@@ -77,7 +77,7 @@ function wpod_get_option( $tab_slug, $field_slug ) {
  *
  * The function checks if the post mime type of the attachment is an image mime type.
  *
- * @since 1.0.0
+ * @since 0.5.0
  * @param int $attachment_id the ID of the attachment
  * @return bool true if the attachment is an image, otherwise false
  */
@@ -108,7 +108,7 @@ function wpod_is_image( $attachment_id ) {
  * This is intended to be used as a callback function, for example to use with array_map().
  *
  * @internal
- * @since 1.0.0
+ * @since 0.5.0
  * @param WPOD\Components\ComponentBase $component any plugin component
  * @return string the slug of the component
  */
@@ -120,7 +120,7 @@ function wpod_component_to_slug( $component ) {
  * Checks if the current user is allowed to access a specific component.
  *
  * @internal
- * @since 1.0.0
+ * @since 0.5.0
  * @param WPOD\Components\ComponentBase $component any plugin component
  * @return bool true if the user may access the component, otherwise false
  */

@@ -3,7 +3,7 @@
 Plugin Name: Options, Definitely
 Plugin URI: http://wordpress.org/plugins/options-definitely/
 Description: This plugin makes adding options to the WordPress admin area very simple, yet flexible. It all works using a filter and an array.
-Version: 1.0.0
+Version: 0.5.0
 Author: Felix Arntz
 Author URI: http://leaves-and-love.net
 License: GNU General Public License v2
@@ -14,7 +14,7 @@ Tags: wordpress, plugin, options, admin, backend, ui, framework
 */
 /**
  * @package WPOD
- * @version 1.0.0
+ * @version 0.5.0
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'WPOD_NAME', 'Options, Definitely' );
-define( 'WPOD_VERSION', '1.0.0' );
+define( 'WPOD_VERSION', '0.5.0' );
 define( 'WPOD_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 define( 'WPOD_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 
@@ -34,7 +34,7 @@ define( 'WPOD_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
  * Afterwards the WPOD\Framework class is instantiated to initialize the plugin.
  *
  * @internal
- * @since 1.0.0
+ * @since 0.5.0
  */
 function wpod_init() {
 	require_once WPOD_PATH . '/inc/functions.php';
@@ -53,7 +53,7 @@ function wpod_init() {
  * If any requirement is not met, the utility class will deactivate the plugin and show an admin notice.
  *
  * @internal
- * @since 1.0.0
+ * @since 0.5.0
  */
 function wpod_maybe_init() {
 	$spl_available = function_exists( 'spl_autoload_register' );

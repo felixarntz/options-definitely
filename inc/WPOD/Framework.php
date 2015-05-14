@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WPOD
- * @version 1.0.0
+ * @version 0.5.0
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
@@ -16,12 +16,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * It also triggers the action and filter to hook into and contains all API functions of the plugin.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 class Framework {
 
 	/**
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @var WPOD\Framework|null Holds the instance of this class.
 	 */
 	private static $instance = null;
@@ -29,7 +29,7 @@ class Framework {
 	/**
 	 * Gets the instance of this class. If it does not exist, it will be created.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @return WPOD\Framework
 	 */
 	public static function instance() {
@@ -41,43 +41,43 @@ class Framework {
 	}
 
 	/**
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @var boolean Holds the status whether the initialization function has been called yet.
 	 */
 	private $initialization_triggered = false;
 
 	/**
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @var boolean Holds the status whether the app has been initialized yet.
 	 */
 	private $initialized = false;
 
 	/**
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @var array Holds all menu component objects added by using the plugin.
 	 */
 	private $menus = array();
 
 	/**
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @var array Holds all page component objects added by using the plugin.
 	 */
 	private $pages = array();
 
 	/**
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @var array Holds all tab component objects added by using the plugin.
 	 */
 	private $tabs = array();
 
 	/**
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @var array Holds all section component objects added by using the plugin.
 	 */
 	private $sections = array();
 
 	/**
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @var array Holds all field component objects added by using the plugin.
 	 */
 	private $fields = array();
@@ -88,7 +88,7 @@ class Framework {
 	 * This will initialize the plugin on the 'after_setup_theme' action.
 	 * If we are currently in the WordPress admin area, the WPOD\Admin class will be instantiated.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	private function __construct() {
 		if ( is_admin() ) {
@@ -108,7 +108,7 @@ class Framework {
 	 *
 	 * For more information on the arguments array, check the `get_defaults()` method of the respective component class.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $slug slug of the component to be added
 	 * @param string $type type of the component (either 'menu', 'page', 'tab' or 'field')
 	 * @param array $args additional arguments for the component
@@ -129,19 +129,19 @@ class Framework {
 
 							return true;
 						} else {
-							\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s already exists. If you want to modify it, please use the update method.', 'wpod' ), $type, $slug ), '1.0.0' );
+							\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s already exists. If you want to modify it, please use the update method.', 'wpod' ), $type, $slug ), '0.5.0' );
 						}
 					} else {
-						\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s was not provided a parent.', 'wpod' ), $type, $slug ), '1.0.0' );
+						\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s was not provided a parent.', 'wpod' ), $type, $slug ), '0.5.0' );
 					}
 				} else {
-					\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '1.0.0' );
+					\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '0.5.0' );
 				}
 			} else {
-				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
+				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '0.5.0' );
 			}
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '0.5.0' );
 		}
 
 		return false;
@@ -154,7 +154,7 @@ class Framework {
 	 *
 	 * For more information on the arguments array, check the `get_defaults()` method of the respective component class.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $slug slug of the component to be updated
 	 * @param string $type type of the component to be updated (either 'menu', 'page', 'tab' or 'field')
 	 * @param array $args arguments to update for the component
@@ -181,16 +181,16 @@ class Framework {
 
 						return true;
 					} else {
-						\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s does not exist. You can instead use the add method to add it.', 'wpod' ), $type, $slug ), '1.0.0' );
+						\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s does not exist. You can instead use the add method to add it.', 'wpod' ), $type, $slug ), '0.5.0' );
 					}
 				} else {
-					\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '1.0.0' );
+					\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '0.5.0' );
 				}
 			} else {
-				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
+				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '0.5.0' );
 			}
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '0.5.0' );
 		}
 
 		return false;
@@ -201,7 +201,7 @@ class Framework {
 	 *
 	 * This function should be used on the 'wpod_oo' action.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $slug slug of the component to be deleted
 	 * @param string $type type of the component to be deleted (either 'menu', 'page', 'tab' or 'field')
 	 * @param string $parent parent slug of the component (only if it's not a 'menu')
@@ -222,16 +222,16 @@ class Framework {
 
 						return true;
 					} else {
-						\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s does not exist, so it does not need to be deleted.', 'wpod' ), $type, $slug ), '1.0.0' );
+						\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s does not exist, so it does not need to be deleted.', 'wpod' ), $type, $slug ), '0.5.0' );
 					}
 				} else {
-					\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '1.0.0' );
+					\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'No slug was provided.', 'wpod' ), '0.5.0' );
 				}
 			} else {
-				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
+				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '0.5.0' );
 			}
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'The plugin is already initialized. You must perform every modifications either in the wpod filter or in the wpod_oo action.', 'wpod' ), '0.5.0' );
 		}
 
 		return false;
@@ -250,7 +250,7 @@ class Framework {
 	 *
 	 * @internal
 	 * @see WPOD\Framework::add()
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	public function init() {
 		if ( ! $this->initialization_triggered ) {
@@ -264,7 +264,7 @@ class Framework {
 			 *
 			 * Read the plugin guide for more information.
 			 *
-			 * @since 1.0.0
+			 * @since 0.5.0
 			 * @param array the array of components (initially empty)
 			 */
 			$raw = apply_filters( 'wpod', $raw );
@@ -309,14 +309,14 @@ class Framework {
 			 *
 			 * Read the plugin guide for more information.
 			 *
-			 * @since 1.0.0
+			 * @since 0.5.0
 			 * @param WPOD\Framework instance of this class
 			 */
 			do_action( 'wpod_oo', $this );
 
 			$this->initialized = true;
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'This function should never be called manually.', 'wpod' ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, __( 'This function should never be called manually.', 'wpod' ), '0.5.0' );
 		}
 	}
 
@@ -327,7 +327,7 @@ class Framework {
 	 * It is executed after the plugin has been initialized, on the 'after_setup_theme' hook with priority 2.
 	 *
 	 * @internal
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	public function validate() {
 		$types = $this->get_type_whitelist();
@@ -361,7 +361,7 @@ class Framework {
 	 * Also be aware that this function will always return components of one specific type.
 	 * It cannot be used to get components of different types at the same time.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param array $args an array of query arguments (for details read the function description above)
 	 * @param boolean $single if this is set to true, the function will always return a single object only (or false if the query did not produce any results)
 	 * @return WPOD\Components\ComponentBase|array|false return value depends on the parameters
@@ -412,7 +412,7 @@ class Framework {
 				}
 			}
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type %s is not a valid type for a component.', 'wpod' ), $type ), '0.5.0' );
 		}
 
 		return $results;
@@ -425,7 +425,7 @@ class Framework {
 	 *
 	 * @internal
 	 * @see WPOD\Framework::query()
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param array $slug array of slugs to look for
 	 * @param array $haystack array of components to find the slugs in
 	 * @param string $haystack_type type of the components array
@@ -450,7 +450,7 @@ class Framework {
 	 *
 	 * @internal
 	 * @see WPOD\Framework::query()
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param array $parent_slug array of parent slugs to query components for
 	 * @param string $parent_type type of the parent component slugs
 	 * @param array $haystack array of components to find the components in
@@ -483,7 +483,7 @@ class Framework {
 	 *
 	 * @internal
 	 * @see WPOD\Framework::query()
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $slug the slug of the component to check
 	 * @param string $type the type of the component to check; must be either 'menu', 'page', 'tab', 'section' or 'field'
 	 * @param string $parent the slug of the components parent (only used if the searched type is 'section' or 'field', otherwise an empty string should be provided)
@@ -553,7 +553,7 @@ class Framework {
 	 * Gets the next superior type in the hierarchy for a specific type.
 	 *
 	 * @internal
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $type type to get the next superior type for
 	 * @return string|boolean either returns the superior type or false if there is no superior type or if the specified type was invalid
 	 */
@@ -573,7 +573,7 @@ class Framework {
 	 * Gets the next inferior type in the hierarchy for a specific type.
 	 *
 	 * @internal
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $type type to get the next inferior type for
 	 * @return string|boolean either returns the inferior type or false if there is no inferior type or if the specified type was invalid
 	 */
@@ -593,7 +593,7 @@ class Framework {
 	 * Checks if a type is valid.
 	 *
 	 * @internal
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $type the type to check if it is a valid one
 	 * @return boolean true if the type is valid, otherwise false
 	 */
@@ -607,7 +607,7 @@ class Framework {
 	 * The types are 'menu', 'page', 'tab', 'section' and 'field'.
 	 *
 	 * @internal
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @return array the array of valid types
 	 */
 	public function get_type_whitelist() {

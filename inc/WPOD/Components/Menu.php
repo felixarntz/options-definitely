@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WPOD
- * @version 1.0.0
+ * @version 0.5.0
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
@@ -19,14 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Furthermore it might not be an actually new component, it can also specify a menu that already exists in WordPress Core.
  *
  * @internal
- * @since 1.0.0
+ * @since 0.5.0
  */
 class Menu extends ComponentBase {
 
 	/**
 	 * Checks if the menu has already been added or if it is part of WP Core.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @return string|boolean the slug of the menu if it has already been added, otherwise boolean false
 	 */
 	public function is_already_added() {
@@ -59,7 +59,7 @@ class Menu extends ComponentBase {
 	/**
 	 * Validates the arguments array.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	public function validate() {
 		parent::validate();
@@ -74,7 +74,7 @@ class Menu extends ComponentBase {
 	 *
 	 * Read the plugin guide for more information about the menu arguments.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @return array
 	 */
 	protected function get_defaults() {
@@ -87,7 +87,7 @@ class Menu extends ComponentBase {
 		/**
 		 * This filter can be used by the developer to modify the default values for each menu component.
 		 *
-		 * @since 1.0.0
+		 * @since 0.5.0
 		 * @param array the associative array of default values
 		 */
 		return apply_filters( 'wpod_menu_defaults', $defaults );

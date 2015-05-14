@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WPOD
- * @version 1.0.0
+ * @version 0.5.0
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
@@ -17,12 +17,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * A page denotes an options page in the WordPress admin.
  *
  * @internal
- * @since 1.0.0
+ * @since 0.5.0
  */
 class Page extends ComponentBase {
 
 	/**
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @var string Holds the page hook for this page (used in the WordPress action `'load-' . $page_hook`).
 	 */
 	protected $page_hook = '';
@@ -37,7 +37,7 @@ class Page extends ComponentBase {
 	 *
 	 * This function is called by the WPOD\Admin class.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Admin::create_admin_menu()
 	 * @return string the page hook of this page
 	 */
@@ -80,7 +80,7 @@ class Page extends ComponentBase {
 	 * It displays the title and (optionally) description of the page.
 	 * Then it iterates through the tabs that belong to the page and calls each one's `render()` function.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	public function render() {
 		echo '<div class="wrap">';
@@ -124,7 +124,7 @@ class Page extends ComponentBase {
 			}
 			$current_tab->render();
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the page %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->slug ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the page %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->slug ), '0.5.0' );
 		}
 
 		do_action( 'wpod_page_after', $this->slug, $this->args, $this->parent );
@@ -137,7 +137,7 @@ class Page extends ComponentBase {
 	 *
 	 * This function is called by the WPOD\Admin class.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Admin::create_admin_menu()
 	 */
 	public function render_help() {
@@ -157,7 +157,7 @@ class Page extends ComponentBase {
 	/**
 	 * Validates the arguments array.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	public function validate() {
 		parent::validate();
@@ -188,7 +188,7 @@ class Page extends ComponentBase {
 	 *
 	 * Read the plugin guide for more information about the page arguments.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @return array
 	 */
 	protected function get_defaults() {
@@ -206,7 +206,7 @@ class Page extends ComponentBase {
 		/**
 		 * This filter can be used by the developer to modify the default values for each page component.
 		 *
-		 * @since 1.0.0
+		 * @since 0.5.0
 		 * @param array the associative array of default values
 		 */
 		return apply_filters( 'wpod_page_defaults', $defaults );

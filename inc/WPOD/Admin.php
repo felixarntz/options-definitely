@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WPOD
- * @version 1.0.0
+ * @version 0.5.0
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
@@ -17,12 +17,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * This includes both registering and displaying options.
  *
  * @internal
- * @since 1.0.0
+ * @since 0.5.0
  */
 class Admin {
 
 	/**
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @var WPOD\Admin|null Holds the instance of this class.
 	 */
 	private static $instance = null;
@@ -30,7 +30,7 @@ class Admin {
 	/**
 	 * Gets the instance of this class. If it does not exist, it will be created.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @return WPOD\Admin
 	 */
 	public static function instance() {
@@ -46,7 +46,7 @@ class Admin {
 	 *
 	 * This will hook functions into the 'admin_init', 'admin_menu' and 'admin_enqueue_scripts' actions.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	private function __construct() {
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
@@ -63,7 +63,7 @@ class Admin {
 	 * @see WPOD\Components\Tab
 	 * @see WPOD\Components\Section
 	 * @see WPOD\Components\Field
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	public function register_settings() {
 		$tabs = \WPOD\Framework::instance()->query( array(
@@ -106,7 +106,7 @@ class Admin {
 	 *
 	 * @see WPOD\Components\Menu
 	 * @see WPOD\Components\Page
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	public function create_admin_menu() {
 		$menus = \WPOD\Framework::instance()->query( array(
@@ -143,7 +143,7 @@ class Admin {
 	 * the WordPress media scripts and the WordPress meta box scripts, both depending on
 	 * whether they are needed on the current page.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	public function enqueue_scripts() {
 		$currents = $this->get_current();
@@ -226,7 +226,7 @@ class Admin {
 	 * The second parameter may be used to omit the retrieving process by specifying a page object.
 	 * In that case, only the current tab as part of this page will be looked for.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $type the type to get the current component for; must be either 'page', 'tab' or an empty string to get an array of both
 	 * @param WPOD\Components\Page|null $page a page object to override the retrieving process or null
 	 * @return WPOD\Components\Page|WPOD\Components\Tab|array|false either the page or tab object, an array of both objects or false if no plugin component is currently active
@@ -273,7 +273,7 @@ class Admin {
 	/**
 	 * Gets the current URL in the WordPress backend.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @return string the current URL
 	 */
 	public function get_current_url() {

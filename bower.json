@@ -1,6 +1,6 @@
 {
   "name": "options-definitely",
-  "version": "1.0.0",
+  "version": "0.5.0",
   "dependencies": {
     "select2": "~3.5.2",
     "datetimepicker": "~2.4.1"

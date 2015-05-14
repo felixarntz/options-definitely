@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WPOD
- * @version 1.0.0
+ * @version 0.5.0
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * The slug of a tab, at the same time, is the slug of the option (or rather array of options) stored in WordPress.
  *
  * @internal
- * @since 1.0.0
+ * @since 0.5.0
  */
 class Tab extends ComponentBase {
 
@@ -31,7 +31,7 @@ class Tab extends ComponentBase {
 	 * * 'wpod_update_TABSLUG_defaults' (will update option defaults for TABSLUG; when running the action, replace TABSLUG by the slug of the tab)
 	 * * 'wpod_update_defaults' (will update option defaults for all options added by the plugin; usage is not recommended)
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $slug slug of this component
 	 * @param array $args array of arguments
 	 * @param string $parent slug of this component's parent component or an empty string
@@ -47,7 +47,7 @@ class Tab extends ComponentBase {
 	/**
 	 * Registers the setting for this tab.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	public function register() {
 		$sections = \WPOD\Framework::instance()->query( array(
@@ -69,13 +69,13 @@ class Tab extends ComponentBase {
 	 *
 	 * If the tab is draggable (i.e. uses meta boxes), the meta boxes are handled in here as well.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	public function render() {
 		/**
 		 * This action can be used to display additional content on top of this tab.
 		 *
-		 * @since 1.0.0
+		 * @since 0.5.0
 		 * @param string the slug of the current tab
 		 * @param array the arguments array for the current tab
 		 * @param string the slug of the current page
@@ -129,7 +129,7 @@ class Tab extends ComponentBase {
 		} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
 			call_user_func( $this->args['callback'] );
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for tab %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for tab %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '0.5.0' );
 		}
 
 		if ( 'draggable' == $this->args['mode'] ) {
@@ -150,7 +150,7 @@ class Tab extends ComponentBase {
 		/**
 		 * This action can be used to display additional content at the bottom of this tab.
 		 *
-		 * @since 1.0.0
+		 * @since 0.5.0
 		 * @param string the slug of the current tab
 		 * @param array the arguments array for the current tab
 		 * @param string the slug of the current page
@@ -166,7 +166,7 @@ class Tab extends ComponentBase {
 	 *
 	 * Furthermore this function adds settings errors if any occur.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param array $options the unvalidated options
 	 * @return array the validated options
 	 */
@@ -218,7 +218,7 @@ class Tab extends ComponentBase {
 		/**
 		 * This action can be used to perform specific actions whenever a setting is validated.
 		 *
-		 * @since 1.0.0
+		 * @since 0.5.0
 		 * @param WPOD\Components\Tab the tab object for which the setting is currently being updated
 		 * @param array the validated options
 		 */
@@ -234,7 +234,7 @@ class Tab extends ComponentBase {
 	 * A valid use-case may be, for example, a plugin installation where the plugin requires the options to be set.
 	 * Whenever this function should be run, it is recommended to trigger it by executing the action 'wpod_update_TABSLUG_defaults' or 'wpod_update_defaults'.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	public function update_option_defaults() {
 		$options = get_option( $this->slug );
@@ -263,7 +263,7 @@ class Tab extends ComponentBase {
 	 *
 	 * Read the plugin guide for more information about the tab arguments.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @return array
 	 */
 	protected function get_defaults() {
@@ -278,7 +278,7 @@ class Tab extends ComponentBase {
 		/**
 		 * This filter can be used by the developer to modify the default values for each tab component.
 		 *
-		 * @since 1.0.0
+		 * @since 0.5.0
 		 * @param array the associative array of default values
 		 */
 		return apply_filters( 'wpod_tab_defaults', $defaults );

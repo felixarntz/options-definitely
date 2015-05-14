@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WPOD
- * @version 1.0.0
+ * @version 0.5.0
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
@@ -29,7 +29,7 @@ class Field extends ComponentBase {
 				if ( isset( $this->args['repeatable'] ) ) {
 					$this->render_repeatable( $args );
 				} else {
-					\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The field %s has been declared as a repeatable, but it does not contain any fields.', 'wpod' ), $slug ), '1.0.0' );
+					\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The field %s has been declared as a repeatable, but it does not contain any fields.', 'wpod' ), $slug ), '0.5.0' );
 				}
 			} else {
 				extract( $args );
@@ -219,7 +219,7 @@ class Field extends ComponentBase {
 		} elseif ( is_callable( $this->args['type'] ) ) {
 			call_user_func( $this->args['type'], $this, $args );
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %s is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %s is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $this->slug ), '0.5.0' );
 		}
 
 		do_action( 'wpod_field_after', $this->slug, $this->args, $this->parent, $args['tab_slug'] );
@@ -385,7 +385,7 @@ class Field extends ComponentBase {
 			} elseif ( is_callable( $field['type'] ) ) {
 				call_user_func( $field['type'], $slug, $field, $key, $id_prefix, $name_prefix, $options );
 			} else {
-				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %1$s (part of repeatable %2$s) is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $slug, $this->slug ), '1.0.0' );
+				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %1$s (part of repeatable %2$s) is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $slug, $this->slug ), '0.5.0' );
 			}
 		}
 

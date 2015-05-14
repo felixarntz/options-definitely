@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WPOD
- * @version 1.0.0
+ * @version 0.5.0
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * This class contains static functions that should be used for field validation.
  *
- * @since 1.0.0
+ * @since 0.5.0
  */
 class Validator {
 
@@ -23,7 +23,7 @@ class Validator {
 	 *
 	 * The function uses the plugin utility class to format the value.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param mixed $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return bool either true or false
@@ -35,7 +35,7 @@ class Validator {
 	/**
 	 * Validates a select value.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return string|array the validated value or an error array
@@ -53,7 +53,7 @@ class Validator {
 	 *
 	 * Alias for `WPOD\Validator::select()`.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Validator::select()
 	 * @param string $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
@@ -66,7 +66,7 @@ class Validator {
 	/**
 	 * Validates the values of a multiselect field.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string|array $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return array the validated value or an error array
@@ -99,7 +99,7 @@ class Validator {
 	 *
 	 * Alias for `WPOD\Validator::multiselect()`.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Validator::multiselect()
 	 * @param string|array $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
@@ -114,7 +114,7 @@ class Validator {
 	 *
 	 * If min/max/step is/are provided in the field arguments, the function also checks if the value is within the allowed boundaries.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string|int|float $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return int|float|array the validated value or an error array
@@ -149,7 +149,7 @@ class Validator {
 	 *
 	 * Alias for `WPOD\Validator::number()`.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Validator::number()
 	 * @param string|int|float $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
@@ -164,7 +164,7 @@ class Validator {
 	 *
 	 * The function strips out any HTML characters not allowed by using the plugin utility class.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return string|array the validated value or an error array
@@ -178,7 +178,7 @@ class Validator {
 	 *
 	 * Alias for `WPOD\Validator::text()`.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Validator::text()
 	 * @param string $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
@@ -193,7 +193,7 @@ class Validator {
 	 *
 	 * Alias for `WPOD\Validator::textarea()`, with the small difference that this function automatically adds paragraphs to the value.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Validator::textarea()
 	 * @param string $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
@@ -206,7 +206,7 @@ class Validator {
 	/**
 	 * Validates an email address.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return string|array the validated value or an error array
@@ -225,7 +225,7 @@ class Validator {
 	/**
 	 * Validates a URL.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return string|array the validated value or an error array
@@ -243,7 +243,7 @@ class Validator {
 	 *
 	 * If min/max is/are provided in the field arguments, the function also checks if the value is within the allowed boundaries.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return string|array the validated value or an error array
@@ -267,7 +267,7 @@ class Validator {
 	 *
 	 * If min/max is/are provided in the field arguments, the function also checks if the value is within the allowed boundaries.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return string|array the validated value or an error array
@@ -291,7 +291,7 @@ class Validator {
 	 *
 	 * If min/max is/are provided in the field arguments, the function also checks if the value is within the allowed boundaries.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return string|array the validated value or an error array
@@ -313,7 +313,7 @@ class Validator {
 	/**
 	 * Validates a hex color string.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return string|array the validated value or an error array
@@ -333,7 +333,7 @@ class Validator {
 	 * This function by default allows all types of media.
 	 * It can be called by other more specific functions to limit the permitted types.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string|int $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @param string|array $desired_types either 'all', a single mime type file extension or an array of mime type file extensions (optional)
@@ -374,7 +374,7 @@ class Validator {
 	/**
 	 * Validates a WordPress image media ID.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Validator::media()
 	 * @param string|int $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
@@ -394,7 +394,7 @@ class Validator {
 	/**
 	 * Validates a WordPress video media ID.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Validator::media()
 	 * @param string|int $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
@@ -421,7 +421,7 @@ class Validator {
 	/**
 	 * Validates a WordPress audio media ID.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Validator::media()
 	 * @param string|int $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
@@ -443,7 +443,7 @@ class Validator {
 	/**
 	 * Validates a WordPress archive media ID.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Validator::media()
 	 * @param string|int $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
@@ -462,7 +462,7 @@ class Validator {
 	/**
 	 * Validates a WordPress favicon media ID.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Validator::media()
 	 * @param string|int $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
@@ -475,7 +475,7 @@ class Validator {
 	/**
 	 * Validates a WordPress PDF media ID.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Validator::media()
 	 * @param string|int $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
@@ -491,7 +491,7 @@ class Validator {
 	 * A repeatable field actually consists of one or more rows where each row itself consists of several fields.
 	 * From within this function other validation functions of this class are called accordingly.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param array $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return array the validated value or an error array
@@ -564,7 +564,7 @@ class Validator {
 	 * If specified, it also holds an 'value' key with the new value to use for the field.
 	 * If this is not specified, the old field value will be used by the plugin.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $message the error message to display
 	 * @param mixed $value the value to use for the field (optional)
 	 * @return array the error array
@@ -585,7 +585,7 @@ class Validator {
 	 * If the field is not required, the function just returns the original value.
 	 *
 	 * @internal
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param mixed $value the field value to validate
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return mixed|array the validated value or an error array
@@ -625,7 +625,7 @@ class Validator {
 	 * It just returns an error array telling the user that there is no valid function specified.
 	 *
 	 * @internal
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @return array the error array
 	 */
 	public static function invalid_validation_function() {

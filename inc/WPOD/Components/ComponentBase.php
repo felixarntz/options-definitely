@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WPOD
- * @version 1.0.0
+ * @version 0.5.0
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
@@ -15,24 +15,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Abstract class for a component.
  *
  * @internal
- * @since 1.0.0
+ * @since 0.5.0
  */
 abstract class ComponentBase {
 
 	/**
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @var string Holds the slug of this component.
 	 */
 	protected $slug = '';
 
 	/**
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @var string Holds the slug of this component's parent (or an empty string if there is no parent).
 	 */
 	protected $parent = '';
 
 	/**
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @var array Holds the arguments array for this class.
 	 */
 	protected $args = array();
@@ -43,7 +43,7 @@ abstract class ComponentBase {
 	 * It will assign the parameters to the class variables.
 	 * The arguments array should contain keys and values according to the component's default values.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @see WPOD\Components\ComponentBase::get_defaults()
 	 * @param string $slug slug of this component
 	 * @param array $args array of arguments
@@ -63,7 +63,7 @@ abstract class ComponentBase {
 	 * 2. Is there a class property of this name?
 	 * 3. Is there a field of this name in the arguments array?
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $property the property to set
 	 * @param mixed $value the value to assign
 	 */
@@ -85,7 +85,7 @@ abstract class ComponentBase {
 	 * 2. Is there a class property of this name?
 	 * 3. Is there a field of this name in the arguments array?
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @param string $property the property to get the value for
 	 * @return mixed value of the property or a boolean false if it does not exist
 	 */
@@ -106,7 +106,7 @@ abstract class ComponentBase {
 	 *
 	 * This method is recommended to be overridden in the sub class.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 */
 	public function validate() {
 		$this->args = \LaL_WP_Plugin_Util::parse_args( $this->args, $this->get_defaults(), true );
@@ -123,7 +123,7 @@ abstract class ComponentBase {
 	/**
 	 * Abstract function to return the keys of the arguments array and their default values.
 	 *
-	 * @since 1.0.0
+	 * @since 0.5.0
 	 * @return array
 	 */
 	protected abstract function get_defaults();

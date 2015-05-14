@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WPOD
- * @version 1.0.0
+ * @version 0.5.0
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
@@ -55,7 +55,7 @@ class Section extends ComponentBase {
 		} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
 			call_user_func( $this->args['callback'] );
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no fields to display for section %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '1.0.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no fields to display for section %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '0.5.0' );
 		}
 
 		do_action( 'wpod_section_after', $this->slug, $this->args, $this->parent );
