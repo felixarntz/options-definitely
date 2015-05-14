@@ -11,8 +11,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
+/**
+ * Class for a field component.
+ *
+ * A field denotes a settings field, i.e. both the field option and the visual input in the WordPress admin.
+ * Since WPOD stores all options inside an array (where the option name is the tab slug), the field slugs are used as array keys in that options array.
+ *
+ * @internal
+ * @since 0.5.0
+ */
 class Field extends ComponentBase {
 
+	/**
+	 * Registers the settings fields.
+	 *
+	 * @since 0.5.0
+	 * @param WPOD\Components\Tab $parent_tab the parent tab component of this field
+	 * @param WPOD\Components\Section $parent_section the parent section component of this field
+	 */
 	public function register( $parent_tab, $parent_section ) {
 		add_settings_field( $this->slug, $this->args['title'], array( $this, 'render' ), $parent_tab->slug, $parent_section->slug, array(
 			'label_for'		=> $parent_tab->slug . '-' . $this->slug,
@@ -21,7 +37,27 @@ class Field extends ComponentBase {
 		) );
 	}
 
+	/**
+	 * Renders the field.
+	 *
+	 * This function will show the input field(s) in the WordPress admin.
+	 * If the field is a repeatable field, the more specific function to render this type of field will be called.
+	 * Otherwise the field is rendered according to the type of the field.
+	 * The type can also be specified as a callback in which case this callback function will be used to render the input.
+	 *
+	 * @since 0.5.0
+	 * @param array $args additional field arguments passed by the add_settings_field function (array has the keys 'label_for', 'tab_slug' and 'section_slug')
+	 */
 	public function render( $args = array() ) {
+		/**
+		 * This action can be used to display additional content on top of this field.
+		 *
+		 * @since 0.5.0
+		 * @param string the slug of the current field
+		 * @param array the arguments array for the current field
+		 * @param string the slug of the current section
+		 * @param string the slug of the current tab
+		 */
 		do_action( 'wpod_field_before', $this->slug, $this->args, $this->parent, $args['tab_slug'] );
 
 		if ( in_array( $this->args['type'], $this->get_supported_types() ) ) {
@@ -222,9 +258,29 @@ class Field extends ComponentBase {
 			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %s is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $this->slug ), '0.5.0' );
 		}
 
+		/**
+		 * This action can be used to display additional content at the bottom of this field.
+		 *
+		 * @since 0.5.0
+		 * @param string the slug of the current field
+		 * @param array the arguments array for the current field
+		 * @param string the slug of the current section
+		 * @param string the slug of the current tab
+		 */
 		do_action( 'wpod_field_after', $this->slug, $this->args, $this->parent, $args['tab_slug'] );
 	}
 
+	/**
+	 * Renders a repeatable field.
+	 *
+	 * A repeatable field is a special field type that actually bundles multiple other input fields into one.
+	 * This group of fields can the be repeated numerous times.
+	 * However, the values are all stored in the one main field option as an array.
+	 * The actual contents of a repeatable field are specified in the 'repeatable' key of the arguments array.
+	 *
+	 * @since 0.5.0
+	 * @param array $args additional field arguments passed by the add_settings_field function (array has the keys 'label_for', 'tab_slug' and 'section_slug')
+	 */
 	public function render_repeatable( $args = array() ) {
 		extract( $args );
 
@@ -264,6 +320,22 @@ class Field extends ComponentBase {
 		}
 	}
 
+	/**
+	 * Renders a repeatable row.
+	 *
+	 * A repeatable row is one row of a repeatable field. It consists of the bundled fields.
+	 * However, since they all belong together, they are displayed in one row, not in a list like normal fields.
+	 * These rows are repeatable, so this function is executed for every item in the repeatable field.
+	 *
+	 * The basic output of this function is also used as a template in JavaScript so that additional rows can be added without making an AJAX call.
+	 *
+	 * @see WPOD\Components\Field::render_repeatable()
+	 * @since 0.5.0
+	 * @param integer $key numeric index of this row (starts with 0)
+	 * @param string $id_prefix the selector ID prefix for this row (same like the 'label_for' value)
+	 * @param string $name_prefix the name prefix for this row (it has the format `TABSLUG[FIELDSLUG]`)
+	 * @param array $options the stored option for this row
+	 */
 	public function render_repeatable_row( $key, $id_prefix, $name_prefix, $options = array() ) {
 		echo '<p class="repeatable-row">';
 
@@ -394,23 +466,29 @@ class Field extends ComponentBase {
 		echo '</p>';
 	}
 
+	/**
+	 * Validates the option for this field.
+	 *
+	 * @see WPOD\Components\Tab::validate_options()
+	 * @since 0.5.0
+	 * @param mixed $option the new option value to validate
+	 * @param mixed $option_old the previous option value
+	 * @return array numeric array where the first item is the validated option (or the old option if an error occurred) and the second item is an error message of an empty string if everything is fine
+	 */
 	public function validate_option( $option = null, $option_old = null ) {
 		if ( $option == null ) {
 			switch ( $this->args['type'] ) {
 				case 'checkbox':
 					$option = false;
-
 					break;
 				case 'multiselect':
 				case 'multibox':
 				case 'repeatable':
 					$option = array();
-
 					break;
 				case 'number':
 				case 'range':
 					$option = isset( $this->args['more_attributes']['min'] ) ? $this->args['more_attributes']['min'] : 0;
-
 					break;
 				default:
 					$option = '';
@@ -444,10 +522,26 @@ class Field extends ComponentBase {
 		return array( $option, $error );
 	}
 
+	/**
+	 * Checks if a variable is a validation error.
+	 *
+	 * This function is used to check return values of validation functions.
+	 *
+	 * @since 0.5.0
+	 * @param mixed $option the option value to check
+	 * @return boolean true if the value is a validation error, otherwise false
+	 */
 	private function is_validation_error( $option ) {
-		return is_array( $option ) && isset( $option['errmsg'] );
+		return is_array( $option ) && isset( $option['errmsg'] ) && is_string( $option['errmsg'] );
 	}
 
+	/**
+	 * Returns the validation error message for an option, prefixed with the title of the field.
+	 *
+	 * @since 0.5.0
+	 * @param mixed $option the option value to get the validation error for
+	 * @return string the validation error message or an empty string if the option is not a validation error
+	 */
 	private function get_validation_error( $option ) {
 		if ( $this->is_validation_error( $option ) ) {
 			return '<em>' . $this->args['title'] . ':</em> ' . $option['errmsg'];
@@ -456,6 +550,15 @@ class Field extends ComponentBase {
 		return '';
 	}
 
+	/**
+	 * Returns an array of available types.
+	 *
+	 * Note that the supported types for a repeatable field are different from those of a normal field.
+	 *
+	 * @since 0.5.0
+	 * @param boolean $repeatable whether to get the supported types for a repeatable field or not
+	 * @return array numeric array of supported types
+	 */
 	private function get_supported_types( $repeatable = false ) {
 		$types = array(
 			'checkbox',
@@ -489,6 +592,15 @@ class Field extends ComponentBase {
 		return $types;
 	}
 
+	/**
+	 * Helper function to check if a value is the checked or selected value in a dropdown/radio group.
+	 *
+	 * @since 0.5.0
+	 * @param string|integer|array $option the option value
+	 * @param string|integer $value the current value to compare
+	 * @param boolean $multiple whether to perform the check for an input where multiple values can be selected
+	 * @return boolean true if the value is checked/selected, otherwise false
+	 */
 	private function is_value_checked_or_selected( $option, $value, $multiple = false ) {
 		if ( $multiple ) {
 			if ( ! is_array( $option ) ) {
@@ -501,6 +613,11 @@ class Field extends ComponentBase {
 		return $option == $value;
 	}
 
+	/**
+	 * Validates the arguments array.
+	 *
+	 * @since 0.5.0
+	 */
 	public function validate() {
 		if ( isset( $this->args['type'] ) ) {
 			if ( ! isset( $this->args['default'] ) ) {
@@ -565,6 +682,11 @@ class Field extends ComponentBase {
 		}
 	}
 
+	/**
+	 * Validates a 'repeatable' key of the arguments array.
+	 *
+	 * @since 0.5.0
+	 */
 	protected function validate_repeatable() {
 		$this->args['repeatable'] = \LaL_WP_Plugin_Util::parse_args( $this->args['repeatable'], array(
 			'limit'           => 0,
@@ -642,6 +764,14 @@ class Field extends ComponentBase {
 		}
 	}
 
+	/**
+	 * Returns the keys of the arguments array and their default values.
+	 *
+	 * Read the plugin guide for more information about the field arguments.
+	 *
+	 * @since 0.5.0
+	 * @return array
+	 */
 	protected function get_defaults() {
 		$defaults = array(
 			'title'				=> __( 'Field title', 'wpod' ),
@@ -655,6 +785,12 @@ class Field extends ComponentBase {
 			'repeatable'		=> array(),
 		);
 
+		/**
+		 * This filter can be used by the developer to modify the default values for each field component.
+		 *
+		 * @since 0.5.0
+		 * @param array the associative array of default values
+		 */
 		return apply_filters( 'wpod_field_defaults', $defaults );
 	}
 }
