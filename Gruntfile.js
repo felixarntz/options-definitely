@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 						'License URI: <%= pkg.license.url %>\n' +
 						'Text Domain: wpod\n' +
 						'Domain Path: /languages/\n' +
-						'Tags: wordpress, plugin, options, admin, backend, ui, framework\n' +
+						'Tags: wordpress, plugin, framework, library, developer, options, admin, backend, ui\n' +
 						'*/',
 		fileheader: '/**\n' +
 					' * @package WPOD\n' +
