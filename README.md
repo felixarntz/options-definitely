@@ -10,4 +10,4 @@ For a detailed guide and reference on how to use this framework, please read the
 Contributions and Bugs
 ----------------------
 
-If you have ideas on how to improve the plugin or if you discover a bug, I would appreciate if you shared them with me, right here on Github. In either case, please open a new issue [here](https://github.com/felixarntz/bootstrap-for-contact-form-7/issues/new)!
+If you have ideas on how to improve the plugin or if you discover a bug, I would appreciate if you shared them with me, right here on Github. In either case, please open a new issue [here](https://github.com/felixarntz/options-definitely/issues/new)!

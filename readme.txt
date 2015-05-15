@@ -53,6 +53,10 @@ You can use the framework anywhere you like, for example in your theme's functio
 
 Options, Definitely is a framework plugin which means it does nothing on its own, it just helps other developers getting things done more quickly.
 
+= Where should I submit my support request? =
+
+I preferably take support requests as [issues on Github](https://github.com/felixarntz/options-definitely/issues), so I would appreciate if you created an issue for your request there. However, if you don't have an account there and do not want to sign up, you can of course use the [wordpress.org support forums](https://wordpress.org/support/plugin/options-definitely) as well.
+
 = How can I contribute to the plugin? =
 
 If you're a developer and you have some ideas to improve the plugin or to solve a bug, feel free to raise an issue or submit a pull request in the [Github repository for the plugin](https://github.com/felixarntz/options-definitely).
