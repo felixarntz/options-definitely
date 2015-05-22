@@ -32,14 +32,15 @@ class Tab extends ComponentBase {
 	 * * 'wpod_update_defaults' (will update option defaults for all options added by the plugin; usage is not recommended)
 	 *
 	 * @since 0.5.0
-	 * @param string $slug slug of this component
+	 * @param string $slug internal slug of this component
+	 * @param string $real_slug real slug of this component
 	 * @param array $args array of arguments
 	 * @param string $parent slug of this component's parent component or an empty string
 	 */
-	public function __construct( $slug, $args, $parent = '' ) {
-		parent::__construct( $slug, $args, $parent );
+	public function __construct( $slug, $real_slug, $args, $parent = '' ) {
+		parent::__construct( $slug, $real_slug, $args, $parent );
 
-		add_action( 'wpod_update_' . $slug . '_defaults', array( $this, 'update_option_defaults' ) );
+		add_action( 'wpod_update_' . $real_slug . '_defaults', array( $this, 'update_option_defaults' ) );
 
 		add_action( 'wpod_update_defaults', array( $this, 'update_option_defaults' ) );
 	}
@@ -57,7 +58,7 @@ class Tab extends ComponentBase {
 		) );
 
 		if ( count( $sections ) > 0 ) {
-			register_setting( $this->slug, $this->slug, array( $this, 'validate_options' ) );
+			register_setting( $this->real_slug, $this->real_slug, array( $this, 'validate_options' ) );
 		}
 	}
 
@@ -80,7 +81,7 @@ class Tab extends ComponentBase {
 		 * @param array the arguments array for the current tab
 		 * @param string the slug of the current page
 		 */
-		do_action( 'wpod_tab_before', $this->slug, $this->args, $this->parent );
+		do_action( 'wpod_tab_before', $this->real_slug, $this->args, $this->parent );
 
 		if ( ! empty( $this->args['description'] ) ) {
 			echo '<p class="description">' . $this->args['description'] . '</p>';
@@ -94,7 +95,7 @@ class Tab extends ComponentBase {
 
 		if ( count( $sections ) > 0 ) {
 			$form_atts = array(
-				'id'			=> $this->slug,
+				'id'			=> $this->real_slug,
 				'action'		=> admin_url( 'options.php' ),
 				'method'		=> 'post',
 				'novalidate'	=> true,
@@ -111,7 +112,7 @@ class Tab extends ComponentBase {
 				echo '<div class="metabox-holder">';
 				echo '<div class="postbox-container">';
 
-				do_meta_boxes( $this->slug, 'normal', null );
+				do_meta_boxes( $this->real_slug, 'normal', null );
 
 				echo '</div>';
 				echo '</div>';
@@ -121,7 +122,7 @@ class Tab extends ComponentBase {
 				}
 			}
 
-			settings_fields( $this->slug );
+			settings_fields( $this->real_slug );
 
 			submit_button();
 
@@ -129,7 +130,7 @@ class Tab extends ComponentBase {
 		} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
 			call_user_func( $this->args['callback'] );
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for tab %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '0.5.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for tab %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->real_slug ), '0.5.0' );
 		}
 
 		if ( 'draggable' == $this->args['mode'] ) {
@@ -140,7 +141,7 @@ class Tab extends ComponentBase {
 			  // close postboxes that should be closed
 			  $('.if-js-closed').removeClass('if-js-closed').addClass('closed');
 			  // postboxes setup
-			  postboxes.add_postbox_toggles('<?php echo $this->slug; ?>');
+			  postboxes.add_postbox_toggles('<?php echo $this->real_slug; ?>');
 			});
 			//]]>
 			</script>
@@ -155,7 +156,7 @@ class Tab extends ComponentBase {
 		 * @param array the arguments array for the current tab
 		 * @param string the slug of the current page
 		 */
-		do_action( 'wpod_tab_after', $this->slug, $this->args, $this->parent );
+		do_action( 'wpod_tab_after', $this->real_slug, $this->args, $this->parent );
 	}
 
 	/**
@@ -173,7 +174,7 @@ class Tab extends ComponentBase {
 	public function validate_options( $options ) {
 		$options_validated = array();
 
-		$options_old = get_option( $this->slug, array() );
+		$options_old = get_option( $this->real_slug, array() );
 
 		$errors = array();
 
@@ -208,12 +209,12 @@ class Tab extends ComponentBase {
 		if ( count( $errors ) > 0 ) {
 			$error_text = __( 'Some errors occured while trying to save the following settings:', 'wpod' );
 
-			add_settings_error( $this->slug, $this->slug . '-error', $error_text . '<br/>' . implode( '<br/>', $errors ), 'error' );
+			add_settings_error( $this->real_slug, $this->real_slug . '-error', $error_text . '<br/>' . implode( '<br/>', $errors ), 'error' );
 
 			$status_text = __( 'All other settings not mentioned above were saved successfully.', 'wpod' );
 		}
 
-		add_settings_error( $this->slug, $this->slug . '-updated', $status_text, 'updated' );
+		add_settings_error( $this->real_slug, $this->real_slug . '-updated', $status_text, 'updated' );
 
 		/**
 		 * This action can be used to perform specific actions whenever a setting is validated.
@@ -237,7 +238,7 @@ class Tab extends ComponentBase {
 	 * @since 0.5.0
 	 */
 	public function update_option_defaults() {
-		$options = get_option( $this->slug );
+		$options = get_option( $this->real_slug );
 
 		if ( ! is_array( $options ) ) {
 			$options = array();
@@ -255,7 +256,7 @@ class Tab extends ComponentBase {
 			}
 		}
 
-		update_option( $this->slug, $options );
+		update_option( $this->real_slug, $options );
 	}
 
 	/**

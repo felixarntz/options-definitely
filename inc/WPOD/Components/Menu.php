@@ -33,23 +33,23 @@ class Menu extends ComponentBase {
 		global $admin_page_hooks;
 
 		// check for the exact menu slug
-		if ( isset( $admin_page_hooks[ $this->slug ] ) )
+		if ( isset( $admin_page_hooks[ $this->real_slug ] ) )
 		{
-			return $this->slug;
+			return $this->real_slug;
 		}
 
 		// check for the sanitized menu title
-		if ( ( $key = array_search( $this->slug, $admin_page_hooks ) ) !== false && strstr( $key, 'separator' ) === false ) {
+		if ( ( $key = array_search( $this->real_slug, $admin_page_hooks ) ) !== false && strstr( $key, 'separator' ) === false ) {
 			return $key;
 		}
 
 		// check if it is a post type menu
-		if ( isset( $admin_page_hooks[ 'edit.php?post_type=' . $this->slug ] ) ) {
-			return 'edit.php?post_type=' . $this->slug;
+		if ( isset( $admin_page_hooks[ 'edit.php?post_type=' . $this->real_slug ] ) ) {
+			return 'edit.php?post_type=' . $this->real_slug;
 		}
 
 		// special case: post type 'post'
-		if ( 'post' == $this->slug ) {
+		if ( 'post' == $this->real_slug ) {
 			return 'edit.php';
 		}
 
@@ -65,7 +65,7 @@ class Menu extends ComponentBase {
 		parent::validate();
 
 		$this->args['added'] = false;
-		$this->args['subslug'] = $this->slug;
+		$this->args['subslug'] = $this->real_slug;
 		$this->args['sublabel'] = false;
 	}
 

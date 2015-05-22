@@ -113,7 +113,7 @@ class Framework {
 	 * @param string $type type of the component (either 'menu', 'page', 'tab' or 'field')
 	 * @param array $args additional arguments for the component
 	 * @param string $parent parent slug of the component (only if it's not a 'menu')
-	 * @return bool true if the component was added successfully, otherwise false
+	 * @return string|bool the unique internal slug of the added component or boolean false if it could not be added
 	 */
 	public function add( $slug, $type, $args, $parent = '' ) {
 		if ( ! $this->initialized ) {
@@ -121,13 +121,18 @@ class Framework {
 			if ( $this->is_valid_type( $type ) ) {
 				if ( ! empty( $slug ) ) {
 					$arrayname = $type . 's';
+					$arr = $this->$arrayname;
 					$classname = '\\WPOD\\Components\\' . ucfirst( $type );
 
 					if ( 'menu' == $type || ! empty( $parent ) ) {
-						if ( ! $this->exists( $slug, $type, $parent ) ) {
-							array_push( $this->$arrayname, new $classname( $slug, $args, $parent ) );
+						if ( ! $this->exists( $slug, $type, $parent, false, true ) ) {
+							$real_slug = $slug;
+							$slug = $this->make_unique_slug( $real_slug, $arr );
 
-							return true;
+							$arr[ $slug ] = new $classname( $slug, $real_slug, $args, $parent );
+							$this->$arrayname = $arr;
+
+							return $slug;
 						} else {
 							\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The %1$s %2$s already exists. If you want to modify it, please use the update method.', 'wpod' ), $type, $slug ), '0.5.0' );
 						}
@@ -151,6 +156,9 @@ class Framework {
 	 * Updates/modifies a component.
 	 *
 	 * This function should be used on the 'wpod_oo' action.
+	 *
+	 * Note that when a component is added, the slug might change (so that it is unique).
+	 * If you want to update a component, you need to use the unique slug.
 	 *
 	 * For more information on the arguments array, check the `get_defaults()` method of the respective component class.
 	 *
@@ -200,6 +208,9 @@ class Framework {
 	 * Deletes a component.
 	 *
 	 * This function should be used on the 'wpod_oo' action.
+	 *
+	 * Note that when a component is added, the slug might change (so that it is unique).
+	 * If you want to delete a component, you need to use the unique slug.
 	 *
 	 * @since 0.5.0
 	 * @param string $slug slug of the component to be deleted
@@ -271,23 +282,23 @@ class Framework {
 
 			if ( is_array( $raw ) ) {
 				foreach ( $raw as $menu_slug => $menu ) {
-					$this->add( $menu_slug, 'menu', $menu );
+					$menu_slug = $this->add( $menu_slug, 'menu', $menu );
 
-					if ( isset( $menu['pages'] ) && is_array( $menu['pages'] ) ) {
+					if ( $menu_slug && isset( $menu['pages'] ) && is_array( $menu['pages'] ) ) {
 						foreach ( $menu['pages'] as $page_slug => $page ) {
-							$this->add( $page_slug, 'page', $page, $menu_slug );
+							$page_slug = $this->add( $page_slug, 'page', $page, $menu_slug );
 
-							if ( isset( $page['tabs'] ) && is_array( $page['tabs'] ) ) {
+							if ( $page_slug && isset( $page['tabs'] ) && is_array( $page['tabs'] ) ) {
 								foreach ( $page['tabs'] as $tab_slug => $tab ) {
-									$this->add( $tab_slug, 'tab', $tab, $page_slug );
+									$tab_slug = $this->add( $tab_slug, 'tab', $tab, $page_slug );
 
-									if ( isset( $tab['sections'] ) && is_array( $tab['sections'] ) ) {
+									if ( $tab_slug && isset( $tab['sections'] ) && is_array( $tab['sections'] ) ) {
 										foreach ( $tab['sections'] as $section_slug => $section ) {
-											$this->add( $section_slug, 'section', $section, $tab_slug );
+											$section_slug = $this->add( $section_slug, 'section', $section, $tab_slug );
 
-											if ( isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
+											if ( $section_slug && isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
 												foreach ( $section['fields'] as $field_slug => $field ) {
-													$this->add( $field_slug, 'field', $field, $section_slug );
+													$field_slug = $this->add( $field_slug, 'field', $field, $section_slug );
 												}
 											}
 										}
@@ -406,7 +417,8 @@ class Framework {
 
 			if ( $single ) {
 				if ( count( $results ) > 0 ) {
-					$results = $results[0];
+					$index = key( $results );
+					$results = $results[ $index ];
 				} else {
 					$results = false;
 				}
@@ -434,13 +446,7 @@ class Framework {
 	private function query_by_slug( $slug, $haystack, $haystack_type ) {
 		$results = array();
 
-		foreach ( $haystack as $component ) {
-			if ( in_array( $component->slug, $slug ) ) {
-				$results[] = $component;
-			}
-		}
-
-		return $results;
+		return array_intersect_key( $haystack, array_flip( $slug ) );
 	}
 
 	/**
@@ -461,7 +467,7 @@ class Framework {
 		while ( ( $current_type = $this->get_next_inferior_type( $parent_type ) ) != $haystack_type ) {
 			$current_arrayname = $current_type .'s';
 			$current_haystack = $this->query_by_parent( $parent_slug, $parent_type, $this->$current_arrayname, $current_type );
-			$parent_slug = array_map( 'wpod_component_to_slug', $current_haystack );
+			$parent_slug = array_keys( $current_haystack );
 			$parent_type = $current_type;
 		}
 
@@ -469,7 +475,7 @@ class Framework {
 
 		foreach ( $haystack as $component ) {
 			if ( in_array( $component->parent, $parent_slug ) ) {
-				$valid_haystack[] = $component;
+				$valid_haystack[ $component->slug ] = $component;
 			}
 		}
 
@@ -490,9 +496,14 @@ class Framework {
 	 * @param boolean $return_key if true, the function will return the slug of the component if found, otherwise it will return true if found
 	 * @return boolean|string if the component exists, either true or the component slug will be returned (depending on $return_key parameter); if it is not found, false is returned
 	 */
-	private function exists( $slug, $type, $parent, $return_key = false ) {
+	private function exists( $slug, $type, $parent, $return_key = false, $transform_slug = false ) {
 		$types = $this->get_type_whitelist();
 		$status = array_search( $type, $types );
+
+		if ( $transform_slug ) {
+			$arrayname = $type . 's';
+			$slug = $this->get_unique_slugs( $slug, $this->$arrayname );
+		}
 
 		$results = array();
 
@@ -528,7 +539,7 @@ class Framework {
 		}
 
 		if ( count( $results ) > 0 ) {
-			if ( $return_key ) {
+			if ( $return_key && ! $transform_slug ) {
 				$arrayname = $type . 's';
 				if ( 4 == $status ) {
 					$arrayname = $this->get_next_superior_type( $type ) . 's';
@@ -612,5 +623,65 @@ class Framework {
 	 */
 	public function get_type_whitelist() {
 		return array( 'menu', 'page', 'tab', 'section', 'field' );
+	}
+
+	/**
+	 * Transforms a slug into a unique slug that can be used internally.
+	 *
+	 * If no component of the same slug and type exists already, the slug is left as is.
+	 * Otherwise it is appended with an index number, starting at 2, to make it unique.
+	 * For example, if the component type is 'field' and the slug is 'textfield' and 3 other fields called 'textfield' have been added already, the slug will be transformed to 'textfield-4'.
+	 *
+	 * @internal
+	 * @since 0.5.0
+	 * @param string $slug component slug to transform
+	 * @param array $haystack array of components of the required type
+	 * @return string the unique slug
+	 */
+	private function make_unique_slug( $slug, $haystack ) {
+		if ( isset( $haystack[ $slug ] ) ) {
+			$slug .= '-';
+			$done = false;
+			$number = 2;
+			while ( ! $done ) {
+				if ( ! isset( $haystack[ $slug . $number ] ) ) {
+					$done = true;
+					$slug .= $number;
+				}
+				$number++;
+			}
+		}
+		return $slug;
+	}
+
+	/**
+	 * Gets all unique slugs that already exist for an unmodified slug.
+	 *
+	 * @internal
+	 * @since 0.5.0
+	 * @param string|array $slug component slug or slugs to find unique slugs for
+	 * @param array $haystack array of components of the required type
+	 * @return array an array containing the unique slugs
+	 */
+	private function get_unique_slugs( $slug, $haystack ) {
+		$_slugs = $slug;
+		if ( ! is_array( $_slugs ) ) {
+			$_slugs = array( $_slugs );
+		}
+		$slugs = $_slugs;
+		foreach ( $_slugs as $slug ) {
+			$slug .= '-';
+			$done = false;
+			$number = 2;
+			while ( ! $done ) {
+				if ( isset( $haystack[ $slug . $number ] ) ) {
+					$slugs[] = $slug . $number;
+				} else {
+					$done = true;
+				}
+				$number++;
+			}
+		}
+		return $slugs;
 	}
 }

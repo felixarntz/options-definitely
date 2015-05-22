@@ -48,15 +48,15 @@ class Page extends ComponentBase {
 		), true );
 
 		if ( false === $menu->added ) {
-			$this->page_hook = add_menu_page( $this->args['title'], $menu->label, $this->args['capability'], $this->slug, array( $this, 'render' ), $menu->icon, $menu->position );
+			$this->page_hook = add_menu_page( $this->args['title'], $menu->label, $this->args['capability'], $this->real_slug, array( $this, 'render' ), $menu->icon, $menu->position );
 
 			\WPOD\Framework::instance()->update( $menu->slug, 'menu', array(
 				'added'			=> true,
-				'subslug'		=> $this->slug,
+				'subslug'		=> $this->real_slug,
 				'sublabel'		=> $this->args['label'],
 			) );
 		} else {
-			$this->page_hook = add_submenu_page( $menu->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
+			$this->page_hook = add_submenu_page( $menu->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->real_slug, array( $this, 'render' ) );
 
 			if ( $menu->sublabel !== true ) {
 				global $submenu;
@@ -87,7 +87,7 @@ class Page extends ComponentBase {
 
 		echo '<h1>' . $this->args['title'] . '</h1>';
 
-		do_action( 'wpod_page_before', $this->slug, $this->args, $this->parent );
+		do_action( 'wpod_page_before', $this->real_slug, $this->args, $this->parent );
 
 		if ( ! empty( $this->args['description'] ) ) {
 			echo '<p class="description">' . $this->args['description'] . '</p>';
@@ -122,10 +122,10 @@ class Page extends ComponentBase {
 			}
 			$current_tab->render();
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the page %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->slug ), '0.5.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the page %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->real_slug ), '0.5.0' );
 		}
 
-		do_action( 'wpod_page_after', $this->slug, $this->args, $this->parent );
+		do_action( 'wpod_page_after', $this->real_slug, $this->args, $this->parent );
 
 		echo '</div>';
 	}

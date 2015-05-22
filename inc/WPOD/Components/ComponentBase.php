@@ -21,9 +21,15 @@ abstract class ComponentBase {
 
 	/**
 	 * @since 0.5.0
-	 * @var string Holds the slug of this component.
+	 * @var string Holds the internal slug of this component.
 	 */
 	protected $slug = '';
+
+	/**
+	 * @since 0.5.0
+	 * @var string Holds the real slug of this component.
+	 */
+	protected $real_slug = '';
 
 	/**
 	 * @since 0.5.0
@@ -45,12 +51,14 @@ abstract class ComponentBase {
 	 *
 	 * @since 0.5.0
 	 * @see WPOD\Components\ComponentBase::get_defaults()
-	 * @param string $slug slug of this component
+	 * @param string $slug internal slug of this component
+	 * @param string $real_slug real slug of this component
 	 * @param array $args array of arguments
 	 * @param string $parent slug of this component's parent component or an empty string
 	 */
-	public function __construct( $slug, $args, $parent = '' ) {
+	public function __construct( $slug, $real_slug, $args, $parent = '' ) {
 		$this->slug = $slug;
+		$this->real_slug = $slug;
 		$this->parent = $parent;
 		$this->args = $args;
 	}

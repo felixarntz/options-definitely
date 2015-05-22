@@ -30,8 +30,8 @@ class Field extends ComponentBase {
 	 * @param WPOD\Components\Section $parent_section the parent section component of this field
 	 */
 	public function register( $parent_tab, $parent_section ) {
-		add_settings_field( $this->slug, $this->args['title'], array( $this, 'render' ), $parent_tab->slug, $parent_section->slug, array(
-			'label_for'		=> $parent_tab->slug . '-' . $this->slug,
+		add_settings_field( $this->real_slug, $this->args['title'], array( $this, 'render' ), $parent_tab->slug, $parent_section->slug, array(
+			'label_for'		=> $parent_tab->slug . '-' . $this->real_slug,
 			'tab_slug'	=> $parent_tab->slug,
 			'section_slug'	=> $parent_section->slug,
 		) );
@@ -58,7 +58,7 @@ class Field extends ComponentBase {
 		 * @param string the slug of the current section
 		 * @param string the slug of the current tab
 		 */
-		do_action( 'wpod_field_before', $this->slug, $this->args, $this->parent, $args['tab_slug'] );
+		do_action( 'wpod_field_before', $this->real_slug, $this->args, $this->parent, $args['tab_slug'] );
 
 		if ( in_array( $this->args['type'], $this->get_supported_types() ) ) {
 			if ( 'repeatable' == $this->args['type'] ) {
@@ -73,7 +73,7 @@ class Field extends ComponentBase {
 				$atts = array();
 
 				$atts['id'] = $label_for;
-				$atts['name'] = $tab_slug . '[' . $this->slug . ']';
+				$atts['name'] = $tab_slug . '[' . $this->real_slug . ']';
 
 				if ( in_array( $this->args['type'], array( 'multiselect', 'multibox' ) ) ) {
 					$atts['name'] .= '[]';
@@ -91,7 +91,7 @@ class Field extends ComponentBase {
 
 				$atts = array_merge( $atts, $this->args['more_attributes'] );
 
-				$option = wpod_get_option( $tab_slug, $this->slug );
+				$option = wpod_get_option( $tab_slug, $this->real_slug );
 
 				switch ( $this->args['type'] ) {
 					case 'checkbox':
@@ -213,7 +213,7 @@ class Field extends ComponentBase {
 							'tinymce'		=> array( 'plugins' => 'wordpress' ),
 						);
 
-						$wp_editor_args = apply_filters( 'wpod_wp_editor_args', $wp_editor_args, $this->slug, $this->args, $this->parent, $args['parent_tab'] );
+						$wp_editor_args = apply_filters( 'wpod_wp_editor_args', $wp_editor_args, $this->real_slug, $this->args, $this->parent, $args['parent_tab'] );
 
 						$id = $atts['id'];
 
@@ -259,7 +259,7 @@ class Field extends ComponentBase {
 		} elseif ( is_callable( $this->args['type'] ) ) {
 			call_user_func( $this->args['type'], $this, $args );
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %s is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $this->slug ), '0.5.0' );
+			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %s is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $this->real_slug ), '0.5.0' );
 		}
 
 		/**
@@ -271,7 +271,7 @@ class Field extends ComponentBase {
 		 * @param string the slug of the current section
 		 * @param string the slug of the current tab
 		 */
-		do_action( 'wpod_field_after', $this->slug, $this->args, $this->parent, $args['tab_slug'] );
+		do_action( 'wpod_field_after', $this->real_slug, $this->args, $this->parent, $args['tab_slug'] );
 	}
 
 	/**
@@ -299,13 +299,13 @@ class Field extends ComponentBase {
 
 		$atts = array_merge( $atts, $this->args['more_attributes'] );
 
-		$name_prefix = $tab_slug . '[' . $this->slug . ']';
+		$name_prefix = $tab_slug . '[' . $this->real_slug . ']';
 
-		$atts['data-slug'] = $this->slug;
+		$atts['data-slug'] = $this->real_slug;
 		$atts['data-parent-slug'] = $tab_slug;
 		$atts['data-limit'] = $this->args['repeatable']['limit'];
 
-		$option = wpod_get_option( $tab_slug, $this->slug );
+		$option = wpod_get_option( $tab_slug, $this->real_slug );
 
 		echo '<div' . \LaL_WP_Plugin_Util::make_html_attributes( $atts, false, false ) . '>';
 
@@ -461,7 +461,7 @@ class Field extends ComponentBase {
 			} elseif ( is_callable( $field['type'] ) ) {
 				call_user_func( $field['type'], $slug, $field, $key, $id_prefix, $name_prefix, $options );
 			} else {
-				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %1$s (part of repeatable %2$s) is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $slug, $this->slug ), '0.5.0' );
+				\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'The type for field %1$s (part of repeatable %2$s) is not supported. Either specify a supported type or provide a valid callback function instead.', 'wpod' ), $slug, $this->real_slug ), '0.5.0' );
 			}
 		}
 
