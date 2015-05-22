@@ -36,7 +36,7 @@ jQuery(document).ready(function($) {
 	};
 
 	var dtp_datetime_args = $.extend({
-		format: 'Y-m-d H:i',
+		format: _wpod_admin.date_format + ' ' + _wpod_admin.time_format,
 		onShow: function( ct, $input ) {
 			var helper = '';
 			if ( $input.attr( 'min' ) ) {
@@ -76,7 +76,7 @@ jQuery(document).ready(function($) {
 	}, dtp_datetimepicker_args );
 
 	var dtp_date_args = $.extend({
-		format: 'Y-m-d',
+		format: _wpod_admin.date_format,
 		timepicker: false,
 		onShow: function( ct, $input ) {
 			if ( $input.attr( 'min' ) ) {
@@ -94,7 +94,7 @@ jQuery(document).ready(function($) {
 	}, dtp_datetimepicker_args );
 
 	var dtp_time_args = $.extend({
-		format: 'H:i',
+		format: _wpod_admin.time_format,
 		datepicker: false,
 		onShow: function( ct, $input ) {
 			if ( $input.attr( 'min' ) ) {

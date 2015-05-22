@@ -103,8 +103,6 @@ class Page extends ComponentBase {
 		if ( count( $tabs ) > 0 ) {
 			$current_tab = \WPOD\Admin::instance()->get_current( 'tab', $this );
 
-			settings_errors( $current_tab->slug );
-
 			if ( count( $tabs ) > 1 ) {
 				$current_url = \WPOD\Admin::instance()->get_current_url();
 

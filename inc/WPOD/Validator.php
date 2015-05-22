@@ -241,6 +241,8 @@ class Validator {
 	/**
 	 * Validates a datetime string.
 	 *
+	 * Although they are displayed in the datetime format set in WordPress, all dates are saved as YmdHis to allow comparisons in the database.
+	 *
 	 * If min/max is/are provided in the field arguments, the function also checks if the value is within the allowed boundaries.
 	 *
 	 * @since 0.5.0
@@ -249,10 +251,16 @@ class Validator {
 	 * @return string|array the validated value or an error array
 	 */
 	public static function datetime( $value, $field ) {
-		$timestamp = mysql2date( 'U', $value );
+		$timestamp = strtotime( $value );
+		$timestamp_min = isset( $field->more_attributes['min'] ) ? strtotime( $field->more_attributes['min'] ) : null;
+		$timestamp_max = isset( $field->more_attributes['max'] ) ? strtotime( $field->more_attributes['max'] ) : null;
 
-		if ( ! isset( $field->more_attributes['min'] ) || $timestamp >= ( $timestamp_min = mysql2date( 'U', $field->more_attributes['min'] ) ) ) {
-			if ( ! isset( $field->more_attributes['max'] ) || $timestamp <= ( $timestamp_max = mysql2date( 'U', $field->more_attributes['max'] ) ) ) {
+		$value = \LaL_WP_Plugin_Util::format( $timestamp, 'datetime', 'input' );
+		$value_min = $timestamp_min !== null ? \LaL_WP_Plugin_Util::format( $timestamp_min, 'datetime', 'input' ) : null;
+		$value_max = $timestamp_max !== null ? \LaL_WP_Plugin_Util::format( $timestamp_max, 'datetime', 'input' ) : null;
+
+		if ( $value_min === null || $value >= $value_min ) {
+			if ( $value_max === null || $value <= $value_max ) {
 				return $value;
 			}
 
@@ -265,6 +273,8 @@ class Validator {
 	/**
 	 * Validates a date string.
 	 *
+	 * Although they are displayed in the date format set in WordPress, all dates are saved as Ymd to allow comparisons in the database.
+	 *
 	 * If min/max is/are provided in the field arguments, the function also checks if the value is within the allowed boundaries.
 	 *
 	 * @since 0.5.0
@@ -273,10 +283,16 @@ class Validator {
 	 * @return string|array the validated value or an error array
 	 */
 	public static function date( $value, $field ) {
-		$timestamp = mysql2date( 'U', $value );
+		$timestamp = strtotime( $value );
+		$timestamp_min = isset( $field->more_attributes['min'] ) ? strtotime( $field->more_attributes['min'] ) : null;
+		$timestamp_max = isset( $field->more_attributes['max'] ) ? strtotime( $field->more_attributes['max'] ) : null;
 
-		if ( ! isset( $field->more_attributes['min'] ) || $timestamp >= ( $timestamp_min = mysql2date( 'U', $field->more_attributes['min'] ) ) ) {
-			if ( ! isset( $field->more_attributes['max'] ) || $timestamp <= ( $timestamp_max = mysql2date( 'U', $field->more_attributes['max'] ) ) ) {
+		$value = \LaL_WP_Plugin_Util::format( $timestamp, 'date', 'input' );
+		$value_min = $timestamp_min !== null ? \LaL_WP_Plugin_Util::format( $timestamp_min, 'date', 'input' ) : null;
+		$value_max = $timestamp_max !== null ? \LaL_WP_Plugin_Util::format( $timestamp_max, 'date', 'input' ) : null;
+
+		if ( $value_min === null || $value >= $value_min ) {
+			if ( $value_max === null || $value <= $value_max ) {
 				return $value;
 			}
 
@@ -289,6 +305,8 @@ class Validator {
 	/**
 	 * Validates a time string.
 	 *
+	 * Although they are displayed in the time format set in WordPress, all dates are saved as His to allow comparisons in the database.
+	 *
 	 * If min/max is/are provided in the field arguments, the function also checks if the value is within the allowed boundaries.
 	 *
 	 * @since 0.5.0
@@ -297,10 +315,16 @@ class Validator {
 	 * @return string|array the validated value or an error array
 	 */
 	public static function time( $value, $field ) {
-		$timestamp = mysql2date( 'U', $value );
+		$timestamp = strtotime( $value );
+		$timestamp_min = isset( $field->more_attributes['min'] ) ? strtotime( $field->more_attributes['min'] ) : null;
+		$timestamp_max = isset( $field->more_attributes['max'] ) ? strtotime( $field->more_attributes['max'] ) : null;
 
-		if ( ! isset( $field->more_attributes['min'] ) || $timestamp >= ( $timestamp_min = mysql2date( 'U', $field->more_attributes['min'] ) ) ) {
-			if ( ! isset( $field->more_attributes['max'] ) || $timestamp <= ( $timestamp_max = mysql2date( 'U', $field->more_attributes['max'] ) ) ) {
+		$value = \LaL_WP_Plugin_Util::format( $timestamp, 'time', 'input' );
+		$value_min = $timestamp_min !== null ? \LaL_WP_Plugin_Util::format( $timestamp_min, 'time', 'input' ) : null;
+		$value_max = $timestamp_max !== null ? \LaL_WP_Plugin_Util::format( $timestamp_max, 'time', 'input' ) : null;
+
+		if ( $value_min === null || $value >= $value_min ) {
+			if ( $value_max === null || $value <= $value_max ) {
 				return $value;
 			}
 

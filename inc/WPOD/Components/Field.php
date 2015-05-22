@@ -221,8 +221,6 @@ class Field extends ComponentBase {
 
 						break;
 					default:
-						$atts = array_merge( $atts, array( 'value' => $option ) );
-
 						$type = $this->args['type'];
 						if ( in_array( $type, array( 'datetime', 'date', 'time' ) ) ) {
 							if ( ! isset( $atts['class'] ) ) {
@@ -232,8 +230,14 @@ class Field extends ComponentBase {
 							}
 							$atts['class'] .= 'dtp-' . $type;
 
+							if ( ! empty( $option ) ) {
+								$option = \LaL_WP_Plugin_Util::format( strtotime( $option ), $type, 'output' );
+							}
+
 							$type = 'text';
 						}
+
+						$atts['value'] = $option;
 
 						$additional_output = '';
 
