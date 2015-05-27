@@ -27,8 +27,8 @@
   },
   "require": {
     "composer/installers": "~1.0",
-    "xrstf/composer-php52": "^1.0.17",
-    "felixarntz/leavesandlove-wp-plugin-util": "~1.1.3"
+    "xrstf/composer-php52": "~1.0",
+    "felixarntz/leavesandlove-wp-plugin-util": "~1.5.0"
   },
   "scripts": {
     "post-install-cmd": [

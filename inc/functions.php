@@ -26,7 +26,7 @@ function wpod_get_options( $tab_slug ) {
 		$options = array();
 	}
 
-	$fields = WPOD\Framework::instance()->query( array(
+	$fields = WPOD\App::instance()->query( array(
 		'type'          => 'field',
 		'parent_slug'   => $tab_slug,
 		'parent_type'   => 'tab',
@@ -58,7 +58,7 @@ function wpod_get_option( $tab_slug, $field_slug ) {
 		return $options[ $field_slug ];
 	}
 
-	$field = WPOD\Framework::instance()->query( array(
+	$field = WPOD\App::instance()->query( array(
 		'slug'          => $field_slug,
 		'type'          => 'field',
 		'parent_slug'   => $tab_slug,

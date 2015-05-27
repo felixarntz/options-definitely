@@ -22,59 +22,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-define( 'WPOD_NAME', 'Options, Definitely' );
-define( 'WPOD_VERSION', '0.5.0' );
-define( 'WPOD_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
-define( 'WPOD_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
+if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload_52.php' ) ) {
 
-/**
- * Initializes the plugin.
- *
- * The functions.php file of the plugin is loaded.
- * Afterwards the WPOD\Framework class is instantiated to initialize the plugin.
- *
- * @internal
- * @since 0.5.0
- */
-function wpod_init() {
-	require_once WPOD_PATH . '/inc/functions.php';
+	require_once dirname( __FILE__ ) . '/vendor/autoload_52.php';
 
-	\WPOD\Framework::instance();
+	\LaL_WP_Plugin_Loader::load_plugin( array(
+		'slug'				=> 'options-definitely',
+		'name'				=> 'Options, Definitely',
+		'version'			=> '0.5.0',
+		'main_file'			=> __FILE__,
+		'namespace'			=> 'WPOD',
+		'textdomain'		=> 'wpod',
+		'autoload_files'	=> array( 'inc/functions.php' ),
+	), array(
+		'phpversion'	=> '5.3.0',
+		'wpversion'		=> '4.0',
+	) );
+
 }
-
-/**
- * Checks plugin requirements and initialized the plugin if possible.
- *
- * It is checked whether the Standard PHP Library function spl_autoload_register() is available.
- * If so, the autoload file is included and the plugin utility class is instantiated.
- * The utility class will then take care of checking PHP and WordPress version requirements of the plugin
- * and, if everything is alright, will hook the wpod_init() function into the 'plugins_loaded' action.
- *
- * If any requirement is not met, the utility class will deactivate the plugin and show an admin notice.
- *
- * @internal
- * @since 0.5.0
- */
-function wpod_maybe_init() {
-	$spl_available = function_exists( 'spl_autoload_register' );
-
-	if ( $spl_available && file_exists( WPOD_PATH . '/vendor/autoload_52.php' ) ) {
-		require_once WPOD_PATH . '/vendor/autoload_52.php';
-	} elseif ( file_exists( WPOD_PATH . '/vendor/felixarntz/leavesandlove-wp-plugin-util/leavesandlove-wp-plugin-util.php' ) ) {
-		require_once WPOD_PATH . '/vendor/felixarntz/leavesandlove-wp-plugin-util/leavesandlove-wp-plugin-util.php';
-	}
-
-	if ( class_exists( 'LaL_WP_Plugin_Util' ) ) {
-		$plugin = LaL_WP_Plugin_Util::get( 'wpod', array(
-			'name'			=> WPOD_NAME,
-			'version'		=> WPOD_VERSION,
-			'required_wp'	=> '4.0',
-			'required_php'	=> '5.3.0',
-			'main_file'		=> __FILE__,
-			'textdomain'	=> 'wpod',
-		) );
-
-		$plugin->maybe_init( 'wpod_init', $spl_available );
-	}
-}
-wpod_maybe_init();

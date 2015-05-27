@@ -51,7 +51,7 @@ class Tab extends ComponentBase {
 	 * @since 0.5.0
 	 */
 	public function register() {
-		$sections = \WPOD\Framework::instance()->query( array(
+		$sections = \WPOD\App::instance()->query( array(
 			'type'			=> 'section',
 			'parent_slug'	=> $this->slug,
 			'parent_type'	=> 'tab',
@@ -87,7 +87,7 @@ class Tab extends ComponentBase {
 			echo '<p class="description">' . $this->args['description'] . '</p>';
 		}
 
-		$sections = \WPOD\Framework::instance()->query( array(
+		$sections = \WPOD\App::instance()->query( array(
 			'type'			=> 'section',
 			'parent_slug'	=> $this->slug,
 			'parent_type'	=> 'tab',
@@ -103,7 +103,7 @@ class Tab extends ComponentBase {
 
 			$form_atts = apply_filters( 'wpod_form_atts', $form_atts, $this );
 
-			echo '<form' . \LaL_WP_Plugin_Util::make_html_attributes( $form_atts, false, false ) . '>';
+			echo '<form' . \WPOD\Util::make_html_attributes( $form_atts, false, false ) . '>';
 
 			if ( 'draggable' == $this->args['mode'] ) {
 				wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
@@ -130,7 +130,7 @@ class Tab extends ComponentBase {
 		} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
 			call_user_func( $this->args['callback'] );
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for tab %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->real_slug ), '0.5.0' );
+			\WPOD\App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for tab %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->real_slug ), '0.5.0' );
 		}
 
 		if ( 'draggable' == $this->args['mode'] ) {
@@ -178,7 +178,7 @@ class Tab extends ComponentBase {
 
 		$errors = array();
 
-		$fields = \WPOD\Framework::instance()->query( array(
+		$fields = \WPOD\App::instance()->query( array(
 			'type'			=> 'field',
 			'parent_slug'	=> $this->slug,
 			'parent_type'	=> 'tab',
@@ -244,7 +244,7 @@ class Tab extends ComponentBase {
 			$options = array();
 		}
 
-		$fields = WPOD\Framework::instance()->query( array(
+		$fields = WPOD\App::instance()->query( array(
 			'type'			=> 'field',
 			'parent_slug'	=> $this->slug,
 			'parent_type'	=> 'tab',

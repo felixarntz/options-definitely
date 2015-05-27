@@ -117,8 +117,8 @@ abstract class ComponentBase {
 	 * @since 0.5.0
 	 */
 	public function validate() {
-		$this->args = \LaL_WP_Plugin_Util::parse_args( $this->args, $this->get_defaults(), true );
-		$types = \WPOD\Framework::instance()->get_type_whitelist();
+		$this->args = \WPOD\Util::parse_args( $this->args, $this->get_defaults(), true );
+		$types = \WPOD\App::instance()->get_type_whitelist();
 
 		foreach ( $types as $type ) {
 			$t = $type . 's';

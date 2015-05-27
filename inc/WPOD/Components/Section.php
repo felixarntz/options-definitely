@@ -69,7 +69,7 @@ class Section extends ComponentBase {
 			echo '<p class="description">' . $this->args['description'] . '</p>';
 		}
 
-		$fields = \WPOD\Framework::instance()->query( array(
+		$fields = \WPOD\App::instance()->query( array(
 			'type'			=> 'field',
 			'parent_slug'	=> $this->slug,
 			'parent_type'	=> 'section',
@@ -81,7 +81,7 @@ class Section extends ComponentBase {
 			);
 			$table_atts = apply_filters( 'wpod_table_atts', $table_atts, $this );
 
-			echo '<table' . \LaL_WP_Plugin_Util::make_html_attributes( $table_atts, false, false ) . '>';
+			echo '<table' . \WPOD\Util::make_html_attributes( $table_atts, false, false ) . '>';
 
 			do_settings_fields( $this->parent, $this->real_slug );
 
@@ -89,7 +89,7 @@ class Section extends ComponentBase {
 		} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
 			call_user_func( $this->args['callback'] );
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no fields to display for section %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->real_slug ), '0.5.0' );
+			\WPOD\App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no fields to display for section %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->real_slug ), '0.5.0' );
 		}
 
 		/**

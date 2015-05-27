@@ -42,7 +42,7 @@ class Page extends ComponentBase {
 	 * @return string the page hook of this page
 	 */
 	public function add_to_menu() {
-		$menu = \WPOD\Framework::instance()->query( array(
+		$menu = \WPOD\App::instance()->query( array(
 			'slug'			=> $this->parent,
 			'type'			=> 'menu',
 		), true );
@@ -50,7 +50,7 @@ class Page extends ComponentBase {
 		if ( false === $menu->added ) {
 			$this->page_hook = add_menu_page( $this->args['title'], $menu->label, $this->args['capability'], $this->real_slug, array( $this, 'render' ), $menu->icon, $menu->position );
 
-			\WPOD\Framework::instance()->update( $menu->slug, 'menu', array(
+			\WPOD\App::instance()->update( $menu->slug, 'menu', array(
 				'added'			=> true,
 				'subslug'		=> $this->real_slug,
 				'sublabel'		=> $this->args['label'],
@@ -64,7 +64,7 @@ class Page extends ComponentBase {
 				if ( isset( $submenu[ $menu->subslug ] ) ) {
 					$submenu[ $menu->subslug ][0][0] = $menu->sublabel;
 
-					\WPOD\Framework::instance()->update( $menu->slug, 'menu', array(
+					\WPOD\App::instance()->update( $menu->slug, 'menu', array(
 						'sublabel'		=> true,
 					) );
 				}
@@ -93,7 +93,7 @@ class Page extends ComponentBase {
 			echo '<p class="description">' . $this->args['description'] . '</p>';
 		}
 
-		$tabs = \WPOD\Framework::instance()->query( array(
+		$tabs = \WPOD\App::instance()->query( array(
 			'type'				=> 'tab',
 			'parent_slug'		=> $this->slug,
 			'parent_type'		=> 'page',
@@ -122,7 +122,7 @@ class Page extends ComponentBase {
 			}
 			$current_tab->render();
 		} else {
-			\LaL_WP_Plugin_Util::get( 'options-definitely' )->doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the page %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->real_slug ), '0.5.0' );
+			\WPOD\App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the page %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->real_slug ), '0.5.0' );
 		}
 
 		do_action( 'wpod_page_after', $this->real_slug, $this->args, $this->parent );
@@ -173,7 +173,7 @@ class Page extends ComponentBase {
 		}
 
 		foreach ( $this->args['help']['tabs'] as $slug => &$tab ) {
-			$tab = \LaL_WP_Plugin_Util::parse_args( $tab, array(
+			$tab = \WPOD\Util::parse_args( $tab, array(
 				'title'			=> __( 'Help tab title', 'wpod' ),
 				'content'		=> '',
 				'callback'		=> false,

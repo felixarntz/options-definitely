@@ -66,14 +66,14 @@ class Admin {
 	 * @since 0.5.0
 	 */
 	public function register_settings() {
-		$tabs = \WPOD\Framework::instance()->query( array(
+		$tabs = \WPOD\App::instance()->query( array(
 			'type'				=> 'tab',
 		) );
 
 		foreach ( $tabs as $tab ) {
 			$tab->register();
 
-			$sections = \WPOD\Framework::instance()->query( array(
+			$sections = \WPOD\App::instance()->query( array(
 				'type'				=> 'section',
 				'parent_slug'		=> $tab->slug,
 				'parent_type'		=> 'tab',
@@ -82,7 +82,7 @@ class Admin {
 			foreach ( $sections as $section ) {
 				$section->register( $tab );
 
-				$fields = \WPOD\Framework::instance()->query( array(
+				$fields = \WPOD\App::instance()->query( array(
 					'type'				=> 'field',
 					'parent_slug'		=> $section->slug,
 					'parent_type'		=> 'section',
@@ -109,13 +109,13 @@ class Admin {
 	 * @since 0.5.0
 	 */
 	public function create_admin_menu() {
-		$menus = \WPOD\Framework::instance()->query( array(
+		$menus = \WPOD\App::instance()->query( array(
 			'type'				=> 'menu',
 		) );
 
 		foreach ( $menus as $menu ) {
 			if ( ( $menu_slug = $menu->is_already_added() ) ) {
-				\WPOD\Framework::instance()->update( $menu->slug, 'menu', array(
+				\WPOD\App::instance()->update( $menu->slug, 'menu', array(
 					'added'			=> true,
 					'subslug'		=> $menu_slug,
 					'sublabel'		=> true,
@@ -123,7 +123,7 @@ class Admin {
 			}
 		}
 
-		$pages = \WPOD\Framework::instance()->query( array(
+		$pages = \WPOD\App::instance()->query( array(
 			'type'				=> 'page',
 		) );
 
@@ -152,7 +152,7 @@ class Admin {
 			$locale = str_replace( '_', '-', get_locale() );
 			$language = substr( $locale, 0, 2 );
 
-			$fields = \WPOD\Framework::instance()->query( array(
+			$fields = \WPOD\App::instance()->query( array(
 				'type'				=> 'field',
 				'parent_slug'		=> $currents['tab']->slug,
 				'parent_type'		=> 'tab',
@@ -190,19 +190,19 @@ class Admin {
 				wp_enqueue_script( 'postbox' );
 			}
 
-			wp_enqueue_style( 'select2', WPOD_URL . '/assets/third-party/select2/select2.css', array(), false );
-			wp_enqueue_script( 'select2', WPOD_URL . '/assets/third-party/select2/select2.min.js', array( 'jquery' ), false, true );
-			if ( file_exists( WPOD_PATH . '/assets/third-party/select2/select2_locale_' . $locale . '.js' ) ) {
-				wp_enqueue_script( 'select2-locale', WPOD_URL . '/assets/third-party/select2/select2_locale_' . $locale . '.js', array( 'select2' ), false, true );
-			} elseif( file_exists( WPOD_PATH . '/assets/third-party/select2/select2_locale_' . $language . '.js' ) ) {
-				wp_enqueue_script( 'select2-locale', WPOD_URL . '/assets/third-party/select2/select2_locale_' . $language . '.js', array( 'select2' ), false, true );
+			wp_enqueue_style( 'select2', \WPOD\App::get_url( '/assets/third-party/select2/select2.css' ), array(), false );
+			wp_enqueue_script( 'select2', \WPOD\App::get_url( '/assets/third-party/select2/select2.min.js' ), array( 'jquery' ), false, true );
+			if ( file_exists( \WPOD\App::get_path( '/assets/third-party/select2/select2_locale_' . $locale . '.js' ) ) ) {
+				wp_enqueue_script( 'select2-locale', \WPOD\App::get_url( '/assets/third-party/select2/select2_locale_' . $locale . '.js' ), array( 'select2' ), false, true );
+			} elseif( file_exists( \WPOD\App::get_path( '/assets/third-party/select2/select2_locale_' . $language . '.js' ) ) ) {
+				wp_enqueue_script( 'select2-locale', \WPOD\App::get_url( '/assets/third-party/select2/select2_locale_' . $language . '.js' ), array( 'select2' ), false, true );
 			}
 
-			wp_enqueue_style( 'datetimepicker', WPOD_URL . '/assets/third-party/datetimepicker/jquery.datetimepicker.css', array(), false );
-			wp_enqueue_script( 'datetimepicker', WPOD_URL . '/assets/third-party/datetimepicker/jquery.datetimepicker.js', array( 'jquery' ), false, true );
+			wp_enqueue_style( 'datetimepicker', \WPOD\App::get_url( '/assets/third-party/datetimepicker/jquery.datetimepicker.css' ), array(), false );
+			wp_enqueue_script( 'datetimepicker', \WPOD\App::get_url( '/assets/third-party/datetimepicker/jquery.datetimepicker.js' ), array( 'jquery' ), false, true );
 
-			wp_enqueue_style( 'wpod-admin', WPOD_URL . '/assets/admin.min.css', array(), WPOD_VERSION );
-			wp_enqueue_script( 'wpod-admin', WPOD_URL . '/assets/admin.min.js', array( 'select2', 'datetimepicker' ), WPOD_VERSION, true );
+			wp_enqueue_style( 'wpod-admin', \WPOD\App::get_url( '/assets/admin.min.css' ), array(), \WPOD\App::get_info( 'version' ) );
+			wp_enqueue_script( 'wpod-admin', \WPOD\App::get_url( '/assets/admin.min.js' ), array( 'select2', 'datetimepicker' ), \WPOD\App::get_info( 'version' ), true );
 			wp_localize_script( 'wpod-admin', '_wpod_admin', array(
 				'locale'						=> $locale,
 				'language'						=> $language,
@@ -234,7 +234,7 @@ class Admin {
 	public function get_current( $type = '', $page = null ) {
 		if ( isset( $_GET['page'] ) ) {
 			if ( null == $page ) {
-				$page = \WPOD\Framework::instance()->query( array(
+				$page = \WPOD\App::instance()->query( array(
 					'slug'				=> $_GET['page'],
 					'type'				=> 'page',
 				), true );
@@ -255,7 +255,7 @@ class Admin {
 					$args['slug'] = $_GET['tab'];
 				}
 
-				$tab = \WPOD\Framework::instance()->query( $args, true );
+				$tab = \WPOD\App::instance()->query( $args, true );
 
 				if ( $tab ) {
 					if ( 'tab' == $type ) {
