@@ -22,9 +22,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload_52.php' ) ) {
+if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
 
-	require_once dirname( __FILE__ ) . '/vendor/autoload_52.php';
+	require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 
 	\LaL_WP_Plugin_Loader::load_plugin( array(
 		'slug'				=> 'options-definitely',
@@ -35,8 +35,8 @@ if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload_52.php' ) ) {
 		'textdomain'		=> 'wpod',
 		'autoload_files'	=> array( 'inc/functions.php' ),
 	), array(
-		'phpversion'	=> '5.3.0',
-		'wpversion'		=> '4.0',
+		'phpversion'		=> '5.3.0',
+		'wpversion'			=> '4.0',
 	) );
 
 }
