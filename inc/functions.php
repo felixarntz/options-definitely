@@ -73,32 +73,40 @@ function wpod_get_option( $tab_slug, $field_slug ) {
 }
 
 /**
- * Checks if a specific WordPress attachment is an image.
+ * Checks whether a specific WordPress attachment is a valid file type.
  *
- * The function checks if the post mime type of the attachment is an image mime type.
+ * The second parameter can be a file extension or a file type to check for (or an array containing multiple).
  *
  * @since 0.5.0
  * @param int $attachment_id the ID of the attachment
+ * @param string|array $desired_types allowed file extensions / types (or 'all' to allow everything)
  * @return bool true if the attachment is an image, otherwise false
  */
-function wpod_is_image( $attachment_id ) {
-	$mime = get_post_mime_type( $attachment_id );
+function wpod_is_valid_file_type( $attachment_id, $desired_types = 'all' ) {
+	$filename = get_attached_file( $attachment_id );
+	if ( $filename ) {
+		$extension = wp_check_filetype( get_attached_file( $attachment_id ) );
+		$extension = $extension['ext'];
+		if ( $extension ) {
+			if ( 'all' == $desired_types || ! $desired_types ) {
+				return true;
+			}
 
-	$mime_types = get_allowed_mime_types();
-	$image_types = array(
-		'jpg|jpeg|jpe',
-		'gif',
-		'png',
-		'bmp',
-		'tif|tiff',
-		'ico',
-	);
-	$mime_types = array_intersect_key( $mime_types, array_flip( $image_types ) );
+			if ( ! is_array( $desired_types ) ) {
+				$desired_types = array( $desired_types );
+			}
 
-	if ( in_array( $mime, $mime_types ) ) {
-		return true;
+			if ( in_array( strtolower( $extension ), $desired_types ) ) {
+				return true;
+			}
+
+			$type = wp_ext2type( $extension );
+
+			if ( $type !== null && in_array( $type, $desired_types ) ) {
+				return true;
+			}
+		}
 	}
-
 	return false;
 }
 

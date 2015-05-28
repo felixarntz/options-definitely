@@ -368,20 +368,7 @@ class Validator {
 		$value = absint( $value );
 
 		if ( get_post_type( $value ) == 'attachment' ) {
-			$mime = get_post_mime_type( $value );
-
-			$mime_types = get_allowed_mime_types();
-
-			if ( 'all' != $desired_types ) {
-				if ( is_string( $desired_types ) && isset( $mime_types[ $desired_types ] ) ) {
-					$mime_value = $mime_types[ $desired_types ];
-					$mime_types = array( $desired_types => $mime_value );
-				} elseif ( is_array( $desired_types ) ) {
-					$mime_types = array_intersect_key( $mime_types, array_flip( $desired_types ) );
-				}
-			}
-
-			if ( in_array( $mime, $mime_types ) ) {
+			if ( wpod_is_valid_file_type( $value, $desired_types ) ) {
 				return $value;
 			}
 
@@ -404,15 +391,8 @@ class Validator {
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return int|array the validated value or an error array
 	 */
-	public static function image( $value, $field ) {
-		return self::media( $value, $field, array(
-			'jpg|jpeg|jpe',
-			'gif',
-			'png',
-			'bmp',
-			'tif|tiff',
-			'ico',
-		), __( 'It has to be an image file.', 'wpod' ) );
+	public static function media_image( $value, $field ) {
+		return self::media( $value, $field, 'image', __( 'It has to be an image file.', 'wpod' ) );
 	}
 
 	/**
@@ -424,22 +404,8 @@ class Validator {
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return int|array the validated value or an error array
 	 */
-	public static function video( $value, $field ) {
-		return self::media( $value, $field, array(
-			'asf|asx',
-			'wmv',
-			'wmx',
-			'wm',
-			'avi',
-			'divx',
-			'flv',
-			'mov|qt',
-			'mpeg|mpg|mpe',
-			'mp4|m4v',
-			'ogv',
-			'webm',
-			'mkv',
-		), __( 'It has to be a video file.', 'wpod' ) );
+	public static function media_video( $value, $field ) {
+		return self::media( $value, $field, 'video', __( 'It has to be a video file.', 'wpod' ) );
 	}
 
 	/**
@@ -451,17 +417,60 @@ class Validator {
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return int|array the validated value or an error array
 	 */
-	public static function audio( $value, $field ) {
-		return self::media( $value, $field, array(
-			'mp3|m4a|m4b',
-			'ra|ram',
-			'wav',
-			'ogg|oga',
-			'mid|midi',
-			'wma',
-			'wax',
-			'mka',
-		), __( 'It has to be an audio file.', 'wpod' ) );
+	public static function media_audio( $value, $field ) {
+		return self::media( $value, $field, 'audio', __( 'It has to be an audio file.', 'wpod' ) );
+	}
+
+	/**
+	 * Validates a WordPress document media ID.
+	 *
+	 * @since 0.5.0
+	 * @see WPOD\Validator::media()
+	 * @param string|int $value the field value to validate
+	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
+	 * @return int|array the validated value or an error array
+	 */
+	public static function media_document( $value, $field ) {
+		return self::media( $value, $field, 'document', __( 'It has to be a document file.', 'wpod' ) );
+	}
+
+	/**
+	 * Validates a WordPress spreadsheet media ID.
+	 *
+	 * @since 0.5.0
+	 * @see WPOD\Validator::media()
+	 * @param string|int $value the field value to validate
+	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
+	 * @return int|array the validated value or an error array
+	 */
+	public static function media_spreadsheet( $value, $field ) {
+		return self::media( $value, $field, 'spreadsheet', __( 'It has to be a spreadsheet file.', 'wpod' ) );
+	}
+
+	/**
+	 * Validates a WordPress interactive media ID.
+	 *
+	 * @since 0.5.0
+	 * @see WPOD\Validator::media()
+	 * @param string|int $value the field value to validate
+	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
+	 * @return int|array the validated value or an error array
+	 */
+	public static function media_interactive( $value, $field ) {
+		return self::media( $value, $field, 'interactive', __( 'It has to be an interactive file.', 'wpod' ) );
+	}
+
+	/**
+	 * Validates a WordPress plain text media ID.
+	 *
+	 * @since 0.5.0
+	 * @see WPOD\Validator::media()
+	 * @param string|int $value the field value to validate
+	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
+	 * @return int|array the validated value or an error array
+	 */
+	public static function media_text( $value, $field ) {
+		return self::media( $value, $field, 'text', __( 'It has to be a plain text file.', 'wpod' ) );
 	}
 
 	/**
@@ -473,14 +482,21 @@ class Validator {
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return int|array the validated value or an error array
 	 */
-	public static function archive( $value, $field ) {
-		return self::media( $value, $field, array(
-			'tar',
-			'zip',
-			'gz|gzip',
-			'rar',
-			'7z',
-		), __( 'It has to be a file archive.', 'wpod' ) );
+	public static function media_archive( $value, $field ) {
+		return self::media( $value, $field, 'archive', __( 'It has to be a file archive.', 'wpod' ) );
+	}
+
+	/**
+	 * Validates a WordPress code media ID.
+	 *
+	 * @since 0.5.0
+	 * @see WPOD\Validator::media()
+	 * @param string|int $value the field value to validate
+	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
+	 * @return int|array the validated value or an error array
+	 */
+	public static function media_code( $value, $field ) {
+		return self::media( $value, $field, 'code', __( 'It has to be a code file.', 'wpod' ) );
 	}
 
 	/**
@@ -492,7 +508,7 @@ class Validator {
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return int|array the validated value or an error array
 	 */
-	public static function favicon( $value, $field ) {
+	public static function media_favicon( $value, $field ) {
 		return self::media( $value, $field, 'ico', __( 'It has to be a favicon.', 'wpod' ) );
 	}
 
@@ -505,7 +521,7 @@ class Validator {
 	 * @param WPOD\Components\ComponentBase $field the field component `$value` belongs to
 	 * @return int|array the validated value or an error array
 	 */
-	public static function pdf( $value, $field ) {
+	public static function media_pdf( $value, $field ) {
 		return self::media( $value, $field, 'pdf', __( 'It has to be a PDF file.', 'wpod' ) );
 	}
 

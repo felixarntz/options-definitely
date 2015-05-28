@@ -176,7 +176,9 @@ jQuery(document).ready(function($) {
 			wp.media.editor.send.attachment = function( props,attachment ) {
 				if ( _custom_media ) {
 					$( '#' + search_id ).val( attachment.id );
-					$( '#' + search_id + '-media-title' ).val( attachment.title );
+					var name = attachment.url.split( '/' );
+					name = name[ name.length - 1 ];
+					$( '#' + search_id + '-media-title' ).val( name );
 					if ( attachment.type === 'image' ) {
 						if ( $( '#' + search_id + '-media-image' ).length > 0 ) {
 							$( '#' + search_id + '-media-image' ).attr( 'src', attachment.url );

@@ -187,12 +187,12 @@ class Field extends ComponentBase {
 
 						echo '<input type="hidden"' . \WPOD\Util::make_html_attributes( $atts, false, false ) . ' />';
 
-						echo '<input type="text" id="' . $atts['id'] . '-media-title" value="' . ( $option ? get_the_title( $option ) : '' ) . '" />';
+						echo '<input type="text" id="' . $atts['id'] . '-media-title" value="' . ( $option ? basename( get_attached_file( $option ) ) : '' ) . '" />';
 
 						echo '<a href="#" id="' . $atts['id'] . '-media-button" class="button media-button">' . __( 'Choose / Upload a file', 'wpod' ) . '</a>';
 
 						if ( $option ) {
-							if ( wpod_is_image( $option ) ) {
+							if ( wpod_is_valid_file_type( $option, 'image' ) ) {
 								echo '<img id="' . $atts['id'] . '-media-image" class="media-image" src="' . wp_get_attachment_url( $option ) . '" />';
 							} else {
 								echo '<a id="' . $atts['id'] . '-media-link" class="media-link" href="' . wp_get_attachment_url( $option ) . '" target="_blank">' . __( 'Open file', 'wpod' ) . '</a>';
@@ -418,12 +418,12 @@ class Field extends ComponentBase {
 
 						echo '<input type="hidden"' . \WPOD\Util::make_html_attributes( $atts, false, false ) . ' />';
 
-						echo '<input type="text" id="' . $atts['id'] . '-media-title" value="' . ( $options[ $slug ] ? get_the_title( $options[ $slug ] ) : '' ) . '" placeholder="' . $field['title'] . '" />';
+						echo '<input type="text" id="' . $atts['id'] . '-media-title" value="' . ( $options[ $slug ] ? basename( get_attached_file( $options[ $slug ] ) ) : '' ) . '" placeholder="' . $field['title'] . '" />';
 
 						echo '<a href="#" id="' . $atts['id'] . '-media-button" class="button media-button">' . __( 'Choose / Upload a file', 'wpod' ) . '</a>';
 
 						if ( $options[ $slug ] ) {
-							if ( wpod_is_image( $options[ $slug ] ) ) {
+							if ( wpod_is_valid_file_type( $options[ $slug ], 'image' ) ) {
 								echo '<img id="' . $atts['id'] . '-media-image" class="media-image" src="' . wp_get_attachment_url( $options[ $slug ] ) . '" />';
 							} else {
 								echo '<a id="' . $atts['id'] . '-media-link" class="media-link" href="' . wp_get_attachment_url( $options[ $slug ] ) . '" target="_blank">' . __( 'Open file', 'wpod' ) . '</a>';
@@ -650,6 +650,10 @@ class Field extends ComponentBase {
 				if ( is_string( $this->args['type'] ) && method_exists( '\\WPOD\\Validator', $this->args['type'] ) ) {
 					$this->args['validate'] = array( '\\WPOD\\Validator', $this->args['type'] );
 				}
+			} else {
+				if ( is_string( $this->args['validate'] ) && ! function_exists( $this->args['validate'] ) && method_exists( '\\WPOD\\Validator', $this->args['validate'] ) ) {
+					$this->args['validate'] = array( '\\WPOD\\Validator', $this->args['validate'] );
+				}
 			}
 		}
 
@@ -728,6 +732,10 @@ class Field extends ComponentBase {
 				if ( ! isset( $field['validate'] ) ) {
 					if ( is_string( $field['type'] ) && method_exists( '\\WPOD\\Validator', $field['type'] ) ) {
 						$field['validate'] = array( '\\WPOD\\Validator', $field['type'] );
+					}
+				} else {
+					if ( is_string( $field['validate'] ) && ! function_exists( $field['validate'] ) && method_exists( '\\WPOD\\Validator', $field['validate'] ) ) {
+						$field['validate'] = array( '\\WPOD\\Validator', $field['validate'] );
 					}
 				}
 			}
