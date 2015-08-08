@@ -2,13 +2,8 @@
 module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-		banner: '/*!\n' +
-				' * <%= pkg.pluginName %> - Version <%= pkg.version %>\n' +
-				' * \n' +
-				' * <%= pkg.author.name %> <<%= pkg.author.email %>>\n' +
-				' */',
 		pluginheader: 	'/*\n' +
-						'Plugin Name: <%= pkg.pluginName %>\n' +
+						'Plugin Name: Options, Definitely\n' +
 						'Plugin URI: <%= pkg.homepage %>\n' +
 						'Description: <%= pkg.description %>\n' +
 						'Version: <%= pkg.version %>\n' +
@@ -27,114 +22,9 @@ module.exports = function(grunt) {
 					' */',
 
 		clean: {
-			admin: [
-				'assets/admin.css',
-				'assets/admin.min.css',
-				'assets/admin.min.js'
-			],
 			translation: [
 				'languages/wpod.pot'
 			]
-		},
-
-		jshint: {
-			options: {
-				boss: true,
-				curly: true,
-				eqeqeq: true,
-				immed: true,
-				noarg: true,
-				quotmark: "single",
-				undef: true,
-				unused: true,
-				browser: true,
-				globals: {
-					jQuery: false,
-					console: false,
-					wp: false,
-					_wpod_admin: false,
-					ajaxurl: false
-				}
-			},
-			admin: {
-				src: [
-					'assets/admin.js'
-				]
-			}
-		},
-
-		uglify: {
-			options: {
-				preserveComments: 'some',
-				report: 'min'
-			},
-			admin: {
-				src: 'assets/admin.js',
-				dest: 'assets/admin.min.js'
-			}
-		},
-
-		recess: {
-			options: {
-				compile: true,
-				compress: false,
-				noIDS: true,
-				noJSPrefix: true,
-				noOverqualifying: false,
-				noUnderscores: true,
-				noUniversalSelectors: false,
-				strictPropertyOrder: true,
-				zeroUnits: true
-			},
-			admin: {
-				files: {
-					'assets/admin.css': 'assets/admin.less'
-				}
-			}
-		},
-
-		autoprefixer: {
-			options: {
-				browsers: [
-					'Android 2.3',
-					'Android >= 4',
-					'Chrome >= 20',
-					'Firefox >= 24',
-					'Explorer >= 8',
-					'iOS >= 6',
-					'Opera >= 12',
-					'Safari >= 6'
-				]
-			},
-			admin: {
-				src: 'assets/admin.css'
-			}
-    	},
-
-		cssmin: {
-			options: {
-				compatibility: 'ie8',
-				keepSpecialComments: '*',
-				noAdvanced: true
-			},
-			admin: {
-				files: {
-					'assets/admin.min.css': 'assets/admin.css'
-				}
-			}
-		},
-
-		usebanner: {
-			options: {
-				position: 'top',
-				banner: '<%= banner %>'
-			},
-			admin: {
-				src: [
-					'assets/admin.min.css',
-					'assets/admin.min.js'
-				]
-			}
 		},
 
 		replace: {
@@ -164,6 +54,7 @@ module.exports = function(grunt) {
 		makepot: {
 			translation: {
 				options: {
+					mainFile: 'options-definitely.php',
 					domainPath: '/languages',
 					exclude: [ 'vendor/.*' ],
 					potComments: 'Copyright (c) 2014-<%= grunt.template.today("yyyy") %> <%= pkg.author.name %>',
@@ -173,7 +64,7 @@ module.exports = function(grunt) {
 						'last-translator': '<%= pkg.author.name %> <<%= pkg.author.email %>>',
 						'project-id-version': '<%= pkg.name %> <%= pkg.version %>',
 						'report-msgid-bugs-to': '<%= pkg.homepage %>',
-						'x-generator': 'grunt-wp-i18n 0.4.5',
+						'x-generator': 'grunt-wp-i18n 0.5.3',
 						'x-poedit-basepath': '.',
 						'x-poedit-language': 'English',
 						'x-poedit-country': 'UNITED STATES',
@@ -191,23 +82,8 @@ module.exports = function(grunt) {
  	});
 
 	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-recess');
-	grunt.loadNpmTasks('grunt-autoprefixer');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	grunt.loadNpmTasks('grunt-banner');
 	grunt.loadNpmTasks('grunt-text-replace');
 	grunt.loadNpmTasks('grunt-wp-i18n');
-
-	grunt.registerTask('admin', [
-		'clean:admin',
-		'jshint:admin',
-		'uglify:admin',
-		'recess:admin',
-		'autoprefixer:admin',
-		'cssmin:admin',
-	]);
 
 	grunt.registerTask('translation', [
 		'clean:translation',
@@ -215,17 +91,15 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask('plugin', [
-		'usebanner',
 		'replace:version',
 		'replace:header'
 	]);
 
 	grunt.registerTask('default', [
-		'admin'
+		'translation'
 	]);
 
 	grunt.registerTask('build', [
-		'admin',
 		'translation',
 		'plugin'
 	]);

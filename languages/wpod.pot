@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: options-definitely 0.5.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/options-definitely/\n"
-"POT-Creation-Date: 2015-05-28 16:56:01+00:00\n"
+"POT-Creation-Date: 2015-08-08 16:35:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,254 +22,76 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/WPOD/Admin.php:212 inc/WPOD/Components/Field.php:198
-#: inc/WPOD/Components/Field.php:429
-msgid "Open file"
-msgstr ""
-
-#: inc/WPOD/App.php:132
-msgid ""
-"The %1$s %2$s already exists. If you want to modify it, please use the "
-"update method."
-msgstr ""
-
-#: inc/WPOD/App.php:135
-msgid "The %1$s %2$s was not provided a parent."
-msgstr ""
-
-#: inc/WPOD/App.php:138 inc/WPOD/App.php:190 inc/WPOD/App.php:234
-msgid "No slug was provided."
-msgstr ""
-
-#: inc/WPOD/App.php:141 inc/WPOD/App.php:193 inc/WPOD/App.php:237
-#: inc/WPOD/App.php:422
-msgid "The type %s is not a valid type for a component."
-msgstr ""
-
-#: inc/WPOD/App.php:144 inc/WPOD/App.php:196 inc/WPOD/App.php:240
-msgid ""
-"The plugin is already initialized. You must perform every modifications "
-"either in the wpod filter or in the wpod_oo action."
-msgstr ""
-
-#: inc/WPOD/App.php:187
-msgid "The %1$s %2$s does not exist. You can instead use the add method to add it."
-msgstr ""
-
-#: inc/WPOD/App.php:231
-msgid "The %1$s %2$s does not exist, so it does not need to be deleted."
-msgstr ""
-
-#: inc/WPOD/App.php:325
+#: inc/WPOD/App.php:155
 msgid "This function should never be called manually."
 msgstr ""
 
-#: inc/WPOD/Components/Field.php:68
+#: inc/WPOD/Components/Field.php:117
+msgid "No value was provided for the required field."
+msgstr ""
+
+#: inc/WPOD/Components/Field.php:148
 msgid ""
-"The field %s has been declared as a repeatable, but it does not contain any "
-"fields."
+"The field type %1$s assigned to the field component %2$s is not a valid "
+"field type."
 msgstr ""
 
-#: inc/WPOD/Components/Field.php:192 inc/WPOD/Components/Field.php:423
-msgid "Choose / Upload a file"
-msgstr ""
-
-#: inc/WPOD/Components/Field.php:262
-msgid ""
-"The type for field %s is not supported. Either specify a supported type or "
-"provide a valid callback function instead."
-msgstr ""
-
-#: inc/WPOD/Components/Field.php:312
-msgid "Add new"
-msgstr ""
-
-#: inc/WPOD/Components/Field.php:347 inc/WPOD/Components/Field.php:350
-msgid "%s."
-msgstr ""
-
-#: inc/WPOD/Components/Field.php:464
-msgid ""
-"The type for field %1$s (part of repeatable %2$s) is not supported. Either "
-"specify a supported type or provide a valid callback function instead."
-msgstr ""
-
-#: inc/WPOD/Components/Field.php:468
-msgid "Remove"
-msgstr ""
-
-#: inc/WPOD/Components/Field.php:744
-msgid "Field placeholder"
-msgstr ""
-
-#: inc/WPOD/Components/Field.php:789
+#: inc/WPOD/Components/Field.php:168
 msgid "Field title"
 msgstr ""
 
-#: inc/WPOD/Components/Menu.php:82
+#: inc/WPOD/Components/Menu.php:105
 msgid "Menu label"
 msgstr ""
 
-#: inc/WPOD/Components/Page.php:125
+#: inc/WPOD/Components/Screen.php:119
 msgid ""
-"There are no tabs to display for the page %s. Either add some or adjust the "
-"required capabilities."
+"There are no tabs to display for the screen %s. Either add some or adjust "
+"the required capabilities."
 msgstr ""
 
-#: inc/WPOD/Components/Page.php:177
+#: inc/WPOD/Components/Screen.php:172
 msgid "Help tab title"
 msgstr ""
 
-#: inc/WPOD/Components/Page.php:194
-msgid "Page title"
+#: inc/WPOD/Components/Screen.php:192
+msgid "Screen title"
 msgstr ""
 
-#: inc/WPOD/Components/Page.php:195
-msgid "Page label"
+#: inc/WPOD/Components/Screen.php:193
+msgid "Screen label"
 msgstr ""
 
-#: inc/WPOD/Components/Section.php:92
+#: inc/WPOD/Components/Section.php:93
 msgid ""
 "There are no fields to display for section %s. Either add some or provide a "
 "valid callback function instead."
 msgstr ""
 
-#: inc/WPOD/Components/Section.php:116
+#: inc/WPOD/Components/Section.php:117
 msgid "Section title"
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:133
+#: inc/WPOD/Components/Tab.php:101
 msgid ""
 "There are no sections to display for tab %s. Either add some or provide a "
 "valid callback function instead."
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:207
+#: inc/WPOD/Components/Tab.php:186
 msgid "Settings successfully saved."
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:210
-msgid "Some errors occured while trying to save the following settings:"
+#: inc/WPOD/Components/Tab.php:189
+msgid "Some errors occurred while trying to save the following settings:"
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:214
-msgid "All other settings not mentioned above were saved successfully."
+#: inc/WPOD/Components/Tab.php:196
+msgid "Other settings were successfully saved."
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:272
+#: inc/WPOD/Components/Tab.php:231
 msgid "Tab title"
-msgstr ""
-
-#: inc/WPOD/Validator.php:48
-msgid "%s is no valid choice for this field."
-msgstr ""
-
-#: inc/WPOD/Validator.php:94
-msgid "The values %s are not valid options for this field."
-msgstr ""
-
-#: inc/WPOD/Validator.php:138
-msgid "The number %1$s is invalid. It must be lower than or equal to %2$s."
-msgstr ""
-
-#: inc/WPOD/Validator.php:141
-msgid "The number %1$s is invalid. It must be greater than or equal to %2$s."
-msgstr ""
-
-#: inc/WPOD/Validator.php:144
-msgid "The number %1$s is invalid since it is not divisible by %2$s."
-msgstr ""
-
-#: inc/WPOD/Validator.php:222
-msgid "%s is not a valid email address."
-msgstr ""
-
-#: inc/WPOD/Validator.php:238
-msgid "%s is not a valid URL."
-msgstr ""
-
-#: inc/WPOD/Validator.php:267 inc/WPOD/Validator.php:299
-msgid "The date %1$s is invalid. It must not occur later than %2$s."
-msgstr ""
-
-#: inc/WPOD/Validator.php:270 inc/WPOD/Validator.php:302
-msgid "The date %1$s is invalid. It must not occur earlier than %2$s."
-msgstr ""
-
-#: inc/WPOD/Validator.php:331
-msgid "The time %1$s is invalid. It must not occur later than %2$s."
-msgstr ""
-
-#: inc/WPOD/Validator.php:334
-msgid "The time %1$s is invalid. It must not occur earlier than %2$s."
-msgstr ""
-
-#: inc/WPOD/Validator.php:351
-msgid "%s is not a valid hexadecimal color."
-msgstr ""
-
-#: inc/WPOD/Validator.php:379
-msgid "The media file with ID %s is neither of the valid formats."
-msgstr ""
-
-#: inc/WPOD/Validator.php:382
-msgid "The post with ID %s is not a WordPress media file."
-msgstr ""
-
-#: inc/WPOD/Validator.php:395
-msgid "It has to be an image file."
-msgstr ""
-
-#: inc/WPOD/Validator.php:408
-msgid "It has to be a video file."
-msgstr ""
-
-#: inc/WPOD/Validator.php:421
-msgid "It has to be an audio file."
-msgstr ""
-
-#: inc/WPOD/Validator.php:434
-msgid "It has to be a document file."
-msgstr ""
-
-#: inc/WPOD/Validator.php:447
-msgid "It has to be a spreadsheet file."
-msgstr ""
-
-#: inc/WPOD/Validator.php:460
-msgid "It has to be an interactive file."
-msgstr ""
-
-#: inc/WPOD/Validator.php:473
-msgid "It has to be a plain text file."
-msgstr ""
-
-#: inc/WPOD/Validator.php:486
-msgid "It has to be a file archive."
-msgstr ""
-
-#: inc/WPOD/Validator.php:499
-msgid "It has to be a code file."
-msgstr ""
-
-#: inc/WPOD/Validator.php:512
-msgid "It has to be a favicon."
-msgstr ""
-
-#: inc/WPOD/Validator.php:525
-msgid "It has to be a PDF file."
-msgstr ""
-
-#: inc/WPOD/Validator.php:591
-msgid "Some errors occurred during validation the repeatable field:"
-msgstr ""
-
-#: inc/WPOD/Validator.php:658
-msgid "The value must not be empty."
-msgstr ""
-
-#: inc/WPOD/Validator.php:672
-msgid "The validation function specified is invalid. It does not exist."
 msgstr ""
 
 #. Plugin Name of the plugin/theme

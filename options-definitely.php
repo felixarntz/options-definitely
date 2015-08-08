@@ -22,21 +22,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
-
+if ( ! class_exists( 'WPOD\App' ) && file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
 	require_once dirname( __FILE__ ) . '/vendor/autoload.php';
-
-	\LaL_WP_Plugin_Loader::load_plugin( array(
-		'slug'				=> 'options-definitely',
-		'name'				=> 'Options, Definitely',
-		'version'			=> '0.5.0',
-		'main_file'			=> __FILE__,
-		'namespace'			=> 'WPOD',
-		'textdomain'		=> 'wpod',
-		'autoload_files'	=> array( 'inc/functions.php' ),
-	), array(
-		'phpversion'		=> '5.3.0',
-		'wpversion'			=> '4.0',
-	) );
-
 }
+
+\LaL_WP_Plugin_Loader::load_plugin( array(
+	'slug'				=> 'options-definitely',
+	'name'				=> 'Options, Definitely',
+	'version'			=> '0.5.0',
+	'main_file'			=> __FILE__,
+	'namespace'			=> 'WPOD',
+	'textdomain'		=> 'wpod',
+), array(
+	'phpversion'		=> '5.3.0',
+	'wpversion'			=> '4.0',
+) );

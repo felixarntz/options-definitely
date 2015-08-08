@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Options, Definitely 0.5.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/options-definitely/\n"
-"POT-Creation-Date: 2015-05-28 16:56:01+00:00\n"
-"PO-Revision-Date: 2015-05-28 18:58+0100\n"
+"POT-Creation-Date: 2015-08-08 15:14:15+00:00\n"
+"PO-Revision-Date: 2015-08-08 18:26+0100\n"
 "Last-Translator: Felix Arntz <felix-arntz@leaves-and-love.net>\n"
 "Language-Team: Felix Arntz <felix-arntz@leaves-and-love.net>\n"
 "Language: de_DE\n"
@@ -22,129 +22,51 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: inc/WPOD/Admin.php:212 inc/WPOD/Components/Field.php:198
-#: inc/WPOD/Components/Field.php:429
-msgid "Open file"
-msgstr "Datei öffnen"
-
-#: inc/WPOD/App.php:132
-msgid ""
-"The %1$s %2$s already exists. If you want to modify it, please use the "
-"update method."
-msgstr ""
-"Das %1$s %2$s ist bereits vorhanden. Um es zu bearbeiten, benutzen Sie bitte "
-"die update-Methode."
-
-#: inc/WPOD/App.php:135
-msgid "The %1$s %2$s was not provided a parent."
-msgstr "Für das %1$s %2$s wurde kein Elternelement angegeben."
-
-#: inc/WPOD/App.php:138 inc/WPOD/App.php:190 inc/WPOD/App.php:234
-msgid "No slug was provided."
-msgstr "Es wurde kein Slug angegeben."
-
-#: inc/WPOD/App.php:141 inc/WPOD/App.php:193 inc/WPOD/App.php:237
-#: inc/WPOD/App.php:422
-msgid "The type %s is not a valid type for a component."
-msgstr "Der Typ %s wird von keiner Komponente unterstützt."
-
-#: inc/WPOD/App.php:144 inc/WPOD/App.php:196 inc/WPOD/App.php:240
-msgid ""
-"The plugin is already initialized. You must perform every modifications "
-"either in the wpod filter or in the wpod_oo action."
-msgstr ""
-"Das Plugin wurde bereits initialisiert. Sie müssen sämtliche Anpassungen "
-"entweder im Rahmen des wpod-Filters oder der wpod_oo-Action vornehmen."
-
-#: inc/WPOD/App.php:187
-msgid ""
-"The %1$s %2$s does not exist. You can instead use the add method to add it."
-msgstr ""
-"Das %1$s %2$s existiert nicht. Verwenden Sie stattdessen die add-Methode, um "
-"es hinzuzufügen."
-
-#: inc/WPOD/App.php:231
-msgid "The %1$s %2$s does not exist, so it does not need to be deleted."
-msgstr ""
-"Das %1$s %2$s existiert nicht, also braucht es nicht gelöscht zu werden."
-
-#: inc/WPOD/App.php:325
+#: inc/WPOD/App.php:155
 msgid "This function should never be called manually."
 msgstr "Diese Funktion sollte niemals manuell aufgerufen werden."
 
-#: inc/WPOD/Components/Field.php:68
+#: inc/WPOD/Components/Field.php:117
+msgid "No value was provided for the required field."
+msgstr "Es wurde kein Wert für das erforderliche Feld eingegeben."
+
+#: inc/WPOD/Components/Field.php:148
 msgid ""
-"The field %s has been declared as a repeatable, but it does not contain any "
-"fields."
+"The field type %1$s assigned to the field component %2$s is not a valid "
+"field type."
 msgstr ""
-"Das Feld %s wurde als wiederholbar deklariert, enthält aber keine Felder."
+"Der der Feldkomponente %2$s zugewiesene Feldtyp %1$s ist kein gültiger "
+"Feldtyp."
 
-#: inc/WPOD/Components/Field.php:192 inc/WPOD/Components/Field.php:423
-msgid "Choose / Upload a file"
-msgstr "Datei wählen / hochladen"
-
-#: inc/WPOD/Components/Field.php:262
-msgid ""
-"The type for field %s is not supported. Either specify a supported type or "
-"provide a valid callback function instead."
-msgstr ""
-"Der Typ des Felds %s wird nicht unterstützt. Geben Sie entweder einen "
-"korrekten Typ oder eine vorhandene Callback-Funktion an."
-
-#: inc/WPOD/Components/Field.php:312
-msgid "Add new"
-msgstr "Neu hinzufügen"
-
-#: inc/WPOD/Components/Field.php:347 inc/WPOD/Components/Field.php:350
-msgid "%s."
-msgstr "%s."
-
-#: inc/WPOD/Components/Field.php:464
-msgid ""
-"The type for field %1$s (part of repeatable %2$s) is not supported. Either "
-"specify a supported type or provide a valid callback function instead."
-msgstr ""
-"Der Typ des Felds %1$s (Teil des wiederholbaren Felds %2$s) wird nicht "
-"unterstützt. Geben Sie entweder einen korrekten Typ oder eine vorhandene "
-"Callback-Funktion an."
-
-#: inc/WPOD/Components/Field.php:468
-msgid "Remove"
-msgstr "Entfernen"
-
-#: inc/WPOD/Components/Field.php:744
-msgid "Field placeholder"
-msgstr "Feld-Platzhalter"
-
-#: inc/WPOD/Components/Field.php:789
+#: inc/WPOD/Components/Field.php:168
 msgid "Field title"
 msgstr "Feld-Titel"
 
-#: inc/WPOD/Components/Menu.php:82
+#: inc/WPOD/Components/Menu.php:105
 msgid "Menu label"
 msgstr "Menü-Label"
 
-#: inc/WPOD/Components/Page.php:125
+#: inc/WPOD/Components/Screen.php:119
 msgid ""
-"There are no tabs to display for the page %s. Either add some or adjust the "
-"required capabilities."
+"There are no tabs to display for the screen %s. Either add some or adjust "
+"the required capabilities."
 msgstr ""
-"Die Seite %s enthält keine Tabs, die angezeigt werden können. Fügen Sie "
-"entweder welche hinzu oder passen Sie die benötigten Berechtigungen an."
+"Der Screen %s enthält keine Tabs, die angezeigt werden können. Fügen Sie "
+"entweder welche hinzu oder passen Sie die nötigen Berechtigungen an."
 
-#: inc/WPOD/Components/Page.php:177
+#: inc/WPOD/Components/Screen.php:172
 msgid "Help tab title"
 msgstr "Hilfs-Tab-Titel"
 
-#: inc/WPOD/Components/Page.php:194
-msgid "Page title"
-msgstr "Seiten-Titel"
+#: inc/WPOD/Components/Screen.php:192
+msgid "Screen title"
+msgstr "Screen-Titel"
 
-#: inc/WPOD/Components/Page.php:195
-msgid "Page label"
-msgstr "Seiten-Label"
+#: inc/WPOD/Components/Screen.php:193
+msgid "Screen label"
+msgstr "Screen-Label"
 
-#: inc/WPOD/Components/Section.php:92
+#: inc/WPOD/Components/Section.php:93
 msgid ""
 "There are no fields to display for section %s. Either add some or provide a "
 "valid callback function instead."
@@ -153,11 +75,11 @@ msgstr ""
 "Sie entweder welche hinzu oder geben Sie eine vorhandene Callback-Funktion "
 "an."
 
-#: inc/WPOD/Components/Section.php:116
+#: inc/WPOD/Components/Section.php:117
 msgid "Section title"
 msgstr "Abschnitts-Titel"
 
-#: inc/WPOD/Components/Tab.php:133
+#: inc/WPOD/Components/Tab.php:101
 msgid ""
 "There are no sections to display for tab %s. Either add some or provide a "
 "valid callback function instead."
@@ -165,137 +87,23 @@ msgstr ""
 "Das Tab %s enthält keine Abschnitte, die angezeigt werden können. Fügen Sie "
 "entweder welche hinzu oder geben Sie eine vorhandene Callback-Funktion an."
 
-#: inc/WPOD/Components/Tab.php:207
+#: inc/WPOD/Components/Tab.php:186
 msgid "Settings successfully saved."
 msgstr "Änderungen erfolgreich gespeichert."
 
-#: inc/WPOD/Components/Tab.php:210
-msgid "Some errors occured while trying to save the following settings:"
-msgstr "Beim Versuch die Einstellungen zu speichern sind Fehler aufgetreten:"
-
-#: inc/WPOD/Components/Tab.php:214
-msgid "All other settings not mentioned above were saved successfully."
+#: inc/WPOD/Components/Tab.php:189
+msgid "Some errors occurred while trying to save the following settings:"
 msgstr ""
-"Alle weiteren, oben nicht erwähnten Einstellungen wurden erfolgreich "
-"gespeichert."
+"Beim Versuch die folgenden Einstellungen zu speichern sind Fehler "
+"aufgetreten:"
 
-#: inc/WPOD/Components/Tab.php:272
+#: inc/WPOD/Components/Tab.php:196
+msgid "Other settings were successfully saved."
+msgstr "Weitere Änderungen wurden erfolgreich gespeichert."
+
+#: inc/WPOD/Components/Tab.php:231
 msgid "Tab title"
 msgstr "Tab-Titel"
-
-#: inc/WPOD/Validator.php:48
-msgid "%s is no valid choice for this field."
-msgstr "%s ist keine korrekte Auswahl für dieses Feld."
-
-#: inc/WPOD/Validator.php:94
-msgid "The values %s are not valid options for this field."
-msgstr "Die Werte %s sind keine korrekte Auswahl für dieses Feld."
-
-#: inc/WPOD/Validator.php:138
-msgid "The number %1$s is invalid. It must be lower than or equal to %2$s."
-msgstr "Die Nummer %1$s ist ungültig. Sie muss kleiner oder gleich %2$s sein."
-
-#: inc/WPOD/Validator.php:141
-msgid "The number %1$s is invalid. It must be greater than or equal to %2$s."
-msgstr "Die Nummer %1$s ist ungültig. Sie muss größer oder gleich %2$s sein."
-
-#: inc/WPOD/Validator.php:144
-msgid "The number %1$s is invalid since it is not divisible by %2$s."
-msgstr "Die Nummer %1$s ist ungültig, da sie nicht durch %2$s teilbar ist."
-
-#: inc/WPOD/Validator.php:222
-msgid "%s is not a valid email address."
-msgstr "%s ist keine gültige Email-Adresse."
-
-#: inc/WPOD/Validator.php:238
-msgid "%s is not a valid URL."
-msgstr "%s ist keine gültige URL."
-
-#: inc/WPOD/Validator.php:267 inc/WPOD/Validator.php:299
-msgid "The date %1$s is invalid. It must not occur later than %2$s."
-msgstr "Das Datum %1$s ist ungültig. Es darf nicht später als %2$s sein."
-
-#: inc/WPOD/Validator.php:270 inc/WPOD/Validator.php:302
-msgid "The date %1$s is invalid. It must not occur earlier than %2$s."
-msgstr "Das Datum %1$s ist ungültig. Es darf nicht früher als %2$s sein."
-
-#: inc/WPOD/Validator.php:331
-msgid "The time %1$s is invalid. It must not occur later than %2$s."
-msgstr "Der Zeitpunkt %1$s ist ungültig. Er darf nicht später als %2$s sein."
-
-#: inc/WPOD/Validator.php:334
-msgid "The time %1$s is invalid. It must not occur earlier than %2$s."
-msgstr "Der Zeitpunkt %1$s ist ungültig. Er darf nicht früher als %2$s sein."
-
-#: inc/WPOD/Validator.php:351
-msgid "%s is not a valid hexadecimal color."
-msgstr "%s ist kein gültiger Hexadezimal-Farbcode."
-
-#: inc/WPOD/Validator.php:379
-msgid "The media file with ID %s is neither of the valid formats."
-msgstr "Die Mediendatei mit ID %s ist nicht in einem der benötigten Formate."
-
-#: inc/WPOD/Validator.php:382
-msgid "The post with ID %s is not a WordPress media file."
-msgstr "Der Post mit ID %s ist keine WordPress-Mediendatei."
-
-#: inc/WPOD/Validator.php:395
-msgid "It has to be an image file."
-msgstr "Es muss eine Bilddatei sein."
-
-#: inc/WPOD/Validator.php:408
-msgid "It has to be a video file."
-msgstr "Es muss eine Videodatei sein."
-
-#: inc/WPOD/Validator.php:421
-msgid "It has to be an audio file."
-msgstr "Es muss eine Audiodatei sein."
-
-#: inc/WPOD/Validator.php:434
-msgid "It has to be a document file."
-msgstr "Es muss ein Textdokument sein."
-
-#: inc/WPOD/Validator.php:447
-msgid "It has to be a spreadsheet file."
-msgstr "Es muss eine Spreadsheet-Datei sein."
-
-#: inc/WPOD/Validator.php:460
-msgid "It has to be an interactive file."
-msgstr "Es muss eine interaktive Datei sein."
-
-#: inc/WPOD/Validator.php:473
-msgid "It has to be a plain text file."
-msgstr "Es muss eine Textdatei sein."
-
-#: inc/WPOD/Validator.php:486
-msgid "It has to be a file archive."
-msgstr "Es muss ein Dateiarchiv sein."
-
-#: inc/WPOD/Validator.php:499
-msgid "It has to be a code file."
-msgstr "Es muss eine Quellcode-Datei sein."
-
-#: inc/WPOD/Validator.php:512
-msgid "It has to be a favicon."
-msgstr "Es muss ein Favicon sein."
-
-#: inc/WPOD/Validator.php:525
-msgid "It has to be a PDF file."
-msgstr "Es muss eine PDF-Datei sein."
-
-#: inc/WPOD/Validator.php:591
-msgid "Some errors occurred during validation the repeatable field:"
-msgstr ""
-"Während der Überprüfung des wiederholbaren Felds sind Fehler aufgetreten:"
-
-#: inc/WPOD/Validator.php:658
-msgid "The value must not be empty."
-msgstr "Der Wert darf nicht leer sein."
-
-#: inc/WPOD/Validator.php:672
-msgid "The validation function specified is invalid. It does not exist."
-msgstr ""
-"Die angegebene Funktion zur Überprüfung ist ungültig. Sie existiert nicht."
 
 #. Plugin Name of the plugin/theme
 msgid "Options, Definitely"
@@ -327,6 +135,180 @@ msgid ""
 "wordpress, plugin, framework, library, developer, options, admin, backend, ui"
 msgstr ""
 "wordpress, plugin, framework, library, developer, options, admin, backend, ui"
+
+#~ msgid "Open file"
+#~ msgstr "Datei öffnen"
+
+#~ msgid ""
+#~ "The %1$s %2$s already exists. If you want to modify it, please use the "
+#~ "update method."
+#~ msgstr ""
+#~ "Das %1$s %2$s ist bereits vorhanden. Um es zu bearbeiten, benutzen Sie "
+#~ "bitte die update-Methode."
+
+#~ msgid "The %1$s %2$s was not provided a parent."
+#~ msgstr "Für das %1$s %2$s wurde kein Elternelement angegeben."
+
+#~ msgid "No slug was provided."
+#~ msgstr "Es wurde kein Slug angegeben."
+
+#~ msgid "The type %s is not a valid type for a component."
+#~ msgstr "Der Typ %s wird von keiner Komponente unterstützt."
+
+#~ msgid ""
+#~ "The plugin is already initialized. You must perform every modifications "
+#~ "either in the wpod filter or in the wpod_oo action."
+#~ msgstr ""
+#~ "Das Plugin wurde bereits initialisiert. Sie müssen sämtliche Anpassungen "
+#~ "entweder im Rahmen des wpod-Filters oder der wpod_oo-Action vornehmen."
+
+#~ msgid ""
+#~ "The %1$s %2$s does not exist. You can instead use the add method to add "
+#~ "it."
+#~ msgstr ""
+#~ "Das %1$s %2$s existiert nicht. Verwenden Sie stattdessen die add-Methode, "
+#~ "um es hinzuzufügen."
+
+#~ msgid "The %1$s %2$s does not exist, so it does not need to be deleted."
+#~ msgstr ""
+#~ "Das %1$s %2$s existiert nicht, also braucht es nicht gelöscht zu werden."
+
+#~ msgid ""
+#~ "The field %s has been declared as a repeatable, but it does not contain "
+#~ "any fields."
+#~ msgstr ""
+#~ "Das Feld %s wurde als wiederholbar deklariert, enthält aber keine Felder."
+
+#~ msgid "Choose / Upload a file"
+#~ msgstr "Datei wählen / hochladen"
+
+#~ msgid ""
+#~ "The type for field %s is not supported. Either specify a supported type "
+#~ "or provide a valid callback function instead."
+#~ msgstr ""
+#~ "Der Typ des Felds %s wird nicht unterstützt. Geben Sie entweder einen "
+#~ "korrekten Typ oder eine vorhandene Callback-Funktion an."
+
+#~ msgid "Add new"
+#~ msgstr "Neu hinzufügen"
+
+#~ msgid "%s."
+#~ msgstr "%s."
+
+#~ msgid ""
+#~ "The type for field %1$s (part of repeatable %2$s) is not supported. "
+#~ "Either specify a supported type or provide a valid callback function "
+#~ "instead."
+#~ msgstr ""
+#~ "Der Typ des Felds %1$s (Teil des wiederholbaren Felds %2$s) wird nicht "
+#~ "unterstützt. Geben Sie entweder einen korrekten Typ oder eine vorhandene "
+#~ "Callback-Funktion an."
+
+#~ msgid "Remove"
+#~ msgstr "Entfernen"
+
+#~ msgid "Field placeholder"
+#~ msgstr "Feld-Platzhalter"
+
+#~ msgid "Page title"
+#~ msgstr "Seiten-Titel"
+
+#~ msgid "Page label"
+#~ msgstr "Seiten-Label"
+
+#~ msgid "All other settings not mentioned above were saved successfully."
+#~ msgstr ""
+#~ "Alle weiteren, oben nicht erwähnten Einstellungen wurden erfolgreich "
+#~ "gespeichert."
+
+#~ msgid "%s is no valid choice for this field."
+#~ msgstr "%s ist keine korrekte Auswahl für dieses Feld."
+
+#~ msgid "The number %1$s is invalid. It must be lower than or equal to %2$s."
+#~ msgstr ""
+#~ "Die Nummer %1$s ist ungültig. Sie muss kleiner oder gleich %2$s sein."
+
+#~ msgid ""
+#~ "The number %1$s is invalid. It must be greater than or equal to %2$s."
+#~ msgstr ""
+#~ "Die Nummer %1$s ist ungültig. Sie muss größer oder gleich %2$s sein."
+
+#~ msgid "The number %1$s is invalid since it is not divisible by %2$s."
+#~ msgstr "Die Nummer %1$s ist ungültig, da sie nicht durch %2$s teilbar ist."
+
+#~ msgid "%s is not a valid email address."
+#~ msgstr "%s ist keine gültige Email-Adresse."
+
+#~ msgid "%s is not a valid URL."
+#~ msgstr "%s ist keine gültige URL."
+
+#~ msgid "The date %1$s is invalid. It must not occur later than %2$s."
+#~ msgstr "Das Datum %1$s ist ungültig. Es darf nicht später als %2$s sein."
+
+#~ msgid "The date %1$s is invalid. It must not occur earlier than %2$s."
+#~ msgstr "Das Datum %1$s ist ungültig. Es darf nicht früher als %2$s sein."
+
+#~ msgid "The time %1$s is invalid. It must not occur later than %2$s."
+#~ msgstr ""
+#~ "Der Zeitpunkt %1$s ist ungültig. Er darf nicht später als %2$s sein."
+
+#~ msgid "The time %1$s is invalid. It must not occur earlier than %2$s."
+#~ msgstr ""
+#~ "Der Zeitpunkt %1$s ist ungültig. Er darf nicht früher als %2$s sein."
+
+#~ msgid "%s is not a valid hexadecimal color."
+#~ msgstr "%s ist kein gültiger Hexadezimal-Farbcode."
+
+#~ msgid "The media file with ID %s is neither of the valid formats."
+#~ msgstr ""
+#~ "Die Mediendatei mit ID %s ist nicht in einem der benötigten Formate."
+
+#~ msgid "The post with ID %s is not a WordPress media file."
+#~ msgstr "Der Post mit ID %s ist keine WordPress-Mediendatei."
+
+#~ msgid "It has to be an image file."
+#~ msgstr "Es muss eine Bilddatei sein."
+
+#~ msgid "It has to be a video file."
+#~ msgstr "Es muss eine Videodatei sein."
+
+#~ msgid "It has to be an audio file."
+#~ msgstr "Es muss eine Audiodatei sein."
+
+#~ msgid "It has to be a document file."
+#~ msgstr "Es muss ein Textdokument sein."
+
+#~ msgid "It has to be a spreadsheet file."
+#~ msgstr "Es muss eine Spreadsheet-Datei sein."
+
+#~ msgid "It has to be an interactive file."
+#~ msgstr "Es muss eine interaktive Datei sein."
+
+#~ msgid "It has to be a plain text file."
+#~ msgstr "Es muss eine Textdatei sein."
+
+#~ msgid "It has to be a file archive."
+#~ msgstr "Es muss ein Dateiarchiv sein."
+
+#~ msgid "It has to be a code file."
+#~ msgstr "Es muss eine Quellcode-Datei sein."
+
+#~ msgid "It has to be a favicon."
+#~ msgstr "Es muss ein Favicon sein."
+
+#~ msgid "It has to be a PDF file."
+#~ msgstr "Es muss eine PDF-Datei sein."
+
+#~ msgid "Some errors occurred during validation the repeatable field:"
+#~ msgstr ""
+#~ "Während der Überprüfung des wiederholbaren Felds sind Fehler aufgetreten:"
+
+#~ msgid "The value must not be empty."
+#~ msgstr "Der Wert darf nicht leer sein."
+
+#~ msgid "The validation function specified is invalid. It does not exist."
+#~ msgstr ""
+#~ "Die angegebene Funktion zur Überprüfung ist ungültig. Sie existiert nicht."
 
 #~ msgid "Group label"
 #~ msgstr "Gruppen-Label"

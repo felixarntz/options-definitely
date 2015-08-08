@@ -5,7 +5,15 @@
   "license": "GPL-2.0",
   "type": "wordpress-plugin",
   "keywords": [
-    "wordpress", "plugin", "framework", "library", "developer", "options", "admin", "backend", "ui"
+    "wordpress",
+    "plugin",
+    "framework",
+    "library",
+    "developer",
+    "options",
+    "admin",
+    "backend",
+    "ui"
   ],
   "homepage": "http://wordpress.org/plugins/options-definitely/",
   "authors": [
@@ -23,10 +31,14 @@
   "autoload": {
     "psr-0": {
       "WPOD\\": "inc/"
-    }
+    },
+    "files": [
+      "inc/functions.php"
+    ]
   },
   "require": {
     "composer/installers": "~1.0",
-    "felixarntz/leavesandlove-wp-plugin-util": "~1.5.2"
+    "felixarntz/wpdlib": "dev-master",
+    "felixarntz/leavesandlove-wp-plugin-util": "~1.6.0"
   }
 }

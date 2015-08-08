@@ -51,7 +51,7 @@ class Admin {
 	private function __construct() {
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_menu', array( $this, 'create_admin_menu' ), 50 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 	}
 
 	/**
@@ -66,29 +66,12 @@ class Admin {
 	 * @since 0.5.0
 	 */
 	public function register_settings() {
-		$tabs = \WPOD\App::instance()->query( array(
-			'type'				=> 'tab',
-		) );
-
+		$tabs = \WPDLib\Components\Manager::get( '*.*.*', 'WPOD\Components\Menu' );
 		foreach ( $tabs as $tab ) {
 			$tab->register();
-
-			$sections = \WPOD\App::instance()->query( array(
-				'type'				=> 'section',
-				'parent_slug'		=> $tab->slug,
-				'parent_type'		=> 'tab',
-			) );
-
-			foreach ( $sections as $section ) {
+			foreach ( $tab->children as $section ) {
 				$section->register( $tab );
-
-				$fields = \WPOD\App::instance()->query( array(
-					'type'				=> 'field',
-					'parent_slug'		=> $section->slug,
-					'parent_type'		=> 'section',
-				) );
-
-				foreach ( $fields as $field ) {
+				foreach ( $section->children as $field ) {
 					$field->register( $tab, $section );
 				}
 			}
@@ -96,41 +79,26 @@ class Admin {
 	}
 
 	/**
-	 * Adds pages to the WordPress admin menu.
+	 * Adds screens to the WordPress admin menu.
 	 *
 	 * For each menu, it is checked whether this menu has already been added.
 	 * If so, the menu slug is updated accordingly.
 	 *
-	 * Every page will be added to the menu it has been assigned to.
-	 * Furthermore the function to add a help tab is hooked into the page loading action.
+	 * Every screen will be added to the menu it has been assigned to.
+	 * Furthermore the function to add a help tab is hooked into the screen loading action.
 	 *
 	 * @see WPOD\Components\Menu
-	 * @see WPOD\Components\Page
+	 * @see WPOD\Components\Screen
 	 * @since 0.5.0
 	 */
 	public function create_admin_menu() {
-		$menus = \WPOD\App::instance()->query( array(
-			'type'				=> 'menu',
-		) );
-
+		$menus = \WPDLib\Components\Manager::get( '*', 'WPOD\Components\Menu' );
 		foreach ( $menus as $menu ) {
-			if ( ( $menu_slug = $menu->is_already_added() ) ) {
-				\WPOD\App::instance()->update( $menu->slug, 'menu', array(
-					'added'			=> true,
-					'subslug'		=> $menu_slug,
-					'sublabel'		=> true,
-				) );
-			}
-		}
-
-		$pages = \WPOD\App::instance()->query( array(
-			'type'				=> 'page',
-		) );
-
-		foreach ( $pages as $page ) {
-			$page_hook = $page->add_to_menu();
-			if ( ! empty( $page_hook ) ) {
-				add_action( 'load-' . $page_hook, array( $page, 'render_help' ) );
+			foreach ( $menu->children as $screen ) {
+				$page_hook = $screen->add_to_menu();
+				if ( $page_hook ) {
+					add_action( 'load-' . $page_hook, array( $screen, 'render_help' ) );
+				}
 			}
 		}
 	}
@@ -138,131 +106,62 @@ class Admin {
 	/**
 	 * Enqueues necessary stylesheets and scripts.
 	 *
-	 * All assets are only enqueued if we are on a settings page created by the plugin.
+	 * All assets are only enqueued if we are on a settings screen created by the plugin.
 	 * Besides adding the plugin stylesheets and scripts, this function might also enqueue
 	 * the WordPress media scripts and the WordPress meta box scripts, both depending on
-	 * whether they are needed on the current page.
+	 * whether they are needed on the current screen.
 	 *
 	 * @since 0.5.0
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_assets() {
 		$currents = $this->get_current();
 
 		if ( $currents ) {
-			$locale = str_replace( '_', '-', get_locale() );
-			$language = substr( $locale, 0, 2 );
-
-			$fields = \WPOD\App::instance()->query( array(
-				'type'				=> 'field',
-				'parent_slug'		=> $currents['tab']->slug,
-				'parent_type'		=> 'tab',
-			) );
-
-			$repeatable_field_templates = array();
-
-			$media_enqueued = false;
-			foreach ( $fields as $field ) {
-				if ( 'repeatable' == $field->type ) {
-					$id_prefix = $currents['tab']->slug . '-' . $field->slug;
-					$name_prefix = $currents['tab']->slug . '[' . $field->slug . ']';
-					ob_start();
-					$field->render_repeatable_row( '{{' . 'KEY' . '}}', $id_prefix, $name_prefix );
-					$repeatable_field_templates[ $id_prefix ] = ob_get_clean();
-
-					$repeatable = $field->repeatable;
-					if ( ! $media_enqueued ) {
-						foreach ( $repeatable['fields'] as $repeatable_field ) {
-							if ( 'media' == $repeatable_field['type'] ) {
-								wp_enqueue_media();
-								$media_enqueued = true;
-							}
-						}
-					}
-				} elseif ( 'media' == $field->type && ! $media_enqueued ) {
-					wp_enqueue_media();
-					$media_enqueued = true;
-				}
-			}
-
-			if ( 'draggable' == $currents['tab']->mode ) {
-				wp_enqueue_script( 'common' );
-				wp_enqueue_script( 'wp-lists' );
-				wp_enqueue_script( 'postbox' );
-			}
-
-			wp_enqueue_style( 'select2', \WPOD\App::get_url( '/assets/third-party/select2/select2.css' ), array(), false );
-			wp_enqueue_script( 'select2', \WPOD\App::get_url( '/assets/third-party/select2/select2.min.js' ), array( 'jquery' ), false, true );
-			if ( file_exists( \WPOD\App::get_path( '/assets/third-party/select2/select2_locale_' . $locale . '.js' ) ) ) {
-				wp_enqueue_script( 'select2-locale', \WPOD\App::get_url( '/assets/third-party/select2/select2_locale_' . $locale . '.js' ), array( 'select2' ), false, true );
-			} elseif( file_exists( \WPOD\App::get_path( '/assets/third-party/select2/select2_locale_' . $language . '.js' ) ) ) {
-				wp_enqueue_script( 'select2-locale', \WPOD\App::get_url( '/assets/third-party/select2/select2_locale_' . $language . '.js' ), array( 'select2' ), false, true );
-			}
-
-			wp_enqueue_style( 'datetimepicker', \WPOD\App::get_url( '/assets/third-party/datetimepicker/jquery.datetimepicker.css' ), array(), false );
-			wp_enqueue_script( 'datetimepicker', \WPOD\App::get_url( '/assets/third-party/datetimepicker/jquery.datetimepicker.js' ), array( 'jquery' ), false, true );
-
-			wp_enqueue_style( 'wpod-admin', \WPOD\App::get_url( '/assets/admin.min.css' ), array(), \WPOD\App::get_info( 'version' ) );
-			wp_enqueue_script( 'wpod-admin', \WPOD\App::get_url( '/assets/admin.min.js' ), array( 'select2', 'datetimepicker' ), \WPOD\App::get_info( 'version' ), true );
-			wp_localize_script( 'wpod-admin', '_wpod_admin', array(
-				'locale'						=> $locale,
-				'language'						=> $language,
-				'date_format'					=> get_option( 'date_format' ),
-				'time_format'					=> get_option( 'time_format' ),
-				'start_of_week'					=> get_option( 'start_of_week' ),
-				'localized_open_file'			=> __( 'Open file', 'wpod' ),
-				'repeatable_field_templates'	=> $repeatable_field_templates,
-			) );
+			$currents['tab']->enqueue_assets();
 		}
 	}
 
 	/**
-	 * Gets the currently active page and tab.
+	 * Gets the currently active screen and tab.
 	 *
-	 * The function checks the currently loaded admin page.
+	 * The function checks the currently loaded admin screen.
 	 * If it is not created by the plugin, the function will return false.
 	 * Otherwise the output depends on the $type parameter:
-	 * The function may return the page object, the tab object or an array of both objects.
+	 * The function may return the screen object, the tab object or an array of both objects.
 	 *
-	 * The second parameter may be used to omit the retrieving process by specifying a page object.
-	 * In that case, only the current tab as part of this page will be looked for.
+	 * The second parameter may be used to omit the retrieving process by specifying a screen object.
+	 * In that case, only the current tab as part of this screen will be looked for.
 	 *
 	 * @since 0.5.0
-	 * @param string $type the type to get the current component for; must be either 'page', 'tab' or an empty string to get an array of both
-	 * @param WPOD\Components\Page|null $page a page object to override the retrieving process or null
-	 * @return WPOD\Components\Page|WPOD\Components\Tab|array|false either the page or tab object, an array of both objects or false if no plugin component is currently active
+	 * @param string $type the type to get the current component for; must be either 'screen', 'tab' or an empty string to get an array of both
+	 * @param WPOD\Components\Screen|null $screen a screen object to override the retrieving process or null
+	 * @return WPOD\Components\Screen|WPOD\Components\Tab|array|false either the screen or tab object, an array of both objects or false if no plugin component is currently active
 	 */
-	public function get_current( $type = '', $page = null ) {
+	public function get_current( $type = '', $screen = null ) {
 		if ( isset( $_GET['page'] ) ) {
-			if ( null == $page ) {
-				$page = \WPOD\App::instance()->query( array(
-					'slug'				=> $_GET['page'],
-					'type'				=> 'page',
-				), true );
+			if ( null === $screen ) {
+				$screen = \WPDLib\Components\Manager::get( '*.' . $_GET['page'], 'WPOD\Components\Menu', true );
 			}
 
-			if ( $page ) {
-				if ( 'page' == $type ) {
-					return $page;
+			if ( null !== $screen ) {
+				if ( 'screen' == $type ) {
+					return $screen;
 				}
 
-				$args = array(
-					'type'				=> 'tab',
-					'parent_slug'		=> $page->slug,
-					'parent_type'		=> 'page',
-				);
-
-				if ( isset( $_GET['tab'] ) ) {
-					$args['slug'] = $_GET['tab'];
+				$tabs = $screen->children;
+				$tab = null;
+				if ( isset( $_GET['tab'] ) && isset( $tabs[ $_GET['tab'] ] ) ) {
+					$tab = $tabs[ $_GET['tab'] ];
+				} elseif ( count( $tabs ) > 0 ) {
+					$tab = array_shift( $tabs );
 				}
 
-				$tab = \WPOD\App::instance()->query( $args, true );
-
-				if ( $tab ) {
+				if ( null !== $tab ) {
 					if ( 'tab' == $type ) {
 						return $tab;
 					}
 
-					return compact( 'page', 'tab' );
+					return compact( 'screen', 'tab' );
 				}
 			}
 		}
