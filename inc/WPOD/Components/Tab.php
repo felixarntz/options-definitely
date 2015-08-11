@@ -7,6 +7,9 @@
 
 namespace WPOD\Components;
 
+use WPOD\App as App;
+use WPDLib\FieldTypes\Manager as FieldManager;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -71,7 +74,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 
 				$form_atts = apply_filters( 'wpod_form_atts', $form_atts, $this );
 
-				echo '<form' . \WPDLib\FieldTypes\Manager::make_html_attributes( $form_atts, false, false ) . '>';
+				echo '<form' . FieldManager::make_html_attributes( $form_atts, false, false ) . '>';
 
 				if ( 'draggable' == $this->args['mode'] ) {
 					wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
@@ -98,7 +101,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 			} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
 				call_user_func( $this->args['callback'] );
 			} else {
-				\WPOD\App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for tab %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '0.5.0' );
+				App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for tab %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '0.5.0' );
 			}
 
 			if ( 'draggable' == $this->args['mode'] ) {
@@ -215,7 +218,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 				}
 			}
 
-			\WPDLib\FieldTypes\Manager::enqueue_assets( $_fields );
+			FieldManager::enqueue_assets( $_fields );
 		}
 
 		/**

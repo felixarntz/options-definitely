@@ -7,6 +7,11 @@
 
 namespace WPOD\Components;
 
+use WPDLib\Components\Manager as ComponentManager;
+use WPDLib\FieldTypes\Manager as FieldManager;
+use WPDLib\Util\Error as UtilError;
+use WP_Error as WPError;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -114,7 +119,7 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 		public function validate_option( $option = null ) {
 			if ( $this->args['required'] ) {
 				if ( $option === null || $this->_field->is_empty( $option ) ) {
-					return new \WP_Error( 'invalid_empty_value', __( 'No value was provided for the required field.', 'wpod' ) );
+					return new WPError( 'invalid_empty_value', __( 'No value was provided for the required field.', 'wpod' ) );
 				}
 			}
 			return $this->_field->validate( $option );
@@ -143,9 +148,9 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 				$this->args['id'] = $parent_tab->slug . '-' . $this->slug;
 				$this->args['name'] = $parent_tab->slug . '[' . $this->slug . ']';
 
-				$this->_field = \WPDLib\FieldTypes\Manager::get_instance( $this->args );
+				$this->_field = FieldManager::get_instance( $this->args );
 				if ( $this->_field === null ) {
-					return new \WPDLib\Util\Error( 'no_valid_field_type', sprintf( __( 'The field type %1$s assigned to the field component %2$s is not a valid field type.', 'wpdlib' ), $this->args['type'], $this->slug ), '', \WPDLib\Components\Manager::get_scope() );
+					return new UtilError( 'no_valid_field_type', sprintf( __( 'The field type %1$s assigned to the field component %2$s is not a valid field type.', 'wpdlib' ), $this->args['type'], $this->slug ), '', ComponentManager::get_scope() );
 				}
 				if ( null === $this->args['default'] ) {
 					$this->args['default'] = $this->_field->validate();

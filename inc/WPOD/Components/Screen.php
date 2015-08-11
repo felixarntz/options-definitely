@@ -7,6 +7,9 @@
 
 namespace WPOD\Components;
 
+use WPOD\App as App;
+use WPOD\Admin as Admin;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -95,10 +98,10 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 			$tabs = array_filter( $tabs, 'wpod_current_user_can' );
 
 			if ( count( $tabs ) > 0 ) {
-				$current_tab = \WPOD\Admin::instance()->get_current( 'tab', $this );
+				$current_tab = Admin::instance()->get_current( 'tab', $this );
 
 				if ( count( $tabs ) > 1 ) {
-					$current_url = \WPOD\Admin::instance()->get_current_url();
+					$current_url = Admin::instance()->get_current_url();
 
 					echo '<h2 class="nav-tab-wrapper">';
 
@@ -116,7 +119,7 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 				}
 				$current_tab->render();
 			} else {
-				\WPOD\App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the screen %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->real_slug ), '0.5.0' );
+				App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the screen %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->real_slug ), '0.5.0' );
 			}
 
 			do_action( 'wpod_screen_after', $this->real_slug, $this->args, $parent_menu->slug );

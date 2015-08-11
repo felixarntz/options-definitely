@@ -28,9 +28,12 @@
     "email": "felix-arntz@leaves-and-love.net",
     "issues": "https://github.com/felixarntz/options-definitely/issues"
   },
+  "config": {
+    "preferred-install": "dist"
+  },
   "autoload": {
-    "psr-0": {
-      "WPOD\\": "inc/"
+    "psr-4": {
+      "WPOD\\": "inc/WPOD/"
     },
     "files": [
       "inc/functions.php"

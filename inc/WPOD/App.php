@@ -7,6 +7,15 @@
 
 namespace WPOD;
 
+use WPOD\Admin as Admin;
+use WPOD\Components\Menu as Menu;
+use WPOD\Components\Screen as Screen;
+use WPOD\Components\Tab as Tab;
+use WPOD\Components\Section as Section;
+use WPOD\Components\Field as Field;
+use WPDLib\Components\Manager as ComponentManager;
+use LaL_WP_Plugin as Plugin;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -18,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 0.5.0
  */
-class App extends \LaL_WP_Plugin {
+class App extends Plugin {
 
 	/**
 	 * @since 0.5.0
@@ -57,7 +66,7 @@ class App extends \LaL_WP_Plugin {
 	 */
 	protected function run() {
 		if ( is_admin() ) {
-			\WPOD\Admin::instance();
+			Admin::instance();
 		}
 
 		// use after_setup_theme action so it is initialized as soon as possible, but also so that both plugins and themes can use the action
@@ -65,14 +74,14 @@ class App extends \LaL_WP_Plugin {
 	}
 
 	public function set_scope( $scope ) {
-		\WPDLib\Components\Manager::set_scope( $scope );
+		ComponentManager::set_scope( $scope );
 	}
 
 	public function add( $component, $scope = '' ) {
 		if ( ! empty( $scope ) ) {
 			$this->set_scope( $scope );
 		}
-		return \WPDLib\Components\Manager::add( $component );
+		return ComponentManager::add( $component );
 	}
 
 	public function add_components( $components, $scope = '' ) {
@@ -81,27 +90,27 @@ class App extends \LaL_WP_Plugin {
 		}
 		if ( is_array( $components ) ) {
 			foreach ( $components as $menu_slug => $menu_args ) {
-				$menu = \WPDLib\Components\Manager::add( new \WPOD\Components\Menu( $menu_slug, $menu_args ) );
+				$menu = ComponentManager::add( new Menu( $menu_slug, $menu_args ) );
 				if ( is_wp_error( $menu ) ) {
 					self::doing_it_wrong( __METHOD__, $menu->get_error_message(), '0.5.0' );
 				} elseif ( isset( $menu_args['screens'] ) && is_array( $menu_args['screens'] ) ) {
 					foreach ( $menu_args['screens'] as $screen_slug => $screen_args ) {
-						$screen = $menu->add( new \WPOD\Components\Screen( $screen_slug, $screen_args ) );
+						$screen = $menu->add( new Screen( $screen_slug, $screen_args ) );
 						if ( is_wp_error( $screen ) ) {
 							self::doing_it_wrong( __METHOD__, $screen->get_error_message(), '0.5.0' );
 						} elseif ( isset( $screen_args['tabs'] ) && is_array( $screen_args['tabs'] ) ) {
 							foreach ( $screen_args['tabs'] as $tab_slug => $tab_args ) {
-								$tab = $screen->add( new \WPOD\Components\Tab( $tab_slug, $tab_args ) );
+								$tab = $screen->add( new Tab( $tab_slug, $tab_args ) );
 								if ( is_wp_error( $tab ) ) {
 									self::doing_it_wrong( __METHOD__, $tab->get_error_message(), '0.5.0' );
 								} elseif ( isset( $tab_args['sections'] ) && is_array( $tab_args['sections'] ) ) {
 									foreach ( $tab_args['sections'] as $section_slug => $section_args ) {
-										$section = $tab->add( new \WPOD\Components\Section( $section_slug, $section_args ) );
+										$section = $tab->add( new Section( $section_slug, $section_args ) );
 										if ( is_wp_error( $section ) ) {
 											self::doing_it_wrong( __METHOD__, $section->get_error_message(), '0.5.0' );
 										} elseif ( isset( $section_args['fields'] ) && is_array( $section_args['fields'] ) ) {
 											foreach ( $section_args['fields'] as $field_slug => $field_args ) {
-												$field = $section->add( new \WPOD\Components\Field( $field_slug, $field_args ) );
+												$field = $section->add( new Field( $field_slug, $field_args ) );
 												if ( is_wp_error( $field ) ) {
 													self::doing_it_wrong( __METHOD__, $field->get_error_message(), '0.5.0' );
 												}
@@ -136,7 +145,7 @@ class App extends \LaL_WP_Plugin {
 		if ( ! $this->initialization_triggered ) {
 			$this->initialization_triggered = true;
 
-			\WPDLib\Components\Manager::register_hierarchy( array(
+			ComponentManager::register_hierarchy( array(
 				'WPOD\Components\Menu'		=> array(
 					'WPOD\Components\Screen'		=> array(
 						'WPOD\Components\Tab'		=> array(

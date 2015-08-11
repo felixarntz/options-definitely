@@ -21,10 +21,11 @@ nbproject/
 node_modules/*
 
 ############
-## Composer
+## Vendor
 ############
 
 vendor/
+!assets/vendor/
 
 ############
 ## OSes

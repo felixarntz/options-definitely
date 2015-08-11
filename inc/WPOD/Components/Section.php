@@ -7,6 +7,9 @@
 
 namespace WPOD\Components;
 
+use WPOD\App as App;
+use WPDLib\FieldTypes\Manager as FieldManager;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -82,7 +85,7 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 				);
 				$table_atts = apply_filters( 'wpod_table_atts', $table_atts, $this );
 
-				echo '<table' . \WPDLib\FieldTypes\Manager::make_html_attributes( $table_atts, false, false ) . '>';
+				echo '<table' . FieldManager::make_html_attributes( $table_atts, false, false ) . '>';
 
 				do_settings_fields( $parent_tab->slug, $this->slug );
 
@@ -90,7 +93,7 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 			} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
 				call_user_func( $this->args['callback'] );
 			} else {
-				\WPOD\App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no fields to display for section %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '0.5.0' );
+				App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no fields to display for section %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '0.5.0' );
 			}
 
 			/**

@@ -7,6 +7,8 @@
 
 namespace WPOD;
 
+use WPDLib\Components\Manager as ComponentManager;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -66,7 +68,7 @@ class Admin {
 	 * @since 0.5.0
 	 */
 	public function register_settings() {
-		$tabs = \WPDLib\Components\Manager::get( '*.*.*', 'WPOD\Components\Menu' );
+		$tabs = ComponentManager::get( '*.*.*', 'WPOD\Components\Menu' );
 		foreach ( $tabs as $tab ) {
 			$tab->register();
 			foreach ( $tab->children as $section ) {
@@ -92,7 +94,7 @@ class Admin {
 	 * @since 0.5.0
 	 */
 	public function create_admin_menu() {
-		$menus = \WPDLib\Components\Manager::get( '*', 'WPOD\Components\Menu' );
+		$menus = ComponentManager::get( '*', 'WPOD\Components\Menu' );
 		foreach ( $menus as $menu ) {
 			foreach ( $menu->children as $screen ) {
 				$page_hook = $screen->add_to_menu();
@@ -140,7 +142,7 @@ class Admin {
 	public function get_current( $type = '', $screen = null ) {
 		if ( isset( $_GET['page'] ) ) {
 			if ( null === $screen ) {
-				$screen = \WPDLib\Components\Manager::get( '*.' . $_GET['page'], 'WPOD\Components\Menu', true );
+				$screen = ComponentManager::get( '*.' . $_GET['page'], 'WPOD\Components\Menu', true );
 			}
 
 			if ( null !== $screen ) {
