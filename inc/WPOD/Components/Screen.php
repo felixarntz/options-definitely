@@ -60,7 +60,7 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 					$menu->subslug = $this->slug;
 					$menu->sublabel = $this->args['label'];
 				} else {
-					if ( false === $menu->subslug ) {
+					if ( false === $menu->sublabel ) {
 						return false;
 					}
 
@@ -70,7 +70,7 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 						$this->page_hook = add_submenu_page( $menu->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
 					}
 
-					if ( $menu->sublabel !== true ) {
+					if ( true !== $menu->sublabel ) {
 						global $submenu;
 
 						if ( isset( $submenu[ $menu->subslug ] ) ) {

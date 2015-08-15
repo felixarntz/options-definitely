@@ -87,26 +87,46 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 
 			if ( is_array( $components ) ) {
 				foreach ( $components as $menu_slug => $menu_args ) {
+					$screens = array();
+					if ( isset( $menu_args['screens'] ) ) {
+						$screens = $menu_args['screens'];
+						unset( $menu_args['screens'] );
+					}
 					$menu = ComponentManager::add( new Menu( $menu_slug, $menu_args ) );
 					if ( is_wp_error( $menu ) ) {
 						self::doing_it_wrong( __METHOD__, $menu->get_error_message(), '0.5.0' );
-					} elseif ( isset( $menu_args['screens'] ) && is_array( $menu_args['screens'] ) ) {
-						foreach ( $menu_args['screens'] as $screen_slug => $screen_args ) {
+					} elseif ( is_array( $screens ) ) {
+						foreach ( $screens as $screen_slug => $screen_args ) {
+							$tabs = array();
+							if ( isset( $screen_args['tabs'] ) ) {
+								$tabs = $screen_args['tabs'];
+								unset( $screen_args['tabs'] );
+							}
 							$screen = $menu->add( new Screen( $screen_slug, $screen_args ) );
 							if ( is_wp_error( $screen ) ) {
 								self::doing_it_wrong( __METHOD__, $screen->get_error_message(), '0.5.0' );
-							} elseif ( isset( $screen_args['tabs'] ) && is_array( $screen_args['tabs'] ) ) {
-								foreach ( $screen_args['tabs'] as $tab_slug => $tab_args ) {
+							} elseif ( is_array( $tabs ) ) {
+								foreach ( $tabs as $tab_slug => $tab_args ) {
+									$sections = array();
+									if ( isset( $tab_args['sections'] ) ) {
+										$sections = $tab_args['sections'];
+										unset( $tab_args['sections'] );
+									}
 									$tab = $screen->add( new Tab( $tab_slug, $tab_args ) );
 									if ( is_wp_error( $tab ) ) {
 										self::doing_it_wrong( __METHOD__, $tab->get_error_message(), '0.5.0' );
-									} elseif ( isset( $tab_args['sections'] ) && is_array( $tab_args['sections'] ) ) {
-										foreach ( $tab_args['sections'] as $section_slug => $section_args ) {
+									} elseif ( is_array( $sections ) ) {
+										foreach ( $sections as $section_slug => $section_args ) {
+											$fields = array();
+											if ( isset( $section_args['fields'] ) ) {
+												$fields = $section_args['fields'];
+												unset( $section_args['fields'] );
+											}
 											$section = $tab->add( new Section( $section_slug, $section_args ) );
 											if ( is_wp_error( $section ) ) {
 												self::doing_it_wrong( __METHOD__, $section->get_error_message(), '0.5.0' );
-											} elseif ( isset( $section_args['fields'] ) && is_array( $section_args['fields'] ) ) {
-												foreach ( $section_args['fields'] as $field_slug => $field_args ) {
+											} elseif ( is_array( $fields ) ) {
+												foreach ( $fields as $field_slug => $field_args ) {
 													$field = $section->add( new Field( $field_slug, $field_args ) );
 													if ( is_wp_error( $field ) ) {
 														self::doing_it_wrong( __METHOD__, $field->get_error_message(), '0.5.0' );
