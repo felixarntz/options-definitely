@@ -1,7 +1,7 @@
-Options, Definitely
-===================
+Options Definitely
+==================
 
-This framework plugin makes adding options to the WordPress admin area very simple, yet flexible. It all works using a filter and an array.
+This framework plugin makes adding options to the WordPress admin area very simple, yet flexible. It all works using a single action and an array.
 
 You can download the latest version from the [WordPress plugin repository](http://wordpress.org/plugins/options-definitely/). If you prefer to install it from Github, make sure to run `composer install` before using it in order to download the necessary dependencies.
 

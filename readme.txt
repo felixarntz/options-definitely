@@ -1,6 +1,6 @@
-=== Options, Definitely ===
+=== Options Definitely ===
 
-Plugin Name:       Options, Definitely
+Plugin Name:       Options Definitely
 Plugin URI:        http://wordpress.org/plugins/options-definitely/
 Author URI:        http://leaves-and-love.net
 Author:            Felix Arntz
@@ -14,22 +14,22 @@ License:           GPL v2
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 Tags:              wordpress, plugin, framework, library, developer, options, admin, backend, ui
 
-This framework plugin makes adding options to the WordPress admin area very simple, yet flexible. It all works using a filter and an array.
+This framework plugin makes adding options to the WordPress admin area very simple, yet flexible. It all works using a single action and an array.
 
 == Description ==
 
-Options, Definitely is a framework for developers that allows them to easily add options and their input fields to the WordPress admin so that a user can manage them. You can add new menus and options pages, add fields to those pages and organize them in multiple tabs and settings sections. Furthermore the fields have a validation mechanism, so you can specify what the user is allowed to enter and print out custom error messages.
+Options Definitely is a framework for developers that allows them to easily add options and their input fields to the WordPress admin so that a user can manage them. You can add new menus and options pages, add fields to those pages and organize them in multiple tabs and settings sections. Furthermore the fields have a validation mechanism, so you can specify what the user is allowed to enter and print out custom error messages.
 The plugin comes with several common field types and validation functions included, including repeatable fields, where you can group a few fields together and allow the user to add more and more of them. If you need another field type or validation function, you can create your own callback and handle it there.
-Another feature of Options, Definitely is that you can easily display your settings sections as meta boxes, making them flexible for the user to move or hide.
+Another feature of Options Definitely is that you can easily display your settings sections as meta boxes, making them flexible for the user to move or hide.
 In a future version, the plugin will also work with the WordPress Customizer.
 
 = Usage =
 
-Options, Definitely is very easy to use. You have two choices of how you would like to add your options:
+Options Definitely is very easy to use. You have two choices of how you would like to add your options:
 * either you add everything in a multidimensional associative array, hooking into the filter `wpod`
 * or, if you prefer the object-oriented method, you can hook into the action 'wpod_oo' to access the framework functions directly
 
-Both ways are fully compatible with each other, meaning you can choose whatever you prefer without conflicting with other plugins/themes using this framework. The basic difference between the two methods is that, when using the filter and array, you have a lot less code to write, on the other hand, the object-oriented approach also gives you the possibility to adjust or even delete components (in Options, Definitely, when we speak about a component, we mean either a menu, a page, a tab, a section or a field) that someone else has previously added.
+Both ways are fully compatible with each other, meaning you can choose whatever you prefer without conflicting with other plugins/themes using this framework. The basic difference between the two methods is that, when using the filter and array, you have a lot less code to write, on the other hand, the object-oriented approach also gives you the possibility to adjust or even delete components (in Options Definitely, when we speak about a component, we mean either a menu, a page, a tab, a section or a field) that someone else has previously added.
 
 For a detailed guide and reference on how to use this framework, please read the [Wiki on Github](https://github.com/felixarntz/options-definitely/wiki). Once you get familiar with the options you have, you will be able to create complex options interfaces in just a few minutes.
 
@@ -51,7 +51,7 @@ You can use the framework anywhere you like, for example in your theme's functio
 
 = Why don't I see any change after having activated the plugin? =
 
-Options, Definitely is a framework plugin which means it does nothing on its own, it just helps other developers getting things done more quickly.
+Options Definitely is a framework plugin which means it does nothing on its own, it just helps other developers getting things done more quickly.
 
 = Where should I submit my support request? =
 
@@ -74,7 +74,7 @@ If you're a developer and you have some ideas to improve the plugin or to solve 
 
 == Upgrade Notice ==
 
-The current version of Options, Definitely requires WordPress 4.0 or higher.
+The current version of Options Definitely requires WordPress 4.0 or higher.
 
 == Future ==
 

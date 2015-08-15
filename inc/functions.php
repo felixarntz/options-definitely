@@ -21,15 +21,19 @@ if ( ! function_exists( 'wpod_get_options' ) ) {
 	 * @param string $tab_slug the tab slug to get the options for
 	 * @return array the options as an associative array
 	 */
-	function wpod_get_options( $tab_slug ) {
-		$options = get_option( $tab_slug, array() );
+	function wpod_get_options( $tab_slug, $formatted = false ) {
+		$_options = get_option( $tab_slug, array() );
 
-		$tab = \WPDLib\Components\Manager::get( '*.*.' . $tab_slug, 'WPOD\Components\Menu', true );
+		$options = array();
+
+		$tab = \WPDLib\Components\Manager::get( '*.*.' . $tab_slug, 'WPDLib\Components\Menu.WPOD\Components\Screen', true );
 		if ( $tab ) {
-			foreach ( $tab->children as $section ) {
-				foreach ( $section->children as $field ) {
-					if ( ! isset( $options[ $field->slug ] ) ) {
-						$options[ $field->slug ] = $field->default;
+			foreach ( $tab->get_children() as $section ) {
+				foreach ( $section->get_children() as $field ) {
+					if ( isset( $_options[ $field->slug ] ) ) {
+						$options[ $field->slug ] = $field->_field->parse( $_options[ $field->slug ], $formatted );
+					} else {
+						$options[ $field->slug ] = $field->_field->parse( $field->default, $formatted );
 					}
 				}
 			}
@@ -51,18 +55,21 @@ if ( ! function_exists( 'wpod_get_option' ) ) {
 	 * @param string $field_slug the field slug to get the option for
 	 * @return mixed the option
 	 */
-	function wpod_get_option( $tab_slug, $field_slug ) {
-		$options = get_option( $tab_slug, array() );
-		if ( isset( $options[ $field_slug ] ) ) {
-			return $options[ $field_slug ];
-		}
+	function wpod_get_option( $tab_slug, $field_slug, $formatted = false ) {
+		$_options = get_option( $tab_slug, array() );
 
-		$field = \WPDLib\Components\Manager::get( '*.*.' . $tab_slug . '.*.' . $field_slug, 'WPOD\Components\Menu', true );
+		$option = null;
+
+		$field = \WPDLib\Components\Manager::get( '*.*.' . $tab_slug . '.*.' . $field_slug, 'WPDLib\Components\Menu.WPOD\Components\Screen', true );
 		if ( $field ) {
-			return $field->default;
+			if ( isset( $_options[ $field->slug ] ) ) {
+				$option = $field->_field->parse( $_options[ $field->slug ], $formatted );
+			} else {
+				$option = $field->_field->parse( $field->default, $formatted );
+			}
 		}
 
-		return false;
+		return $option;
 	}
 }
 

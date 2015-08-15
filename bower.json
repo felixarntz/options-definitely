@@ -1,7 +1,7 @@
 {
   "name": "options-definitely",
   "version": "0.5.0",
-  "description": "This framework plugin makes adding options to the WordPress admin area very simple, yet flexible. It all works using a filter and an array.",
+  "description": "This framework plugin makes adding options to the WordPress admin area very simple, yet flexible. It all works using a single action and an array.",
   "keywords": [
     "wordpress",
     "plugin",

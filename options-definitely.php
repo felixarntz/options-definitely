@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Options, Definitely
+Plugin Name: Options Definitely
 Plugin URI: http://wordpress.org/plugins/options-definitely/
-Description: This framework plugin makes adding options to the WordPress admin area very simple, yet flexible. It all works using a filter and an array.
+Description: This framework plugin makes adding options to the WordPress admin area very simple, yet flexible. It all works using a single action and an array.
 Version: 0.5.0
 Author: Felix Arntz
 Author URI: http://leaves-and-love.net
@@ -28,7 +28,7 @@ if ( ! class_exists( 'WPOD\App' ) && file_exists( dirname( __FILE__ ) . '/vendor
 
 \LaL_WP_Plugin_Loader::load_plugin( array(
 	'slug'				=> 'options-definitely',
-	'name'				=> 'Options, Definitely',
+	'name'				=> 'Options Definitely',
 	'version'			=> '0.5.0',
 	'main_file'			=> __FILE__,
 	'namespace'			=> 'WPOD',

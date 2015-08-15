@@ -8,6 +8,7 @@
 namespace WPOD\Components;
 
 use WPOD\App as App;
+use WPDLib\Components\Base as Base;
 use WPDLib\FieldTypes\Manager as FieldManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -24,7 +25,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 	 * @internal
 	 * @since 0.5.0
 	 */
-	class Tab extends \WPDLib\Components\Base {
+	class Tab extends Base {
 
 		/**
 		 * Registers the setting for this tab.
@@ -32,7 +33,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 		 * @since 0.5.0
 		 */
 		public function register() {
-			if ( count( $this->children ) > 0 ) {
+			if ( count( $this->get_children() ) > 0 ) {
 				register_setting( $this->slug, $this->slug, array( $this, 'validate_options' ) );
 			}
 		}
@@ -64,7 +65,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 				echo '<p class="description">' . $this->args['description'] . '</p>';
 			}
 
-			if ( count( $this->children ) > 0 ) {
+			if ( count( $this->get_children() ) > 0 ) {
 				$form_atts = array(
 					'id'			=> $this->slug,
 					'action'		=> admin_url( 'options.php' ),
@@ -88,7 +89,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 					echo '</div>';
 					echo '</div>';
 				} else {
-					foreach ( $this->children as $section ) {
+					foreach ( $this->get_children() as $section ) {
 						$section->render( false );
 					}
 				}
@@ -151,8 +152,8 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 
 			$changes = false;
 
-			foreach ( $this->children as $section ) {
-				foreach ( $section->children as $field ) {
+			foreach ( $this->get_children() as $section ) {
+				foreach ( $section->get_children() as $field ) {
 					$option_old = $field->default;
 					if ( isset( $options_old[ $field->slug ] ) ) {
 						$option_old = $options_old[ $field->slug ];
@@ -212,8 +213,8 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 			}
 
 			$_fields = array();
-			foreach ( $this->children as $section ) {
-				foreach ( $section->children as $field ) {
+			foreach ( $this->get_children() as $section ) {
+				foreach ( $section->get_children() as $field ) {
 					$_fields[] = $field->_field;
 				}
 			}

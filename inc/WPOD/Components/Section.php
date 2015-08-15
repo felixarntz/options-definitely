@@ -8,6 +8,7 @@
 namespace WPOD\Components;
 
 use WPOD\App as App;
+use WPDLib\Components\Base as Base;
 use WPDLib\FieldTypes\Manager as FieldManager;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -24,7 +25,7 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 	 * @internal
 	 * @since 0.5.0
 	 */
-	class Section extends \WPDLib\Components\Base {
+	class Section extends Base {
 
 		/**
 		 * Registers the settings section.
@@ -79,7 +80,7 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 				echo '<p class="description">' . $this->args['description'] . '</p>';
 			}
 
-			if ( count( $this->children ) > 0 ) {
+			if ( count( $this->get_children() ) > 0 ) {
 				$table_atts = array(
 					'class'		=> 'form-table',
 				);

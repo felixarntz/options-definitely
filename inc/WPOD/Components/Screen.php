@@ -9,6 +9,7 @@ namespace WPOD\Components;
 
 use WPOD\App as App;
 use WPOD\Admin as Admin;
+use WPDLib\Components\Base as Base;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
@@ -23,7 +24,7 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 	 * @internal
 	 * @since 0.5.0
 	 */
-	class Screen extends \WPDLib\Components\Base {
+	class Screen extends Base {
 
 		/**
 		 * @since 0.5.0
@@ -33,6 +34,8 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 
 		/**
 		 * Adds the screen to the WordPress admin menu.
+		 *
+		 * If the parent menu has an empty slug, the menu won't be added. The screen will be added though, without showing it in any menu.
 		 *
 		 * If the parent menu has not been added yet, the screen will be added as the top level item of this menu.
 		 * If it has been added, the screen will be added as a submenu item to this menu.
@@ -48,24 +51,32 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 		public function add_to_menu() {
 			$menu = $this->get_parent();
 
-			if ( false === $menu->is_already_added( $this->slug ) ) {
-				$this->page_hook = add_menu_page( $this->args['title'], $menu->label, $this->args['capability'], $this->slug, array( $this, 'render' ), $menu->icon, $menu->position );
-				$menu->added = true;
-				$menu->subslug = $this->slug;
-				$menu->sublabel = $this->args['label'];
+			if ( empty( $menu->slug ) ) {
+				$this->page_hook = add_submenu_page( null, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
 			} else {
-				if ( preg_match( '/^add_[a-z]+_page$/', $menu->subslug ) && function_exists( $menu->subslug ) ) {
-					$this->page_hook = call_user_func( $menu->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
+				if ( false === $menu->is_already_added( $this->slug ) ) {
+					$this->page_hook = add_menu_page( $this->args['title'], $menu->label, $this->args['capability'], $this->slug, array( $this, 'render' ), $menu->icon, $menu->position );
+					$menu->added = true;
+					$menu->subslug = $this->slug;
+					$menu->sublabel = $this->args['label'];
 				} else {
-					$this->page_hook = add_submenu_page( $menu->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
-				}
+					if ( false === $menu->subslug ) {
+						return false;
+					}
 
-				if ( $menu->sublabel !== true ) {
-					global $submenu;
+					if ( preg_match( '/^add_[a-z]+_page$/', $menu->subslug ) && function_exists( $menu->subslug ) ) {
+						$this->page_hook = call_user_func( $menu->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
+					} else {
+						$this->page_hook = add_submenu_page( $menu->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
+					}
 
-					if ( isset( $submenu[ $menu->subslug ] ) ) {
-						$submenu[ $menu->subslug ][0][0] = $menu->sublabel;
-						$menu->sublabel = true;
+					if ( $menu->sublabel !== true ) {
+						global $submenu;
+
+						if ( isset( $submenu[ $menu->subslug ] ) ) {
+							$submenu[ $menu->subslug ][0][0] = $menu->sublabel;
+							$menu->sublabel = true;
+						}
 					}
 				}
 			}
@@ -94,7 +105,7 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 				echo '<p class="description">' . $this->args['description'] . '</p>';
 			}
 
-			$tabs = $this->children;
+			$tabs = $this->get_children();
 			$tabs = array_filter( $tabs, 'wpod_current_user_can' );
 
 			if ( count( $tabs ) > 0 ) {

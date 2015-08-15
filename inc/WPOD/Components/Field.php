@@ -8,6 +8,7 @@
 namespace WPOD\Components;
 
 use WPDLib\Components\Manager as ComponentManager;
+use WPDLib\Components\Base as Base;
 use WPDLib\FieldTypes\Manager as FieldManager;
 use WPDLib\Util\Error as UtilError;
 use WP_Error as WPError;
@@ -26,7 +27,7 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 	 * @internal
 	 * @since 0.5.0
 	 */
-	class Field extends \WPDLib\Components\Base {
+	class Field extends Base {
 
 		/**
 		 * @since 0.5.0
@@ -64,9 +65,6 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 		 * Renders the field.
 		 *
 		 * This function will show the input field(s) in the WordPress admin.
-		 * If the field is a repeatable field, the more specific function to render this type of field will be called.
-		 * Otherwise the field is rendered according to the type of the field.
-		 * The type can also be specified as a callback in which case this callback function will be used to render the input.
 		 *
 		 * @since 0.5.0
 		 */
@@ -114,10 +112,10 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 		 * @see WPOD\Components\Tab::validate_options()
 		 * @since 0.5.0
 		 * @param mixed $option the new option value to validate
-		 * @return array numeric array where the first item is the validated option (or the old option if an error occurred) and the second item is an error message of an empty string if everything is fine
+		 * @return mixed either the validated option or a WP_Error object
 		 */
-		public function validate_option( $option = null ) {
-			if ( $this->args['required'] ) {
+		public function validate_option( $option = null, $skip_required = false ) {
+			if ( $this->args['required'] && ! $skip_required ) {
 				if ( $option === null || $this->_field->is_empty( $option ) ) {
 					return new WPError( 'invalid_empty_value', __( 'No value was provided for the required field.', 'wpod' ) );
 				}
@@ -150,7 +148,7 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 
 				$this->_field = FieldManager::get_instance( $this->args );
 				if ( $this->_field === null ) {
-					return new UtilError( 'no_valid_field_type', sprintf( __( 'The field type %1$s assigned to the field component %2$s is not a valid field type.', 'wpdlib' ), $this->args['type'], $this->slug ), '', ComponentManager::get_scope() );
+					return new UtilError( 'no_valid_field_type', sprintf( __( 'The field type %1$s assigned to the field component %2$s is not a valid field type.', 'wpod' ), $this->args['type'], $this->slug ), '', ComponentManager::get_scope() );
 				}
 				if ( null === $this->args['default'] ) {
 					$this->args['default'] = $this->_field->validate();

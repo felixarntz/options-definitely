@@ -3,14 +3,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: options-definitely 0.5.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/options-definitely/\n"
-"POT-Creation-Date: 2015-08-08 16:35:10+00:00\n"
+"POT-Creation-Date: 2015-08-15 15:04:31+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Felix Arntz <felix-arntz@leaves-and-love.net>\n"
 "Language-Team: Felix Arntz <felix-arntz@leaves-and-love.net>\n"
-"X-Generator: grunt-wp-i18n 0.4.5\n"
+"X-Generator: grunt-wp-i18n 0.5.3\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-Country: UNITED STATES\n"
@@ -22,80 +22,76 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/WPOD/App.php:155
+#: inc/WPOD/App.php:157
 msgid "This function should never be called manually."
 msgstr ""
 
-#: inc/WPOD/Components/Field.php:117
+#: inc/WPOD/Components/Field.php:120
 msgid "No value was provided for the required field."
 msgstr ""
 
-#: inc/WPOD/Components/Field.php:148
+#: inc/WPOD/Components/Field.php:151
 msgid ""
 "The field type %1$s assigned to the field component %2$s is not a valid "
 "field type."
 msgstr ""
 
-#: inc/WPOD/Components/Field.php:168
+#: inc/WPOD/Components/Field.php:171
 msgid "Field title"
 msgstr ""
 
-#: inc/WPOD/Components/Menu.php:105
-msgid "Menu label"
-msgstr ""
-
-#: inc/WPOD/Components/Screen.php:119
+#: inc/WPOD/Components/Screen.php:133
 msgid ""
 "There are no tabs to display for the screen %s. Either add some or adjust "
 "the required capabilities."
 msgstr ""
 
-#: inc/WPOD/Components/Screen.php:172
+#: inc/WPOD/Components/Screen.php:186
 msgid "Help tab title"
 msgstr ""
 
-#: inc/WPOD/Components/Screen.php:192
+#: inc/WPOD/Components/Screen.php:206
 msgid "Screen title"
 msgstr ""
 
-#: inc/WPOD/Components/Screen.php:193
+#: inc/WPOD/Components/Screen.php:207
 msgid "Screen label"
 msgstr ""
 
-#: inc/WPOD/Components/Section.php:93
+#: inc/WPOD/Components/Section.php:97
 msgid ""
 "There are no fields to display for section %s. Either add some or provide a "
 "valid callback function instead."
 msgstr ""
 
-#: inc/WPOD/Components/Section.php:117
+#: inc/WPOD/Components/Section.php:121
 msgid "Section title"
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:101
+#: inc/WPOD/Components/Tab.php:105
 msgid ""
 "There are no sections to display for tab %s. Either add some or provide a "
 "valid callback function instead."
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:186
+#: inc/WPOD/Components/Tab.php:190
 msgid "Settings successfully saved."
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:189
+#: inc/WPOD/Components/Tab.php:193
 msgid "Some errors occurred while trying to save the following settings:"
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:196
+#: inc/WPOD/Components/Tab.php:200
 msgid "Other settings were successfully saved."
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:231
+#: inc/WPOD/Components/Tab.php:235
 msgid "Tab title"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "Options, Definitely"
+msgid "Options Definitely"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
@@ -105,7 +101,7 @@ msgstr ""
 #. Description of the plugin/theme
 msgid ""
 "This framework plugin makes adding options to the WordPress admin area very "
-"simple, yet flexible. It all works using a filter and an array."
+"simple, yet flexible. It all works using a single action and an array."
 msgstr ""
 
 #. Author of the plugin/theme

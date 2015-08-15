@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		pluginheader: 	'/*\n' +
-						'Plugin Name: Options, Definitely\n' +
+						'Plugin Name: Options Definitely\n' +
 						'Plugin URI: <%= pkg.homepage %>\n' +
 						'Description: <%= pkg.description %>\n' +
 						'Version: <%= pkg.version %>\n' +
