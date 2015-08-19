@@ -54,7 +54,7 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 		 * @return string the page hook of this screen
 		 */
 		public function add_to_menu( $args ) {
-			if ( 'menu' === $mode ) {
+			if ( 'menu' === $args['mode'] ) {
 				$this->page_hook = add_menu_page( $this->args['title'], $args['menu_label'], $this->args['capability'], $this->slug, array( $this, 'render' ), $args['menu_icon'], $args['menu_priority'] );
 			} else {
 				$this->page_hook = add_submenu_page( $args['menu_slug'], $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
