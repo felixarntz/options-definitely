@@ -27,6 +27,11 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 	 */
 	class Section extends Base {
 
+		public function __construct( $slug, $args ) {
+			parent::__construct( $slug, $args );
+			$this->validate_filter = 'wpod_section_validated';
+		}
+
 		/**
 		 * Registers the settings section.
 		 *
@@ -109,6 +114,23 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 		}
 
 		/**
+		 * Validates the arguments array.
+		 *
+		 * @since 0.5.0
+		 */
+		public function validate( $parent = null ) {
+			$status = parent::validate( $parent );
+
+			if ( $status === true ) {
+				if ( null !== $this->args['priority'] ) {
+					$this->args['priority'] = floatval( $this->args['priority'] );
+				}
+			}
+
+			return $status;
+		}
+
+		/**
 		 * Returns the keys of the arguments array and their default values.
 		 *
 		 * Read the plugin guide for more information about the section arguments.
@@ -121,6 +143,7 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 				'title'			=> __( 'Section title', 'wpod' ),
 				'description'	=> '',
 				'callback'		=> false, //only used if no fields are attached to this section
+				'priority'		=> null,
 			);
 
 			/**

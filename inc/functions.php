@@ -24,6 +24,10 @@ if ( ! function_exists( 'wpod_get_options' ) ) {
 	function wpod_get_options( $tab_slug, $formatted = false ) {
 		$_options = get_option( $tab_slug, array() );
 
+		if ( doing_action( 'wpod' ) || ! did_action( 'wpod' ) ) {
+			return $_options;
+		}
+
 		$options = array();
 
 		$tab = \WPDLib\Components\Manager::get( '*.*.' . $tab_slug, 'WPDLib\Components\Menu.WPOD\Components\Screen', true );
@@ -57,6 +61,13 @@ if ( ! function_exists( 'wpod_get_option' ) ) {
 	 */
 	function wpod_get_option( $tab_slug, $field_slug, $formatted = false ) {
 		$_options = get_option( $tab_slug, array() );
+
+		if ( doing_action( 'wpod' ) || ! did_action( 'wpod' ) ) {
+			if ( isset( $_options[ $field_slug ] ) ) {
+				return $_options[ $field_slug ];
+			}
+			return null;
+		}
 
 		$option = null;
 

@@ -72,6 +72,11 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 
 			// use after_setup_theme action so it is initialized as soon as possible, but also so that both plugins and themes can use the action
 			add_action( 'after_setup_theme', array( $this, 'init' ), 1 );
+
+			add_filter( 'wpdlib_menu_validated', array( $this, 'menu_validated' ), 10, 2 );
+			add_filter( 'wpdlib_screen_validated', array( $this, 'screen_validated' ), 10, 2 );
+			add_filter( 'wpdlib_tab_validated', array( $this, 'tab_validated' ), 10, 2 );
+			add_filter( 'wpdlib_section_validated', array( $this, 'section_validated' ), 10, 2 );
 		}
 
 		public function set_scope( $scope ) {
@@ -87,49 +92,37 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 
 			if ( is_array( $components ) ) {
 				foreach ( $components as $menu_slug => $menu_args ) {
-					$screens = array();
-					if ( isset( $menu_args['screens'] ) ) {
-						$screens = $menu_args['screens'];
-						unset( $menu_args['screens'] );
-					}
 					$menu = ComponentManager::add( new Menu( $menu_slug, $menu_args ) );
 					if ( is_wp_error( $menu ) ) {
 						self::doing_it_wrong( __METHOD__, $menu->get_error_message(), '0.5.0' );
-					} elseif ( is_array( $screens ) ) {
-						foreach ( $screens as $screen_slug => $screen_args ) {
-							$tabs = array();
-							if ( isset( $screen_args['tabs'] ) ) {
-								$tabs = $screen_args['tabs'];
-								unset( $screen_args['tabs'] );
-							}
-							$screen = $menu->add( new Screen( $screen_slug, $screen_args ) );
-							if ( is_wp_error( $screen ) ) {
-								self::doing_it_wrong( __METHOD__, $screen->get_error_message(), '0.5.0' );
-							} elseif ( is_array( $tabs ) ) {
-								foreach ( $tabs as $tab_slug => $tab_args ) {
-									$sections = array();
-									if ( isset( $tab_args['sections'] ) ) {
-										$sections = $tab_args['sections'];
-										unset( $tab_args['sections'] );
-									}
-									$tab = $screen->add( new Tab( $tab_slug, $tab_args ) );
-									if ( is_wp_error( $tab ) ) {
-										self::doing_it_wrong( __METHOD__, $tab->get_error_message(), '0.5.0' );
-									} elseif ( is_array( $sections ) ) {
-										foreach ( $sections as $section_slug => $section_args ) {
-											$fields = array();
-											if ( isset( $section_args['fields'] ) ) {
-												$fields = $section_args['fields'];
-												unset( $section_args['fields'] );
-											}
-											$section = $tab->add( new Section( $section_slug, $section_args ) );
-											if ( is_wp_error( $section ) ) {
-												self::doing_it_wrong( __METHOD__, $section->get_error_message(), '0.5.0' );
-											} elseif ( is_array( $fields ) ) {
-												foreach ( $fields as $field_slug => $field_args ) {
-													$field = $section->add( new Field( $field_slug, $field_args ) );
-													if ( is_wp_error( $field ) ) {
-														self::doing_it_wrong( __METHOD__, $field->get_error_message(), '0.5.0' );
+					} else {
+						if ( isset( $menu_args['screens'] ) && is_array( $menu_args['screens'] ) ) {
+							foreach ( $menu_args['screens'] as $screen_slug => $screen_args ) {
+								$screen = $menu->add( new Screen( $screen_slug, $screen_args ) );
+								if ( is_wp_error( $screen ) ) {
+									self::doing_it_wrong( __METHOD__, $screen->get_error_message(), '0.5.0' );
+								} else {
+									if ( isset( $screen_args['tabs'] ) && is_array( $screen_args['tabs'] ) ) {
+										foreach ( $screen_args['tabs'] as $tab_slug => $tab_args ) {
+											$tab = $screen->add( new Tab( $tab_slug, $tab_args ) );
+											if ( is_wp_error( $tab ) ) {
+												self::doing_it_wrong( __METHOD__, $tab->get_error_message(), '0.5.0' );
+											} else {
+												if ( isset( $tab_args['sections'] ) && is_array( $tab_args['sections'] ) ) {
+													foreach ( $tab_args['sections'] as $section_slug => $section_args ) {
+														$section = $tab->add( new Section( $section_slug, $section_args ) );
+														if ( is_wp_error( $section ) ) {
+															self::doing_it_wrong( __METHOD__, $section->get_error_message(), '0.5.0' );
+														} else {
+															if ( isset( $section_args['fields'] ) && is_array( $section_args['fields'] ) ) {
+																foreach ( $section_args['fields'] as $field_slug => $field_args ) {
+																	$field = $section->add( new Field( $field_slug, $field_args ) );
+																	if ( is_wp_error( $field ) ) {
+																		self::doing_it_wrong( __METHOD__, $field->get_error_message(), '0.5.0' );
+																	}
+																}
+															}
+														}
 													}
 												}
 											}
@@ -158,7 +151,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			if ( ! $this->initialization_triggered ) {
 				$this->initialization_triggered = true;
 
-				ComponentManager::register_hierarchy( array(
+				ComponentManager::register_hierarchy( apply_filters( 'wpod_class_hierarchy', array(
 					'WPDLib\Components\Menu'		=> array(
 						'WPOD\Components\Screen'		=> array(
 							'WPOD\Components\Tab'			=> array(
@@ -168,7 +161,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 							),
 						),
 					),
-				) );
+				) ) );
 
 				do_action( 'wpod', $this );
 
@@ -176,6 +169,34 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			} else {
 				self::doing_it_wrong( __METHOD__, __( 'This function should never be called manually.', 'wpod' ), '0.5.0' );
 			}
+		}
+
+		public function menu_validated( $args, $menu ) {
+			if ( isset( $args['screens'] ) ) {
+				unset( $args['screens'] );
+			}
+			return $args;
+		}
+
+		public function screen_validated( $args, $screen ) {
+			if ( isset( $args['tabs'] ) ) {
+				unset( $args['tabs'] );
+			}
+			return $args;
+		}
+
+		public function tab_validated( $args, $tab ) {
+			if ( isset( $args['sections'] ) ) {
+				unset( $args['sections'] );
+			}
+			return $args;
+		}
+
+		public function section_validated( $args, $section ) {
+			if ( isset( $args['fields'] ) ) {
+				unset( $args['fields'] );
+			}
+			return $args;
 		}
 	}
 }

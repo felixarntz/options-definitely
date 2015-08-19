@@ -29,6 +29,11 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 	 */
 	class Field extends Base {
 
+		public function __construct( $slug, $args ) {
+			parent::__construct( $slug, $args );
+			$this->validate_filter = 'wpod_field_validated';
+		}
+
 		/**
 		 * @since 0.5.0
 		 * @var WPDLib\FieldTypes\Base Holds the field type object from WPDLib.
@@ -153,6 +158,10 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 				if ( null === $this->args['default'] ) {
 					$this->args['default'] = $this->_field->validate();
 				}
+
+				if ( null !== $this->args['priority'] ) {
+					$this->args['priority'] = floatval( $this->args['priority'] );
+				}
 			}
 
 			return $status;
@@ -174,6 +183,7 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 				'class'				=> '',
 				'default'			=> null,
 				'required'			=> false,
+				'priority'			=> null,
 			);
 
 			/**

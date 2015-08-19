@@ -53,7 +53,7 @@ if ( ! class_exists( 'WPOD\Admin' ) ) {
 		 */
 		private function __construct() {
 			add_action( 'admin_init', array( $this, 'register_settings' ) );
-			add_action( 'admin_menu', array( $this, 'create_admin_menu' ), 50 );
+			add_action( 'admin_menu', array( $this, 'register_help' ), 100 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		}
 
@@ -77,6 +77,16 @@ if ( ! class_exists( 'WPOD\Admin' ) ) {
 					foreach ( $section->get_children() as $field ) {
 						$field->register( $tab, $section );
 					}
+				}
+			}
+		}
+
+		public function register_help() {
+			$screens = ComponentManager::get( '*.*', 'WPDLib\Components\Menu.WPOD\Components\Screen' );
+			foreach ( $screens as $screen ) {
+				$page_hook = $screen->page_hook;
+				if ( $page_hook ) {
+					add_action( 'load-' . $page_hook, array( $screen, 'render_help' ) );
 				}
 			}
 		}

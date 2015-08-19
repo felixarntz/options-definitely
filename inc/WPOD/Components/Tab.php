@@ -27,6 +27,11 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 	 */
 	class Tab extends Base {
 
+		public function __construct( $slug, $args ) {
+			parent::__construct( $slug, $args );
+			$this->validate_filter = 'wpod_tab_validated';
+		}
+
 		/**
 		 * Registers the setting for this tab.
 		 *
@@ -223,6 +228,23 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 		}
 
 		/**
+		 * Validates the arguments array.
+		 *
+		 * @since 0.5.0
+		 */
+		public function validate( $parent = null ) {
+			$status = parent::validate( $parent );
+
+			if ( $status === true ) {
+				if ( null !== $this->args['priority'] ) {
+					$this->args['priority'] = floatval( $this->args['priority'] );
+				}
+			}
+
+			return $status;
+		}
+
+		/**
 		 * Returns the keys of the arguments array and their default values.
 		 *
 		 * Read the plugin guide for more information about the tab arguments.
@@ -237,6 +259,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 				'capability'	=> 'manage_options',
 				'mode'			=> 'default',
 				'callback'		=> false, //only used if no sections are attached to this tab
+				'priority'		=> null,
 			);
 
 			/**

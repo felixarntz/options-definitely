@@ -32,6 +32,11 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 		 */
 		protected $page_hook = '';
 
+		public function __construct( $slug, $args ) {
+			parent::__construct( $slug, $args );
+			$this->validate_filter = 'wpod_screen_validated';
+		}
+
 		/**
 		 * Adds the screen to the WordPress admin menu.
 		 *
@@ -48,40 +53,14 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 		 * @see WPOD\Admin::create_admin_menu()
 		 * @return string the page hook of this screen
 		 */
-		public function add_to_menu() {
-			$menu = $this->get_parent();
-
-			if ( empty( $menu->slug ) ) {
-				$this->page_hook = add_submenu_page( null, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
+		public function add_to_menu( $args ) {
+			if ( 'menu' === $mode ) {
+				$this->page_hook = add_menu_page( $this->args['title'], $args['menu_label'], $this->args['capability'], $this->slug, array( $this, 'render' ), $args['menu_icon'], $args['menu_priority'] );
 			} else {
-				if ( false === $menu->is_already_added( $this->slug ) ) {
-					$this->page_hook = add_menu_page( $this->args['title'], $menu->label, $this->args['capability'], $this->slug, array( $this, 'render' ), $menu->icon, $menu->position );
-					$menu->added = true;
-					$menu->subslug = $this->slug;
-					$menu->sublabel = $this->args['label'];
-				} else {
-					if ( false === $menu->sublabel ) {
-						return false;
-					}
-
-					if ( preg_match( '/^add_[a-z]+_page$/', $menu->subslug ) && function_exists( $menu->subslug ) ) {
-						$this->page_hook = call_user_func( $menu->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
-					} else {
-						$this->page_hook = add_submenu_page( $menu->subslug, $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
-					}
-
-					if ( true !== $menu->sublabel ) {
-						global $submenu;
-
-						if ( isset( $submenu[ $menu->subslug ] ) ) {
-							$submenu[ $menu->subslug ][0][0] = $menu->sublabel;
-							$menu->sublabel = true;
-						}
-					}
-				}
+				$this->page_hook = add_submenu_page( $args['menu_slug'], $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
 			}
 
-			return $this->page_hook;
+			return $this->args['label'];
 		}
 
 		/**
@@ -169,6 +148,10 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 			$status = parent::validate( $parent );
 
 			if ( $status === true ) {
+				if ( null !== $this->args['priority'] ) {
+					$this->args['priority'] = floatval( $this->args['priority'] );
+				}
+
 				if( ! is_array( $this->args['help'] ) ) {
 					$this->args['help'] = array();
 				}
@@ -207,6 +190,7 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 				'label'			=> __( 'Screen label', 'wpod' ),
 				'description'	=> '',
 				'capability'	=> 'manage_options',
+				'priority'		=> null,
 				'help'			=> array(
 					'tabs'			=> array(),
 					'sidebar'		=> '',
