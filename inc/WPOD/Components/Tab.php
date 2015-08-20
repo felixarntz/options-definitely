@@ -215,6 +215,8 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 				wp_enqueue_script( 'common' );
 				wp_enqueue_script( 'wp-lists' );
 				wp_enqueue_script( 'postbox' );
+
+				add_action( 'admin_head', array( $this, 'fix_metabox_styles' ) );
 			}
 
 			$_fields = array();
@@ -225,6 +227,16 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 			}
 
 			FieldManager::enqueue_assets( $_fields );
+		}
+
+		public function fix_metabox_styles() {
+			?>
+			<style type="text/css">
+				.postbox-container {
+					float: none;
+				}
+			</style>
+			<?php
 		}
 
 		/**
