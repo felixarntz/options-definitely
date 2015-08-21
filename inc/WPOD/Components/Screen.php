@@ -55,7 +55,7 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 		 */
 		public function add_to_menu( $args ) {
 			if ( 'menu' === $args['mode'] ) {
-				$this->page_hook = add_menu_page( $this->args['title'], $args['menu_label'], $this->args['capability'], $this->slug, array( $this, 'render' ), $args['menu_icon'], $args['menu_priority'] );
+				$this->page_hook = add_menu_page( $this->args['title'], $args['menu_label'], $this->args['capability'], $this->slug, array( $this, 'render' ), $args['menu_icon'], $args['menu_position'] );
 			} else {
 				$this->page_hook = add_submenu_page( $args['menu_slug'], $this->args['title'], $this->args['label'], $this->args['capability'], $this->slug, array( $this, 'render' ) );
 			}
@@ -148,8 +148,8 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 			$status = parent::validate( $parent );
 
 			if ( $status === true ) {
-				if ( null !== $this->args['priority'] ) {
-					$this->args['priority'] = floatval( $this->args['priority'] );
+				if ( null !== $this->args['position'] ) {
+					$this->args['position'] = floatval( $this->args['position'] );
 				}
 
 				if( ! is_array( $this->args['help'] ) ) {
@@ -190,7 +190,7 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 				'label'			=> __( 'Screen label', 'wpod' ),
 				'description'	=> '',
 				'capability'	=> 'manage_options',
-				'priority'		=> null,
+				'position'		=> null,
 				'help'			=> array(
 					'tabs'			=> array(),
 					'sidebar'		=> '',

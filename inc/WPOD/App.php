@@ -32,18 +32,6 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 
 		/**
 		 * @since 0.5.0
-		 * @var boolean Holds the status whether the initialization function has been called yet.
-		 */
-		private $initialization_triggered = false;
-
-		/**
-		 * @since 0.5.0
-		 * @var boolean Holds the status whether the app has been initialized yet.
-		 */
-		private $initialized = false;
-
-		/**
-		 * @since 0.5.0
 		 * @var array Holds the plugin data.
 		 */
 		protected static $_args = array();
@@ -148,9 +136,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * @since 0.5.0
 		 */
 		public function init() {
-			if ( ! $this->initialization_triggered ) {
-				$this->initialization_triggered = true;
-
+			if ( ! did_action( 'wpod' ) ) {
 				ComponentManager::register_hierarchy( apply_filters( 'wpod_class_hierarchy', array(
 					'WPDLib\Components\Menu'		=> array(
 						'WPOD\Components\Screen'		=> array(
@@ -164,8 +150,6 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 				) ) );
 
 				do_action( 'wpod', $this );
-
-				$this->initialized = true;
 			} else {
 				self::doing_it_wrong( __METHOD__, __( 'This function should never be called manually.', 'wpod' ), '0.5.0' );
 			}

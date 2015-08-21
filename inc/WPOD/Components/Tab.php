@@ -248,8 +248,8 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 			$status = parent::validate( $parent );
 
 			if ( $status === true ) {
-				if ( null !== $this->args['priority'] ) {
-					$this->args['priority'] = floatval( $this->args['priority'] );
+				if ( null !== $this->args['position'] ) {
+					$this->args['position'] = floatval( $this->args['position'] );
 				}
 			}
 
@@ -271,7 +271,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 				'capability'	=> 'manage_options',
 				'mode'			=> 'default',
 				'callback'		=> false, //only used if no sections are attached to this tab
-				'priority'		=> null,
+				'position'		=> null,
 			);
 
 			/**
