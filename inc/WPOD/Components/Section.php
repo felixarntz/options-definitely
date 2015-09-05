@@ -87,7 +87,7 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 
 			if ( count( $this->get_children() ) > 0 ) {
 				$table_atts = array(
-					'class'		=> 'form-table',
+					'class'		=> 'form-table wpdlib-form-table',
 				);
 				$table_atts = apply_filters( 'wpod_table_atts', $table_atts, $this );
 
