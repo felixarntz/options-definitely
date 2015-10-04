@@ -151,7 +151,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 
 				do_action( 'wpod', $this );
 			} else {
-				self::doing_it_wrong( __METHOD__, __( 'This function should never be called manually.', 'wpod' ), '0.5.0' );
+				self::doing_it_wrong( __METHOD__, __( 'This function should never be called manually.', 'options-definitely' ), '0.5.0' );
 			}
 		}
 

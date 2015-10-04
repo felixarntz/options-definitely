@@ -109,7 +109,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 			} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
 				call_user_func( $this->args['callback'] );
 			} else {
-				App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for tab %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '0.5.0' );
+				App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no sections to display for tab %s. Either add some or provide a valid callback function instead.', 'options-definitely' ), $this->slug ), '0.5.0' );
 			}
 
 			if ( 'draggable' == $this->args['mode'] ) {
@@ -194,17 +194,17 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 
 			$options_validated = apply_filters( 'wpod_validated_options', $options_validated );
 
-			$status_text = __( 'Settings successfully saved.', 'wpod' );
+			$status_text = __( 'Settings successfully saved.', 'options-definitely' );
 
 			if ( count( $errors ) > 0 ) {
-				$error_text = __( 'Some errors occurred while trying to save the following settings:', 'wpod' );
+				$error_text = __( 'Some errors occurred while trying to save the following settings:', 'options-definitely' );
 				foreach ( $errors as $field_slug => $error ) {
 					$error_text .= '<br/><em>' . $field_slug . '</em>: ' . $error->get_error_message();
 				}
 
 				add_settings_error( $this->slug, $this->slug . '-error', $error_text, 'error' );
 
-				$status_text = __( 'Other settings were successfully saved.', 'wpod' );
+				$status_text = __( 'Other settings were successfully saved.', 'options-definitely' );
 			}
 
 			add_settings_error( $this->slug, $this->slug . '-updated', $status_text, 'updated' );
@@ -268,7 +268,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 		 */
 		protected function get_defaults() {
 			$defaults = array(
-				'title'			=> __( 'Tab title', 'wpod' ),
+				'title'			=> __( 'Tab title', 'options-definitely' ),
 				'description'	=> '',
 				'capability'	=> 'manage_options',
 				'mode'			=> 'default',

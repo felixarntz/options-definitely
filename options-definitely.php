@@ -8,7 +8,7 @@ Author: Felix Arntz
 Author URI: http://leaves-and-love.net
 License: GNU General Public License v2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: wpod
+Text Domain: options-definitely
 Domain Path: /languages/
 Tags: wordpress, plugin, framework, library, developer, options, admin, backend, ui
 */
@@ -32,7 +32,7 @@ if ( ! class_exists( 'WPOD\App' ) && file_exists( dirname( __FILE__ ) . '/vendor
 	'version'			=> '0.5.0',
 	'main_file'			=> __FILE__,
 	'namespace'			=> 'WPOD',
-	'textdomain'		=> 'wpod',
+	'textdomain'		=> 'options-definitely',
 ), array(
 	'phpversion'		=> '5.3.0',
 	'wpversion'			=> '4.0',

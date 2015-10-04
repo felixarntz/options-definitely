@@ -99,7 +99,7 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 			} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
 				call_user_func( $this->args['callback'] );
 			} else {
-				App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no fields to display for section %s. Either add some or provide a valid callback function instead.', 'wpod' ), $this->slug ), '0.5.0' );
+				App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no fields to display for section %s. Either add some or provide a valid callback function instead.', 'options-definitely' ), $this->slug ), '0.5.0' );
 			}
 
 			/**
@@ -140,7 +140,7 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 		 */
 		protected function get_defaults() {
 			$defaults = array(
-				'title'			=> __( 'Section title', 'wpod' ),
+				'title'			=> __( 'Section title', 'options-definitely' ),
 				'description'	=> '',
 				'callback'		=> false, //only used if no fields are attached to this section
 				'position'		=> null,

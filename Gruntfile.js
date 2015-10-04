@@ -2,7 +2,7 @@
 module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-		pluginheader: 	'/*\n' +
+		pluginheader:	'/*\n' +
 						'Plugin Name: Options Definitely\n' +
 						'Plugin URI: <%= pkg.homepage %>\n' +
 						'Description: <%= pkg.description %>\n' +
@@ -11,19 +11,19 @@ module.exports = function(grunt) {
 						'Author URI: <%= pkg.author.url %>\n' +
 						'License: <%= pkg.license.name %>\n' +
 						'License URI: <%= pkg.license.url %>\n' +
-						'Text Domain: wpod\n' +
+						'Text Domain: options-definitely\n' +
 						'Domain Path: /languages/\n' +
 						'Tags: wordpress, plugin, framework, library, developer, options, admin, backend, ui\n' +
 						'*/',
-		fileheader: '/**\n' +
-					' * @package WPOD\n' +
-					' * @version <%= pkg.version %>\n' +
-					' * @author <%= pkg.author.name %> <<%= pkg.author.email %>>\n' +
-					' */',
+		fileheader:		'/**\n' +
+						' * @package WPOD\n' +
+						' * @version <%= pkg.version %>\n' +
+						' * @author <%= pkg.author.name %> <<%= pkg.author.email %>>\n' +
+						' */',
 
 		clean: {
 			translation: [
-				'languages/wpod.pot'
+				'languages/options-definitely.pot'
 			]
 		},
 
@@ -58,7 +58,7 @@ module.exports = function(grunt) {
 					domainPath: '/languages',
 					exclude: [ 'vendor/.*' ],
 					potComments: 'Copyright (c) 2014-<%= grunt.template.today("yyyy") %> <%= pkg.author.name %>',
-					potFilename: 'wpod.pot',
+					potFilename: 'options-definitely.pot',
 					potHeaders: {
 						'language-team': '<%= pkg.author.name %> <<%= pkg.author.email %>>',
 						'last-translator': '<%= pkg.author.name %> <<%= pkg.author.email %>>',

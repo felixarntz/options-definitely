@@ -109,7 +109,7 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 				}
 				$current_tab->render();
 			} else {
-				App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the screen %s. Either add some or adjust the required capabilities.', 'wpod' ), $this->real_slug ), '0.5.0' );
+				App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the screen %s. Either add some or adjust the required capabilities.', 'options-definitely' ), $this->real_slug ), '0.5.0' );
 			}
 
 			do_action( 'wpod_screen_after', $this->real_slug, $this->args, $parent_menu->slug );
@@ -166,7 +166,7 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 
 				foreach ( $this->args['help']['tabs'] as $slug => &$tab ) {
 					$tab = wp_parse_args( $tab, array(
-						'title'			=> __( 'Help tab title', 'wpod' ),
+						'title'			=> __( 'Help tab title', 'options-definitely' ),
 						'content'		=> '',
 						'callback'		=> false,
 					) );
@@ -186,8 +186,8 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 		 */
 		protected function get_defaults() {
 			$defaults = array(
-				'title'			=> __( 'Screen title', 'wpod' ),
-				'label'			=> __( 'Screen label', 'wpod' ),
+				'title'			=> __( 'Screen title', 'options-definitely' ),
+				'label'			=> __( 'Screen label', 'options-definitely' ),
 				'description'	=> '',
 				'capability'	=> 'manage_options',
 				'position'		=> null,

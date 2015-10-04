@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: options-definitely 0.5.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/options-definitely/\n"
-"POT-Creation-Date: 2015-08-15 15:04:31+00:00\n"
-"PO-Revision-Date: 2015-08-15 17:06+0100\n"
+"POT-Creation-Date: 2015-10-04 14:52:03+00:00\n"
+"PO-Revision-Date: 2015-10-04 16:53+0100\n"
 "Last-Translator: Felix Arntz <felix-arntz@leaves-and-love.net>\n"
 "Language-Team: Felix Arntz <felix-arntz@leaves-and-love.net>\n"
 "Language: de_DE\n"
@@ -22,15 +22,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: inc/WPOD/App.php:157
+#: inc/WPOD/App.php:154
 msgid "This function should never be called manually."
 msgstr "Diese Funktion sollte niemals manuell aufgerufen werden."
 
-#: inc/WPOD/Components/Field.php:120
+#: inc/WPOD/Components/Field.php:122
 msgid "No value was provided for the required field."
 msgstr "Es wurde kein Wert für das erforderliche Feld eingegeben."
 
-#: inc/WPOD/Components/Field.php:151
+#: inc/WPOD/Components/Field.php:153
 msgid ""
 "The field type %1$s assigned to the field component %2$s is not a valid "
 "field type."
@@ -38,11 +38,11 @@ msgstr ""
 "Der der Feldkomponente %2$s zugewiesene Feldtyp %1$s ist kein gültiger "
 "Feldtyp."
 
-#: inc/WPOD/Components/Field.php:171
+#: inc/WPOD/Components/Field.php:177
 msgid "Field title"
 msgstr "Feld-Titel"
 
-#: inc/WPOD/Components/Screen.php:133
+#: inc/WPOD/Components/Screen.php:112
 msgid ""
 "There are no tabs to display for the screen %s. Either add some or adjust "
 "the required capabilities."
@@ -50,19 +50,19 @@ msgstr ""
 "Der Screen %s enthält keine Tabs, die angezeigt werden können. Fügen Sie "
 "entweder welche hinzu oder passen Sie die nötigen Berechtigungen an."
 
-#: inc/WPOD/Components/Screen.php:186
+#: inc/WPOD/Components/Screen.php:169
 msgid "Help tab title"
 msgstr "Hilfs-Tab-Titel"
 
-#: inc/WPOD/Components/Screen.php:206
+#: inc/WPOD/Components/Screen.php:189
 msgid "Screen title"
 msgstr "Screen-Titel"
 
-#: inc/WPOD/Components/Screen.php:207
+#: inc/WPOD/Components/Screen.php:190
 msgid "Screen label"
 msgstr "Screen-Label"
 
-#: inc/WPOD/Components/Section.php:97
+#: inc/WPOD/Components/Section.php:102
 msgid ""
 "There are no fields to display for section %s. Either add some or provide a "
 "valid callback function instead."
@@ -71,11 +71,11 @@ msgstr ""
 "Sie entweder welche hinzu oder geben Sie eine vorhandene Callback-Funktion "
 "an."
 
-#: inc/WPOD/Components/Section.php:121
+#: inc/WPOD/Components/Section.php:143
 msgid "Section title"
 msgstr "Abschnitts-Titel"
 
-#: inc/WPOD/Components/Tab.php:105
+#: inc/WPOD/Components/Tab.php:112
 msgid ""
 "There are no sections to display for tab %s. Either add some or provide a "
 "valid callback function instead."
@@ -83,21 +83,21 @@ msgstr ""
 "Das Tab %s enthält keine Abschnitte, die angezeigt werden können. Fügen Sie "
 "entweder welche hinzu oder geben Sie eine vorhandene Callback-Funktion an."
 
-#: inc/WPOD/Components/Tab.php:190
+#: inc/WPOD/Components/Tab.php:197
 msgid "Settings successfully saved."
 msgstr "Änderungen erfolgreich gespeichert."
 
-#: inc/WPOD/Components/Tab.php:193
+#: inc/WPOD/Components/Tab.php:200
 msgid "Some errors occurred while trying to save the following settings:"
 msgstr ""
 "Beim Versuch die folgenden Einstellungen zu speichern sind Fehler "
 "aufgetreten:"
 
-#: inc/WPOD/Components/Tab.php:200
+#: inc/WPOD/Components/Tab.php:207
 msgid "Other settings were successfully saved."
 msgstr "Weitere Änderungen wurden erfolgreich gespeichert."
 
-#: inc/WPOD/Components/Tab.php:235
+#: inc/WPOD/Components/Tab.php:271
 msgid "Tab title"
 msgstr "Tab-Titel"
 
