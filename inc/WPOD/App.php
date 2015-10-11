@@ -39,6 +39,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		/**
 		 * Class constructor.
 		 *
+		 * @internal
 		 * @since 0.5.0
 		 */
 		protected function __construct( $args ) {
@@ -49,8 +50,8 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * The run() method.
 		 *
 		 * This will initialize the plugin on the 'after_setup_theme' action.
-		 * If we are currently in the WordPress admin area, the WPOD\Admin class will be instantiated.
 		 *
+		 * @internal
 		 * @since 0.5.0
 		 */
 		protected function run() {
@@ -67,14 +68,43 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			add_filter( 'wpdlib_section_validated', array( $this, 'section_validated' ), 10, 2 );
 		}
 
+		/**
+		 * Sets the current scope.
+		 *
+		 * The scope is an internal identifier. When adding a component, it will be added to the currently active scope.
+		 * Therefore every plugin or theme should define its own unique scope to prevent conflicts.
+		 *
+		 * @since 0.5.0
+		 * @param string $scope the current scope to set
+		 */
 		public function set_scope( $scope ) {
 			ComponentManager::set_scope( $scope );
 		}
 
+		/**
+		 * Adds a toplevel component.
+		 *
+		 * This function should be utilized when using the plugin manually.
+		 * Every component has an `add()` method to add subcomponents to it, however if you want to add toplevel components, use this function.
+		 *
+		 * @since 0.5.0
+		 * @param WPDLib\Component $component the component object to add
+		 * @return WPDLib\Component|WP_Error either the component added or a WP_Error object if an error occurred
+		 */
 		public function add( $component ) {
 			return ComponentManager::add( $component );
 		}
 
+		/**
+		 * Takes an array of hierarchically nested components and adds them.
+		 *
+		 * This function is the general function to add an array of components.
+		 * You should call it from your plugin or theme within the 'wpod' action.
+		 *
+		 * @since 0.5.0
+		 * @param array $components the components to add
+		 * @param string $scope the scope to add the components to
+		 */
 		public function add_components( $components, $scope = '' ) {
 			$this->set_scope( $scope );
 
@@ -114,6 +144,15 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			}
 		}
 
+		/**
+		 * Callback function run after a menu has been validated.
+		 *
+		 * @internal
+		 * @since 0.5.0
+		 * @param array $args the menu arguments
+		 * @param WPDLib\Menu $menu the current menu object
+		 * @return array the adjusted menu arguments
+		 */
 		public function menu_validated( $args, $menu ) {
 			if ( isset( $args['screens'] ) ) {
 				unset( $args['screens'] );
@@ -121,6 +160,15 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			return $args;
 		}
 
+		/**
+		 * Callback function run after a screen has been validated.
+		 *
+		 * @internal
+		 * @since 0.5.0
+		 * @param array $args the screen arguments
+		 * @param WPOD\Screen $menu the current screen object
+		 * @return array the adjusted screen arguments
+		 */
 		public function screen_validated( $args, $screen ) {
 			if ( isset( $args['tabs'] ) ) {
 				unset( $args['tabs'] );
@@ -128,6 +176,15 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			return $args;
 		}
 
+		/**
+		 * Callback function run after a tab has been validated.
+		 *
+		 * @internal
+		 * @since 0.5.0
+		 * @param array $args the tab arguments
+		 * @param WPOD\Tab $menu the current tab object
+		 * @return array the adjusted tab arguments
+		 */
 		public function tab_validated( $args, $tab ) {
 			if ( isset( $args['sections'] ) ) {
 				unset( $args['sections'] );
@@ -135,6 +192,15 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			return $args;
 		}
 
+		/**
+		 * Callback function run after a section has been validated.
+		 *
+		 * @internal
+		 * @since 0.5.0
+		 * @param array $args the section arguments
+		 * @param WPOD\Section $menu the current section object
+		 * @return array the adjusted section arguments
+		 */
 		public function section_validated( $args, $section ) {
 			if ( isset( $args['fields'] ) ) {
 				unset( $args['fields'] );
@@ -142,9 +208,16 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			return $args;
 		}
 
+		/**
+		 * Adds menus and their subcomponents.
+		 *
+		 * @internal
+		 * @since 0.5.0
+		 * @param array $menus the menus to add as $menu_slug => $menu_args
+		 */
 		protected function add_menus( $menus ) {
 			foreach ( $menus as $menu_slug => $menu_args ) {
-				$menu = ComponentManager::add( new Menu( $menu_slug, $menu_args ) );
+				$menu = $this->add( new Menu( $menu_slug, $menu_args ) );
 				if ( is_wp_error( $menu ) ) {
 					self::doing_it_wrong( __METHOD__, $menu->get_error_message(), '0.5.0' );
 				} elseif ( isset( $menu_args['screens'] ) && is_array( $menu_args['screens'] ) ) {
@@ -153,6 +226,14 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			}
 		}
 
+		/**
+		 * Adds screens and their subcomponents.
+		 *
+		 * @internal
+		 * @since 0.5.0
+		 * @param array $screens the screens to add as $screen_slug => $screen_args
+		 * @param WPDLib\Menu $menu the menu to add the screens to
+		 */
 		protected function add_screens( $screens, $menu ) {
 			foreach ( $screens as $screen_slug => $screen_args ) {
 				$screen = $menu->add( new Screen( $screen_slug, $screen_args ) );
@@ -164,6 +245,14 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			}
 		}
 
+		/**
+		 * Adds tabs and their subcomponents.
+		 *
+		 * @internal
+		 * @since 0.5.0
+		 * @param array $tabs the tabs to add as $tab_slug => $tab_args
+		 * @param WPOD\Screen $screen the screen to add the tabs to
+		 */
 		protected function add_tabs( $tabs, $screen ) {
 			foreach ( $tabs as $tab_slug => $tab_args ) {
 				$tab = $screen->add( new Tab( $tab_slug, $tab_args ) );
@@ -175,6 +264,14 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			}
 		}
 
+		/**
+		 * Adds sections and their subcomponents.
+		 *
+		 * @internal
+		 * @since 0.5.0
+		 * @param array $sections the sections to add as $section_slug => $section_args
+		 * @param WPOD\Tab $tab the tab to add the sections to
+		 */
 		protected function add_sections( $sections, $tab ) {
 			foreach ( $sections as $section_slug => $section_args ) {
 				$section = $tab->add( new Section( $section_slug, $section_args ) );
@@ -186,6 +283,14 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			}
 		}
 
+		/**
+		 * Adds fields and their subcomponents.
+		 *
+		 * @internal
+		 * @since 0.5.0
+		 * @param array $fields the fields to add as $field_slug => $field_args
+		 * @param WPOD\Section $section the section to add the fields to
+		 */
 		protected function add_fields( $fields, $section ) {
 			foreach ( $fields as $field_slug => $field_args ) {
 				$field = $section->add( new Field( $field_slug, $field_args ) );
