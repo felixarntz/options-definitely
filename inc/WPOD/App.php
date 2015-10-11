@@ -79,48 +79,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			$this->set_scope( $scope );
 
 			if ( is_array( $components ) ) {
-				foreach ( $components as $menu_slug => $menu_args ) {
-					$menu = ComponentManager::add( new Menu( $menu_slug, $menu_args ) );
-					if ( is_wp_error( $menu ) ) {
-						self::doing_it_wrong( __METHOD__, $menu->get_error_message(), '0.5.0' );
-					} else {
-						if ( isset( $menu_args['screens'] ) && is_array( $menu_args['screens'] ) ) {
-							foreach ( $menu_args['screens'] as $screen_slug => $screen_args ) {
-								$screen = $menu->add( new Screen( $screen_slug, $screen_args ) );
-								if ( is_wp_error( $screen ) ) {
-									self::doing_it_wrong( __METHOD__, $screen->get_error_message(), '0.5.0' );
-								} else {
-									if ( isset( $screen_args['tabs'] ) && is_array( $screen_args['tabs'] ) ) {
-										foreach ( $screen_args['tabs'] as $tab_slug => $tab_args ) {
-											$tab = $screen->add( new Tab( $tab_slug, $tab_args ) );
-											if ( is_wp_error( $tab ) ) {
-												self::doing_it_wrong( __METHOD__, $tab->get_error_message(), '0.5.0' );
-											} else {
-												if ( isset( $tab_args['sections'] ) && is_array( $tab_args['sections'] ) ) {
-													foreach ( $tab_args['sections'] as $section_slug => $section_args ) {
-														$section = $tab->add( new Section( $section_slug, $section_args ) );
-														if ( is_wp_error( $section ) ) {
-															self::doing_it_wrong( __METHOD__, $section->get_error_message(), '0.5.0' );
-														} else {
-															if ( isset( $section_args['fields'] ) && is_array( $section_args['fields'] ) ) {
-																foreach ( $section_args['fields'] as $field_slug => $field_args ) {
-																	$field = $section->add( new Field( $field_slug, $field_args ) );
-																	if ( is_wp_error( $field ) ) {
-																		self::doing_it_wrong( __METHOD__, $field->get_error_message(), '0.5.0' );
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+				$this->add_menus( $components );
 			}
 		}
 
@@ -181,6 +140,59 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 				unset( $args['fields'] );
 			}
 			return $args;
+		}
+
+		protected function add_menus( $menus ) {
+			foreach ( $menus as $menu_slug => $menu_args ) {
+				$menu = ComponentManager::add( new Menu( $menu_slug, $menu_args ) );
+				if ( is_wp_error( $menu ) ) {
+					self::doing_it_wrong( __METHOD__, $menu->get_error_message(), '0.5.0' );
+				} elseif ( isset( $menu_args['screens'] ) && is_array( $menu_args['screens'] ) ) {
+					$this->add_screens( $menu_args['screens'], $menu );
+				}
+			}
+		}
+
+		protected function add_screens( $screens, $menu ) {
+			foreach ( $screens as $screen_slug => $screen_args ) {
+				$screen = $menu->add( new Screen( $screen_slug, $screen_args ) );
+				if ( is_wp_error( $screen ) ) {
+					self::doing_it_wrong( __METHOD__, $screen->get_error_message(), '0.5.0' );
+				} elseif ( isset( $screen_args['tabs'] ) && is_array( $screen_args['tabs'] ) ) {
+					$this->add_tabs( $screen_args['tabs'], $screen );
+				}
+			}
+		}
+
+		protected function add_tabs( $tabs, $screen ) {
+			foreach ( $tabs as $tab_slug => $tab_args ) {
+				$tab = $screen->add( new Tab( $tab_slug, $tab_args ) );
+				if ( is_wp_error( $tab ) ) {
+					self::doing_it_wrong( __METHOD__, $tab->get_error_message(), '0.5.0' );
+				} elseif ( isset( $tab_args['sections'] ) && is_array( $tab_args['sections'] ) ) {
+					$this->add_sections( $tab_args['sections'], $tab );
+				}
+			}
+		}
+
+		protected function add_sections( $sections, $tab ) {
+			foreach ( $sections as $section_slug => $section_args ) {
+				$section = $tab->add( new Section( $section_slug, $section_args ) );
+				if ( is_wp_error( $section ) ) {
+					self::doing_it_wrong( __METHOD__, $section->get_error_message(), '0.5.0' );
+				} elseif ( isset( $section_args['fields'] ) && is_array( $section_args['fields'] ) ) {
+					$this->add_fields( $section_args['fields'], $section );
+				}
+			}
+		}
+
+		protected function add_fields( $fields, $section ) {
+			foreach ( $fields as $field_slug => $field_args ) {
+				$field = $section->add( new Field( $field_slug, $field_args ) );
+				if ( is_wp_error( $field ) ) {
+					self::doing_it_wrong( __METHOD__, $field->get_error_message(), '0.5.0' );
+				}
+			}
 		}
 	}
 }
