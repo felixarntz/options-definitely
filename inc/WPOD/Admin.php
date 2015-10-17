@@ -47,7 +47,7 @@ if ( ! class_exists( 'WPOD\Admin' ) ) {
 		/**
 		 * Class constructor.
 		 *
-		 * This will hook functions into the 'admin_init', 'admin_menu' and 'admin_enqueue_scripts' actions.
+		 * This will hook in the functions to register settings, help tabs and to enqueue assets.
 		 *
 		 * @since 0.5.0
 		 */
@@ -81,6 +81,14 @@ if ( ! class_exists( 'WPOD\Admin' ) ) {
 			}
 		}
 
+		/**
+		 * Hooks in the functions to render the help tabs.
+		 *
+		 * This function should be hooked into the 'admin_menu' action with a low priority (i.e. high number)
+		 * so that it is executed after the menu has been created by WPDLib.
+		 *
+		 * @since 0.5.0
+		 */
 		public function register_help() {
 			$screens = ComponentManager::get( '*.*', 'WPDLib\Components\Menu.WPOD\Components\Screen' );
 			foreach ( $screens as $screen ) {
@@ -92,31 +100,9 @@ if ( ! class_exists( 'WPOD\Admin' ) ) {
 		}
 
 		/**
-		 * Adds screens to the WordPress admin menu.
-		 *
-		 * Every screen will be added to the menu it has been assigned to.
-		 * Furthermore the function to add a help tab is hooked into the screen loading action.
-		 *
-		 * @see WPOD\Components\Screen
-		 * @since 0.5.0
-		 */
-		public function create_admin_menu() {
-			$screens = ComponentManager::get( '*.*', 'WPDLib\Components\Menu.WPOD\Components\Screen' );
-			foreach ( $screens as $screen ) {
-				$page_hook = $screen->add_to_menu();
-				if ( $page_hook ) {
-					add_action( 'load-' . $page_hook, array( $screen, 'render_help' ) );
-				}
-			}
-		}
-
-		/**
 		 * Enqueues necessary stylesheets and scripts.
 		 *
 		 * All assets are only enqueued if we are on a settings screen created by the plugin.
-		 * Besides adding the plugin stylesheets and scripts, this function might also enqueue
-		 * the WordPress media scripts and the WordPress meta box scripts, both depending on
-		 * whether they are needed on the current screen.
 		 *
 		 * @since 0.5.0
 		 */

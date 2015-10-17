@@ -29,6 +29,11 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 	 */
 	class Field extends Base {
 
+		/**
+		 * Class constructor.
+		 *
+		 * @since 0.5.0
+		 */
 		public function __construct( $slug, $args ) {
 			parent::__construct( $slug, $args );
 			$this->validate_filter = 'wpod_field_validated';
@@ -40,6 +45,15 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 		 */
 		protected $_field = null;
 
+		/**
+		 * Magic get method.
+		 *
+		 * This function exists to allow direct access to properties that are stored on the internal WPDLib\FieldTypes\Base object of the field.
+		 *
+		 * @since 0.5.0
+		 * @param string $property name of the property to find
+		 * @return mixed value of the property or null if it does not exist
+		 */
 		public function __get( $property ) {
 			$value = parent::__get( $property );
 			if ( null === $value ) {

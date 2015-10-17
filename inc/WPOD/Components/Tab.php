@@ -27,6 +27,11 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 	 */
 	class Tab extends Base {
 
+		/**
+		 * Class constructor.
+		 *
+		 * @since 0.5.0
+		 */
 		public function __construct( $slug, $args ) {
 			parent::__construct( $slug, $args );
 			$this->validate_filter = 'wpod_tab_validated';
@@ -48,6 +53,8 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 		 *
 		 * It displays the tab description (if available) and renders the form tag.
 		 * Inside the form tag, it iterates through all the sections belonging to this tab and calls each one's `render()` function.
+		 *
+		 * If no sections are available for this tab, the function will try to call the tab callback function to generate the output.
 		 *
 		 * If the tab is draggable (i.e. uses meta boxes), the meta boxes are handled in here as well.
 		 *
@@ -73,39 +80,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 			}
 
 			if ( count( $this->get_children() ) > 0 ) {
-				$form_atts = array(
-					'id'			=> $this->slug,
-					'action'		=> admin_url( 'options.php' ),
-					'method'		=> 'post',
-					'novalidate'	=> true,
-				);
-
-				$form_atts = apply_filters( 'wpod_form_atts', $form_atts, $this );
-
-				echo '<form' . FieldManager::make_html_attributes( $form_atts, false, false ) . '>';
-
-				if ( 'draggable' == $this->args['mode'] ) {
-					wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
-					wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
-
-					echo '<div class="metabox-holder">';
-					echo '<div class="postbox-container">';
-
-					do_meta_boxes( $this->slug, 'normal', null );
-
-					echo '</div>';
-					echo '</div>';
-				} else {
-					foreach ( $this->get_children() as $section ) {
-						$section->render( false );
-					}
-				}
-
-				settings_fields( $this->slug );
-
-				submit_button();
-
-				echo '</form>';
+				$this->render_sections();
 			} elseif ( $this->args['callback'] && is_callable( $this->args['callback'] ) ) {
 				call_user_func( $this->args['callback'] );
 			} else {
@@ -113,18 +88,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 			}
 
 			if ( 'draggable' == $this->args['mode'] ) {
-				?>
-				<script type="text/javascript">
-				//<![CDATA[
-				jQuery(document).ready( function ($) {
-				  // close postboxes that should be closed
-				  $('.if-js-closed').removeClass('if-js-closed').addClass('closed');
-				  // postboxes setup
-				  postboxes.add_postbox_toggles('<?php echo $this->slug; ?>');
-				});
-				//]]>
-				</script>
-				<?php
+				$this->print_metaboxes_script();
 			}
 
 			/**
@@ -161,57 +125,38 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 
 			foreach ( $this->get_children() as $section ) {
 				foreach ( $section->get_children() as $field ) {
-					$option_old = $field->default;
-					if ( isset( $options_old[ $field->slug ] ) ) {
-						$option_old = $options_old[ $field->slug ];
-					} else {
-						$options_old[ $field->slug ] = $option_old;
-					}
-
-					$option = null;
-					if ( isset( $options[ $field->slug ] ) ) {
-						$option = $options[ $field->slug ];
-					}
-
-					$option = $field->validate_option( $option );
-					if ( is_wp_error( $option ) ) {
-						$errors[ $field->slug ] = $option;
-						$option = $option_old;
-					}
-
-					$options_validated[ $field->slug ] = $option;
-
-					if ( $option != $option_old ) {
-						do_action( 'wpod_update_option_' . $this->slug . '_' . $field->slug, $option, $option_old );
+					$option_changed = $this->validate_option( $field, $options_validated, $options, $options_old, $errors );
+					if ( $option_changed ) {
 						$changes = true;
 					}
 				}
 			}
 
 			if ( $changes ) {
+				/**
+				 * This action can be used to perform additional steps when the options of this tab were updated.
+				 *
+				 * @since 0.5.0
+				 * @param array the updated option values as $field_slug => $value
+				 * @param array the previous option values as $field_slug => $value
+				 */
 				do_action( 'wpod_update_options_' . $this->slug, $options_validated, $options_old );
 			}
 
 			$options_validated = apply_filters( 'wpod_validated_options', $options_validated );
 
-			$status_text = __( 'Settings successfully saved.', 'options-definitely' );
-
-			if ( count( $errors ) > 0 ) {
-				$error_text = __( 'Some errors occurred while trying to save the following settings:', 'options-definitely' );
-				foreach ( $errors as $field_slug => $error ) {
-					$error_text .= '<br/><em>' . $field_slug . '</em>: ' . $error->get_error_message();
-				}
-
-				add_settings_error( $this->slug, $this->slug . '-error', $error_text, 'error' );
-
-				$status_text = __( 'Other settings were successfully saved.', 'options-definitely' );
-			}
-
-			add_settings_error( $this->slug, $this->slug . '-updated', $status_text, 'updated' );
+			$this->add_settings_message( $errors );
 
 			return $options_validated;
 		}
 
+		/**
+		 * Enqueues necessary stylesheets and scripts for this tab.
+		 *
+		 * In addition to stylesheets and scripts, this function will also add the metabox scripts if the tab is draggable.
+		 *
+		 * @since 0.5.0
+		 */
 		public function enqueue_assets() {
 			if ( 'draggable' == $this->args['mode'] ) {
 				wp_enqueue_script( 'common' );
@@ -231,6 +176,11 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 			FieldManager::enqueue_assets( $_fields );
 		}
 
+		/**
+		 * Outputs an inline style tag to fix a styling issue with metaboxes on option screens.
+		 *
+		 * @since 0.5.0
+		 */
 		public function fix_metabox_styles() {
 			?>
 			<style type="text/css">
@@ -306,6 +256,150 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 		 */
 		protected function supports_globalslug() {
 			return false;
+		}
+
+		/**
+		 * Renders the sections of this tab.
+		 *
+		 * If the tab is set to be draggable, the function will run its metabox action.
+		 * Otherwise it will just manually output the sections.
+		 *
+		 * @since 0.5.0
+		 */
+		protected function render_sections() {
+			$form_atts = array(
+				'id'			=> $this->slug,
+				'action'		=> admin_url( 'options.php' ),
+				'method'		=> 'post',
+				'novalidate'	=> true,
+			);
+
+			/**
+			 * This filter can be used to adjust the form attributes.
+			 *
+			 * @since 0.5.0
+			 * @param array the associative array of form attributes
+			 * @param WPOD\Components\Tab current tab instance
+			 */
+			$form_atts = apply_filters( 'wpod_form_atts', $form_atts, $this );
+
+			echo '<form' . FieldManager::make_html_attributes( $form_atts, false, false ) . '>';
+
+			if ( 'draggable' == $this->args['mode'] ) {
+				wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
+				wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
+
+				echo '<div class="metabox-holder">';
+				echo '<div class="postbox-container">';
+
+				do_meta_boxes( $this->slug, 'normal', null );
+
+				echo '</div>';
+				echo '</div>';
+			} else {
+				foreach ( $this->get_children() as $section ) {
+					$section->render( false );
+				}
+			}
+
+			settings_fields( $this->slug );
+
+			submit_button();
+
+			echo '</form>';
+		}
+
+		/**
+		 * Outputs a script to handle metaboxes inside this tab.
+		 *
+		 * @since 0.5.0
+		 */
+		protected function print_metaboxes_script() {
+			?>
+			<script type="text/javascript">
+			//<![CDATA[
+			jQuery(document).ready( function ($) {
+			  // close postboxes that should be closed
+			  $('.if-js-closed').removeClass('if-js-closed').addClass('closed');
+			  // postboxes setup
+			  postboxes.add_postbox_toggles('<?php echo $this->slug; ?>');
+			});
+			//]]>
+			</script>
+			<?php
+		}
+
+		/**
+		 * Validates an option.
+		 *
+		 * All parameters except for the $field parameter are passed by reference
+		 * so that they can be altered directly.
+		 *
+		 * @since 0.5.0
+		 * @param WPOD\Components\Field $field field object to validate the option for
+		 * @param array &$options_validated the results array that will contain the validated options
+		 * @param array &$options the original options array to be validated
+		 * @param array &$options_old the options array that holds previous option values
+		 * @param array &$errors an array where validation errors can be stored in (as WP_Error objects)
+		 * @return bool true if the option value changed, false otherwise
+		 */
+		protected function validate_option( $field, &$options_validated, &$options, &$options_old, &$errors ) {
+			$option_old = $field->default;
+			if ( isset( $options_old[ $field->slug ] ) ) {
+				$option_old = $options_old[ $field->slug ];
+			} else {
+				$options_old[ $field->slug ] = $option_old;
+			}
+
+			$option = null;
+			if ( isset( $options[ $field->slug ] ) ) {
+				$option = $options[ $field->slug ];
+			}
+
+			$option = $field->validate_option( $option );
+			if ( is_wp_error( $option ) ) {
+				$errors[ $field->slug ] = $option;
+				$option = $option_old;
+			}
+
+			$options_validated[ $field->slug ] = $option;
+
+			if ( $option != $option_old ) {
+				/**
+				 * This action can be used to perform additional steps when the option for a specific field of this tab has been updated.
+				 *
+				 * @since 0.5.0
+				 * @param mixed the updated option value
+				 * @param mixed the previous option value
+				 */
+				do_action( 'wpod_update_option_' . $this->slug . '_' . $field->slug, $option, $option_old );
+				return true;
+			}
+
+			return false;
+		}
+
+		/**
+		 * Adds settings errors and/or updated messages for the current tab.
+		 *
+		 * @since 0.5.0
+		 * @param array $errors an array (possibly) containing validation errors as $field_slug => $wp_error
+		 */
+		protected function add_settings_message( $errors ) {
+			$status_text = __( 'Settings successfully saved.', 'options-definitely' );
+
+			if ( count( $errors ) > 0 ) {
+				$error_text = __( 'Some errors occurred while trying to save the following settings:', 'options-definitely' );
+				foreach ( $errors as $field_slug => $error ) {
+					$error_text .= '<br/><em>' . $field_slug . '</em>: ' . $error->get_error_message();
+				}
+
+				add_settings_error( $this->slug, $this->slug . '-error', $error_text, 'error' );
+
+				$status_text = __( 'Other settings were successfully saved.', 'options-definitely' );
+			}
+
+			add_settings_error( $this->slug, $this->slug . '-updated', $status_text, 'updated' );
 		}
 	}
 }

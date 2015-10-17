@@ -27,6 +27,11 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 	 */
 	class Section extends Base {
 
+		/**
+		 * Class constructor.
+		 *
+		 * @since 0.5.0
+		 */
 		public function __construct( $slug, $args ) {
 			parent::__construct( $slug, $args );
 			$this->validate_filter = 'wpod_section_validated';
@@ -38,7 +43,7 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 		 * If the parent tab is draggable, this function will also add a meta box for this section.
 		 *
 		 * @since 0.5.0
-		 * @param WPOD\Components\Tab $parent_tab the parent tab component of this section
+		 * @param WPOD\Components\Tab|null $parent_tab the parent tab component of this section or null
 		 */
 		public function register( $parent_tab = null ) {
 			global $wp_settings_sections;
@@ -65,6 +70,7 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 		 * @param boolean $metabox if this function is called inside a metabox, this parameter needs to be true, otherwise it has to be explicitly false
 		 */
 		public function render( $metabox = true ) {
+			// only display the title if the section is not displayed as a metabox
 			if ( null !== $metabox || false === $metabox ) {
 				echo '<h3>' . $this->args['title'] . '</h3>';
 			}
@@ -89,6 +95,14 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 				$table_atts = array(
 					'class'		=> 'form-table wpdlib-form-table',
 				);
+
+				/**
+				 * This filter can be used to adjust the form table attributes.
+				 *
+				 * @since 0.5.0
+				 * @param array the associative array of form table attributes
+				 * @param WPOD\Components\Section current section instance
+				 */
 				$table_atts = apply_filters( 'wpod_table_atts', $table_atts, $this );
 
 				echo '<table' . FieldManager::make_html_attributes( $table_atts, false, false ) . '>';

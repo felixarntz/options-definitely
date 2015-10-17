@@ -32,6 +32,11 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 		 */
 		protected $page_hook = '';
 
+		/**
+		 * Class constructor.
+		 *
+		 * @since 0.5.0
+		 */
 		public function __construct( $slug, $args ) {
 			parent::__construct( $slug, $args );
 			$this->validate_filter = 'wpod_screen_validated';
@@ -40,18 +45,14 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 		/**
 		 * Adds the screen to the WordPress admin menu.
 		 *
-		 * If the parent menu has an empty slug, the menu won't be added. The screen will be added though, without showing it in any menu.
-		 *
-		 * If the parent menu has not been added yet, the screen will be added as the top level item of this menu.
-		 * If it has been added, the screen will be added as a submenu item to this menu.
-		 *
 		 * By adding the screen to the menu, a page hook is assigned to it.
-		 *
-		 * This function is called by the WPOD\Admin class.
+		 * This function is called by the WPDLib\Components\Menu class.
+		 * The function returns the menu label this screen should have. This is then processed by the calling class.
 		 *
 		 * @since 0.5.0
-		 * @see WPOD\Admin::create_admin_menu()
-		 * @return string the page hook of this screen
+		 * @see WPDLib\Components\Menu::add_menu_page()
+		 * @param array $args an array with keys 'mode' (either 'menu' or 'submenu'), 'menu_label', 'menu_icon' and 'menu_position'
+		 * @return string the menu label that this screen should have
 		 */
 		public function add_to_menu( $args ) {
 			if ( 'menu' === $args['mode'] ) {
@@ -67,7 +68,7 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 		 * Renders the screen.
 		 *
 		 * It displays the title and (optionally) description of the screen.
-		 * Then it iterates through the tabs that belong to the screen and calls each one's `render()` function.
+		 * Then it displays the tab navigation (if there are multiple tabs) and the currently active tab.
 		 *
 		 * @since 0.5.0
 		 */
@@ -78,6 +79,14 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 
 			echo '<h1>' . $this->args['title'] . '</h1>';
 
+			/**
+			 * This action can be used to display additional content on top of this screen.
+			 *
+			 * @since 0.5.0
+			 * @param string the slug of the current screen
+			 * @param array the arguments array for the current screen
+			 * @param string the slug of the current menu
+			 */
 			do_action( 'wpod_screen_before', $this->real_slug, $this->args, $parent_menu->slug );
 
 			if ( ! empty( $this->args['description'] ) ) {
@@ -91,27 +100,21 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 				$current_tab = Admin::instance()->get_current( 'tab', $this );
 
 				if ( count( $tabs ) > 1 ) {
-					$current_url = Admin::instance()->get_current_url();
-
-					echo '<h2 class="nav-tab-wrapper">';
-
-					foreach ( $tabs as $tab ) {
-						$class = 'nav-tab';
-
-						if ( $tab->slug == $current_tab->slug ) {
-							$class .= ' nav-tab-active';
-						}
-
-						echo '<a class="' . $class . '" href="' . add_query_arg( 'tab', $tab->slug, $current_url ) . '">' . $tab->title . '</a>';
-					}
-
-					echo '</h2>';
+					$this->render_tab_navigation( $tabs, $current_tab );
 				}
 				$current_tab->render();
 			} else {
 				App::doing_it_wrong( __METHOD__, sprintf( __( 'There are no tabs to display for the screen %s. Either add some or adjust the required capabilities.', 'options-definitely' ), $this->real_slug ), '0.5.0' );
 			}
 
+			/**
+			 * This action can be used to display additional content at the bottom of this screen.
+			 *
+			 * @since 0.5.0
+			 * @param string the slug of the current screen
+			 * @param array the arguments array for the current screen
+			 * @param string the slug of the current menu
+			 */
 			do_action( 'wpod_screen_after', $this->real_slug, $this->args, $parent_menu->slug );
 
 			echo '</div>';
@@ -227,6 +230,31 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 		 */
 		protected function supports_globalslug() {
 			return false;
+		}
+
+		/**
+		 * Renders the tab navigation.
+		 *
+		 * @since 0.5.0
+		 * @param array $tabs array of WPOD\Components\Tab objects
+		 * @param WPOD\Components\Tab $current_tab the current tab object
+		 */
+		protected function render_tab_navigation( $tabs, $current_tab ) {
+			$current_url = Admin::instance()->get_current_url();
+
+			echo '<h2 class="nav-tab-wrapper">';
+
+			foreach ( $tabs as $tab ) {
+				$class = 'nav-tab';
+
+				if ( $tab->slug == $current_tab->slug ) {
+					$class .= ' nav-tab-active';
+				}
+
+				echo '<a class="' . $class . '" href="' . add_query_arg( 'tab', $tab->slug, $current_url ) . '">' . $tab->title . '</a>';
+			}
+
+			echo '</h2>';
 		}
 	}
 }
