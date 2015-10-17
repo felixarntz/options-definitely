@@ -125,8 +125,24 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 
 			foreach ( $this->get_children() as $section ) {
 				foreach ( $section->get_children() as $field ) {
-					$option_changed = $this->validate_option( $field, $options_validated, $options, $options_old, $errors );
-					if ( $option_changed ) {
+					$option_old = $field->default;
+					if ( isset( $options_old[ $field->slug ] ) ) {
+						$option_old = $options_old[ $field->slug ];
+					} else {
+						$options_old[ $field->slug ] = $option_old;
+					}
+
+					$option = null;
+					if ( isset( $options[ $field->slug ] ) ) {
+						$option = $options[ $field->slug ];
+					}
+
+					list( $option_validated, $error, $changed ) = $this->validate_option( $field, $option, $option_old );
+
+					$options_validated[ $field->slug ] = $option_validated;
+					if ( $error ) {
+						$errors[ $field->slug ] = $error;
+					} elseif ( $changed ) {
 						$changes = true;
 					}
 				}
@@ -332,39 +348,21 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 		/**
 		 * Validates an option.
 		 *
-		 * All parameters except for the $field parameter are passed by reference
-		 * so that they can be altered directly.
-		 *
 		 * @since 0.5.0
 		 * @param WPOD\Components\Field $field field object to validate the option for
-		 * @param array &$options_validated the results array that will contain the validated options
-		 * @param array &$options the original options array to be validated
-		 * @param array &$options_old the options array that holds previous option values
-		 * @param array &$errors an array where validation errors can be stored in (as WP_Error objects)
-		 * @return bool true if the option value changed, false otherwise
+		 * @param mixed $option the option value to validate
+		 * @param mixed $option_old the previous option value
+		 * @return array an array containing the validated value, a variable possibly containing a WP_Error object and a boolean value whether the option value has changed
 		 */
-		protected function validate_option( $field, &$options_validated, &$options, &$options_old, &$errors ) {
-			$option_old = $field->default;
-			if ( isset( $options_old[ $field->slug ] ) ) {
-				$option_old = $options_old[ $field->slug ];
-			} else {
-				$options_old[ $field->slug ] = $option_old;
-			}
-
-			$option = null;
-			if ( isset( $options[ $field->slug ] ) ) {
-				$option = $options[ $field->slug ];
-			}
-
+		protected function validate_option( $field, $option, $option_old ) {
 			$option = $field->validate_option( $option );
+			$error = false;
+			$changed = false;
+
 			if ( is_wp_error( $option ) ) {
-				$errors[ $field->slug ] = $option;
+				$error = $option;
 				$option = $option_old;
-			}
-
-			$options_validated[ $field->slug ] = $option;
-
-			if ( $option != $option_old ) {
+			} elseif ( $option != $option_old ) {
 				/**
 				 * This action can be used to perform additional steps when the option for a specific field of this tab has been updated.
 				 *
@@ -373,10 +371,10 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 				 * @param mixed the previous option value
 				 */
 				do_action( 'wpod_update_option_' . $this->slug . '_' . $field->slug, $option, $option_old );
-				return true;
+				$changed = true;
 			}
 
-			return false;
+			return array( $option, $error, $changed );
 		}
 
 		/**
