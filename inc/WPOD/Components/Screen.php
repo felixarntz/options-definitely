@@ -94,7 +94,7 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 			}
 
 			$tabs = $this->get_children();
-			$tabs = array_filter( $tabs, 'wpod_current_user_can' );
+			$tabs = array_filter( $tabs, array( 'WPDLib\Util\Util', 'current_user_can' ) );
 
 			if ( count( $tabs ) > 0 ) {
 				$current_tab = Admin::instance()->get_current( 'tab', $this );

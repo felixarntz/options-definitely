@@ -83,39 +83,3 @@ if ( ! function_exists( 'wpod_get_option' ) ) {
 		return $option;
 	}
 }
-
-if ( ! function_exists( 'wpod_component_to_slug' ) ) {
-	/**
-	 * Transforms a component into its slug.
-	 *
-	 * This is intended to be used as a callback function, for example to use with array_map().
-	 *
-	 * @internal
-	 * @since 0.5.0
-	 * @param WPOD\Components\ComponentBase $component any plugin component
-	 * @return string the slug of the component
-	 */
-	function wpod_component_to_slug( $component ) {
-		return $component->slug;
-	}
-}
-
-if ( ! function_exists( 'wpod_current_user_can' ) ) {
-	/**
-	 * Checks if the current user is allowed to access a specific component.
-	 *
-	 * @internal
-	 * @since 0.5.0
-	 * @param WPOD\Components\ComponentBase $component any plugin component
-	 * @return bool true if the user may access the component, otherwise false
-	 */
-	function wpod_current_user_can( $component ) {
-		$cap = $component->capability;
-
-		if ( null === $cap || current_user_can( $cap ) ) {
-			return true;
-		}
-
-		return false;
-	}
-}
