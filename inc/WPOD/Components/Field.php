@@ -33,6 +33,8 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 		 * Class constructor.
 		 *
 		 * @since 0.5.0
+		 * @param string $slug the field slug
+		 * @param array $args array of field properties
 		 */
 		public function __construct( $slug, $args ) {
 			parent::__construct( $slug, $args );

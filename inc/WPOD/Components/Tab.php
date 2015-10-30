@@ -31,6 +31,8 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 		 * Class constructor.
 		 *
 		 * @since 0.5.0
+		 * @param string $slug the tab slug
+		 * @param array $args array of tab properties
 		 */
 		public function __construct( $slug, $args ) {
 			parent::__construct( $slug, $args );

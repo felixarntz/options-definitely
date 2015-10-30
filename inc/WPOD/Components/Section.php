@@ -31,6 +31,8 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 		 * Class constructor.
 		 *
 		 * @since 0.5.0
+		 * @param string $slug the section slug
+		 * @param array $args array of section properties
 		 */
 		public function __construct( $slug, $args ) {
 			parent::__construct( $slug, $args );

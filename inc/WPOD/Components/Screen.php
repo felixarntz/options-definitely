@@ -37,6 +37,8 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 		 * Class constructor.
 		 *
 		 * @since 0.5.0
+		 * @param string $slug the screen slug
+		 * @param array $args array of screen properties
 		 */
 		public function __construct( $slug, $args ) {
 			parent::__construct( $slug, $args );
