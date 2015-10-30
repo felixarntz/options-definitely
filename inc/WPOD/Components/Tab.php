@@ -159,6 +159,12 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 				do_action( 'wpod_update_options_' . $this->slug, $options_validated, $options_old );
 			}
 
+			/**
+			 * This filter can be used by the developer to modify the validated options right before they are saved.
+			 *
+			 * @since 0.5.0
+			 * @param array the associative array of options and their values
+			 */
 			$options_validated = apply_filters( 'wpod_validated_options', $options_validated );
 
 			$this->add_settings_message( $errors );
@@ -216,9 +222,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 			$status = parent::validate( $parent );
 
 			if ( $status === true ) {
-				if ( null !== $this->args['position'] ) {
-					$this->args['position'] = floatval( $this->args['position'] );
-				}
+				$this->args = Utility::validate_position_args( $this->args );
 			}
 
 			return $status;

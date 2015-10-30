@@ -88,8 +88,8 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * Every component has an `add()` method to add subcomponents to it, however if you want to add toplevel components, use this function.
 		 *
 		 * @since 0.5.0
-		 * @param WPDLib\Component $component the component object to add
-		 * @return WPDLib\Component|WP_Error either the component added or a WP_Error object if an error occurred
+		 * @param WPDLib\Components\Base $component the component object to add
+		 * @return WPDLib\Components\Base|WP_Error either the component added or a WP_Error object if an error occurred
 		 */
 		public function add( $component ) {
 			return ComponentManager::add( $component );
@@ -126,6 +126,13 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 */
 		public function init() {
 			if ( ! did_action( 'wpod' ) ) {
+				/**
+				 * This filter can be used to alter the component hierarchy of the plugin.
+				 * It must only be used to add more components to the hierarchy, never to change or remove something existing.
+				 *
+				 * @since 0.5.0
+				 * @param array the nested array of component class names
+				 */
 				ComponentManager::register_hierarchy( apply_filters( 'wpod_class_hierarchy', array(
 					'WPDLib\Components\Menu'		=> array(
 						'WPOD\Components\Screen'		=> array(
@@ -138,6 +145,14 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 					),
 				) ) );
 
+				/**
+				 * The main API action of the plugin.
+				 *
+				 * Every developer must hook into this action to register components.
+				 *
+				 * @since 0.5.0
+				 * @param WPOD\App instance of the main plugin class
+				 */
 				do_action( 'wpod', $this );
 			} else {
 				self::doing_it_wrong( __METHOD__, __( 'This function should never be called manually.', 'options-definitely' ), '0.5.0' );
@@ -150,7 +165,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * @internal
 		 * @since 0.5.0
 		 * @param array $args the menu arguments
-		 * @param WPDLib\Menu $menu the current menu object
+		 * @param WPDLib\Components\Menu $menu the current menu object
 		 * @return array the adjusted menu arguments
 		 */
 		public function menu_validated( $args, $menu ) {
@@ -166,7 +181,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * @internal
 		 * @since 0.5.0
 		 * @param array $args the screen arguments
-		 * @param WPOD\Screen $menu the current screen object
+		 * @param WPOD\Components\Screen $menu the current screen object
 		 * @return array the adjusted screen arguments
 		 */
 		public function screen_validated( $args, $screen ) {
@@ -182,7 +197,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * @internal
 		 * @since 0.5.0
 		 * @param array $args the tab arguments
-		 * @param WPOD\Tab $menu the current tab object
+		 * @param WPOD\Components\Tab $menu the current tab object
 		 * @return array the adjusted tab arguments
 		 */
 		public function tab_validated( $args, $tab ) {
@@ -198,7 +213,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * @internal
 		 * @since 0.5.0
 		 * @param array $args the section arguments
-		 * @param WPOD\Section $menu the current section object
+		 * @param WPOD\Components\Section $menu the current section object
 		 * @return array the adjusted section arguments
 		 */
 		public function section_validated( $args, $section ) {
@@ -232,7 +247,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * @internal
 		 * @since 0.5.0
 		 * @param array $screens the screens to add as $screen_slug => $screen_args
-		 * @param WPDLib\Menu $menu the menu to add the screens to
+		 * @param WPDLib\Components\Menu $menu the menu to add the screens to
 		 */
 		protected function add_screens( $screens, $menu ) {
 			foreach ( $screens as $screen_slug => $screen_args ) {
@@ -251,7 +266,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * @internal
 		 * @since 0.5.0
 		 * @param array $tabs the tabs to add as $tab_slug => $tab_args
-		 * @param WPOD\Screen $screen the screen to add the tabs to
+		 * @param WPOD\Components\Screen $screen the screen to add the tabs to
 		 */
 		protected function add_tabs( $tabs, $screen ) {
 			foreach ( $tabs as $tab_slug => $tab_args ) {
@@ -270,7 +285,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * @internal
 		 * @since 0.5.0
 		 * @param array $sections the sections to add as $section_slug => $section_args
-		 * @param WPOD\Tab $tab the tab to add the sections to
+		 * @param WPOD\Components\Tab $tab the tab to add the sections to
 		 */
 		protected function add_sections( $sections, $tab ) {
 			foreach ( $sections as $section_slug => $section_args ) {
@@ -289,7 +304,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * @internal
 		 * @since 0.5.0
 		 * @param array $fields the fields to add as $field_slug => $field_args
-		 * @param WPOD\Section $section the section to add the fields to
+		 * @param WPOD\Components\Section $section the section to add the fields to
 		 */
 		protected function add_fields( $fields, $section ) {
 			foreach ( $fields as $field_slug => $field_args ) {

@@ -170,9 +170,7 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 					$this->args['default'] = $this->_field->validate();
 				}
 
-				if ( null !== $this->args['position'] ) {
-					$this->args['position'] = floatval( $this->args['position'] );
-				}
+				$this->args = Utility::validate_position_args( $this->args );
 			}
 
 			return $status;

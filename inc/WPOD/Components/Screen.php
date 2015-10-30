@@ -9,6 +9,7 @@ namespace WPOD\Components;
 
 use WPOD\App as App;
 use WPOD\Admin as Admin;
+use WPOD\Utility as Utility;
 use WPDLib\Components\Base as Base;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -126,20 +127,9 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 		 * This function is called by the WPOD\Admin class.
 		 *
 		 * @since 0.5.0
-		 * @see WPOD\Admin::create_admin_menu()
 		 */
 		public function render_help() {
-			$screen = get_current_screen();
-
-			foreach ( $this->args['help']['tabs'] as $slug => $tab ) {
-				$args = array_merge( array( 'id' => $slug ), $tab );
-
-				$screen->add_help_tab( $args );
-			}
-
-			if ( ! empty( $this->args['help']['sidebar'] ) ) {
-				$screen->set_help_sidebar( $this->args['help']['sidebar'] );
-			}
+			Utility::render_help( get_current_screen(), $this->args['help'] );
 		}
 
 		/**
@@ -151,29 +141,9 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 			$status = parent::validate( $parent );
 
 			if ( $status === true ) {
-				if ( null !== $this->args['position'] ) {
-					$this->args['position'] = floatval( $this->args['position'] );
-				}
+				$this->args = Utility::validate_position_args( $this->args );
 
-				if( ! is_array( $this->args['help'] ) ) {
-					$this->args['help'] = array();
-				}
-
-				if ( ! isset( $this->args['help']['tabs'] ) || ! is_array( $this->args['help']['tabs'] ) ) {
-					$this->args['help']['tabs'] = array();
-				}
-
-				if ( ! isset( $this->args['help']['sidebar'] ) ) {
-					$this->args['help']['sidebar'] = '';
-				}
-
-				foreach ( $this->args['help']['tabs'] as $slug => &$tab ) {
-					$tab = wp_parse_args( $tab, array(
-						'title'			=> __( 'Help tab title', 'options-definitely' ),
-						'content'		=> '',
-						'callback'		=> false,
-					) );
-				}
+				$this->args = Utility::validate_help_args( $this->args, 'help' );
 			}
 
 			return $status;

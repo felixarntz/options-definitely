@@ -47,11 +47,20 @@ if ( ! class_exists( 'WPOD\Admin' ) ) {
 		/**
 		 * Class constructor.
 		 *
-		 * This will hook in the functions to register settings, help tabs and to enqueue assets.
-		 *
 		 * @since 0.5.0
 		 */
 		private function __construct() {
+			add_action( 'after_setup_theme', array( $this, 'add_hooks' ) );
+		}
+
+		/**
+		 * Hooks in all the necessary actions and filters.
+		 *
+		 * This function should be executed after the plugin has been initialized.
+		 *
+		 * @since 0.5.0
+		 */
+		public function add_hooks() {
 			add_action( 'admin_init', array( $this, 'register_settings' ) );
 			add_action( 'admin_menu', array( $this, 'register_help' ), 100 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
@@ -87,6 +96,7 @@ if ( ! class_exists( 'WPOD\Admin' ) ) {
 		 * This function should be hooked into the 'admin_menu' action with a low priority (i.e. high number)
 		 * so that it is executed after the menu has been created by WPDLib.
 		 *
+		 * @see WPOD\Components\Screen
 		 * @since 0.5.0
 		 */
 		public function register_help() {
