@@ -7,6 +7,7 @@
 
 namespace WPOD\Components;
 
+use WPOD\Utility as Utility;
 use WPDLib\Components\Manager as ComponentManager;
 use WPDLib\Components\Base as Base;
 use WPDLib\FieldTypes\Manager as FieldManager;
