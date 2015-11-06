@@ -27,7 +27,6 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 	 * @since 0.5.0
 	 */
 	class Section extends Base {
-
 		/**
 		 * Class constructor.
 		 *
@@ -134,6 +133,7 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 		 * Validates the arguments array.
 		 *
 		 * @since 0.5.0
+		 * @param WPOD\Components\Tab $parent the parent component
 		 */
 		public function validate( $parent = null ) {
 			$status = parent::validate( $parent );

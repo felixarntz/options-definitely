@@ -39,6 +39,8 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		/**
 		 * Class constructor.
 		 *
+		 * This is protected on purpose since it is called by the parent class' singleton.
+		 *
 		 * @internal
 		 * @since 0.5.0
 		 */
@@ -53,6 +55,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 *
 		 * @internal
 		 * @since 0.5.0
+		 * @param array $args array of class arguments (passed by the plugin utility class)
 		 */
 		protected function run() {
 			if ( is_admin() ) {

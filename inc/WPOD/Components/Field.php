@@ -146,6 +146,7 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 		 * Validates the arguments array.
 		 *
 		 * @since 0.5.0
+		 * @param WPOD\Components\Section $parent the parent component
 		 */
 		public function validate( $parent = null ) {
 			$status = parent::validate( $parent );

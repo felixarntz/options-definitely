@@ -220,6 +220,7 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 		 * Validates the arguments array.
 		 *
 		 * @since 0.5.0
+		 * @param WPOD\Components\Screen $parent the parent component
 		 */
 		public function validate( $parent = null ) {
 			$status = parent::validate( $parent );
