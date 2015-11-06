@@ -134,6 +134,7 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 		 *
 		 * @since 0.5.0
 		 * @param WPOD\Components\Tab $parent the parent component
+		 * @return bool|WPDLib\Util\Error an error object if an error occurred during validation, true if it was validated, false if it did not need to be validated
 		 */
 		public function validate( $parent = null ) {
 			$status = parent::validate( $parent );
