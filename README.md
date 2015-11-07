@@ -1,3 +1,7 @@
+[![Code Climate](https://codeclimate.com/github/felixarntz/options-definitely/badges/gpa.svg)](https://codeclimate.com/github/felixarntz/options-definitely)
+[![Latest Stable Version](https://poser.pugx.org/felixarntz/options-definitely/version)](https://packagist.org/packages/felixarntz/options-definitely)
+[![License](https://poser.pugx.org/felixarntz/options-definitely/license)](https://packagist.org/packages/felixarntz/options-definitely)
+
 Options Definitely
 ==================
 

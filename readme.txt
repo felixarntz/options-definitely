@@ -1,13 +1,13 @@
 === Options Definitely ===
 
 Plugin Name:       Options Definitely
-Plugin URI:        http://wordpress.org/plugins/options-definitely/
+Plugin URI:        https://wordpress.org/plugins/options-definitely/
 Author URI:        http://leaves-and-love.net
 Author:            Felix Arntz
 Donate link:       http://leaves-and-love.net/wordpress-plugins/
 Contributors:      flixos90
 Requires at least: 4.0 
-Tested up to:      4.2
+Tested up to:      4.4-beta3
 Stable tag:        0.5.0
 Version:           0.5.0
 License:           GPL v2 
@@ -18,24 +18,30 @@ This framework plugin makes adding options to the WordPress admin area very simp
 
 == Description ==
 
-Options Definitely is a framework for developers that allows them to easily add options and their input fields to the WordPress admin so that a user can manage them. You can add new menus and options pages, add fields to those pages and organize them in multiple tabs and settings sections. Furthermore the fields have a validation mechanism, so you can specify what the user is allowed to enter and print out custom error messages.
-The plugin comes with several common field types and validation functions included, including repeatable fields, where you can group a few fields together and allow the user to add more and more of them. If you need another field type or validation function, you can create your own callback and handle it there.
-Another feature of Options Definitely is that you can easily display your settings sections as meta boxes, making them flexible for the user to move or hide.
-In a future version, the plugin will also work with the WordPress Customizer.
+_Options Definitely_ is a framework for developers that allows them to easily add options and their input fields to the WordPress admin so that a user can manage them. You can add new menus and options pages, add fields to those pages and organize them in multiple tabs and settings sections.
 
-= Usage =
+The plugin belongs to the group of _Definitely_ plugins which aim at making adding backend components in WordPress easier and more standardized for developers. All _Definitely_ plugins bundle a custom library that handles functionality which is shared across all these plugins, for example handling the field types and their controls.
 
-Options Definitely is very easy to use. You have two choices of how you would like to add your options:
-* either you add everything in a multidimensional associative array, hooking into the filter `wpod`
-* or, if you prefer the object-oriented method, you can hook into the action 'wpod_oo' to access the framework functions directly
+The library comes with several common field types and validation functions included, including repeatable fields, where you can group a few fields together and allow the user to add more and more of them. All the fields have a validation mechanism, so you can specify what the user is allowed to enter and print out custom error messages.
 
-Both ways are fully compatible with each other, meaning you can choose whatever you prefer without conflicting with other plugins/themes using this framework. The basic difference between the two methods is that, when using the filter and array, you have a lot less code to write, on the other hand, the object-oriented approach also gives you the possibility to adjust or even delete components (in Options Definitely, when we speak about a component, we mean either a menu, a page, a tab, a section or a field) that someone else has previously added.
-
-For a detailed guide and reference on how to use this framework, please read the [Wiki on Github](https://github.com/felixarntz/options-definitely/wiki). Once you get familiar with the options you have, you will be able to create complex options interfaces in just a few minutes.
+For an extensive list of features, please visit the [Features page in the _Options Definitely_ Wiki](https://github.com/felixarntz/options-definitely/wiki/Features).
 
 > <strong>This plugin is a framework.</strong><br>
 > When you activate the plugin, it will not change anything visible in your WordPress site. The plugin is a framework to make things easier for developers.
 > In order to benefit by this framework, you or your developer should use its functionality to do what the framework is supposed to help with.
+
+= Usage =
+
+_Options Definitely_ is very easy to use. Although you need to be able to write some PHP code to use the library, setting up settings pages with tabs, sections and fields should be quite straightforward. All you need to know is:
+
+* how to hook into a WordPress action
+* how to call a single class function
+* how to handle an array
+
+For a detailed guide and reference on how to use this framework, please read the [Wiki on Github](https://github.com/felixarntz/options-definitely/wiki). Once you get familiar with the options you have, you will be able to create complex options interfaces in just a few minutes.
+
+> _Options Definitely_ is just one among a group of _Definitely_ plugins which allow developers to build their admin interfaces more quickly. You might also wanna check out:
+> * [Post Types Definitely](https://wordpress.org/plugins/post-types-definitely/)
 
 == Installation ==
 
@@ -51,7 +57,7 @@ You can use the framework anywhere you like, for example in your theme's functio
 
 = Why don't I see any change after having activated the plugin? =
 
-Options Definitely is a framework plugin which means it does nothing on its own, it just helps other developers getting things done more quickly.
+Options Definitely is a framework plugin which means it does nothing on its own, it just helps other developers getting things done way more quickly.
 
 = Where should I submit my support request? =
 
@@ -61,23 +67,14 @@ I preferably take support requests as [issues on Github](https://github.com/feli
 
 If you're a developer and you have some ideas to improve the plugin or to solve a bug, feel free to raise an issue or submit a pull request in the [Github repository for the plugin](https://github.com/felixarntz/options-definitely).
 
+You can also contribute to the plugin by translating it. Among the plugin files, there is a `.pot` file which you can use as a starting point. When you're done with a translation, you can either create a pull request with the new translation files on Github or you can send them to me manually.
+
 == Screenshots ==
 
 1. an options page created with the plugin
-2. PHP code to create the options page above using the array filter method
-3. PHP code to create the options page above using the object-oriented action method
+2. PHP code to create the options page above
 
 == Changelog ==
 
 = 0.5.0 =
 * First stable version
-
-== Upgrade Notice ==
-
-The current version of Options Definitely requires WordPress 4.0 or higher.
-
-== Future ==
-
-In a future version (before the 1.0.0 release), the plugin will also work with the WordPress Customizer (which will be especially useful for themes), in the same way it works now. You will be able to add your sections and fields in there, tabs can be added as panels.
-
-If you want to be prepared before it comes out, you can already add `'customizer' => true` to each tab, section or field that you would like to show up in Customizer.
