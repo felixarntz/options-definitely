@@ -67,7 +67,7 @@ I preferably take support requests as [issues on Github](https://github.com/feli
 
 If you're a developer and you have some ideas to improve the plugin or to solve a bug, feel free to raise an issue or submit a pull request in the [Github repository for the plugin](https://github.com/felixarntz/options-definitely).
 
-You can also contribute to the plugin by translating it. Among the plugin files, there is a `.pot` file which you can use as a starting point. When you're done with a translation, you can either create a pull request with the new translation files on Github or you can send them to me manually.
+You can also contribute to the plugin by translating it. Among the plugin files, there is a `.pot` file which you can use as a starting point. When you're done with a translation, you can either create a pull request with the new translation files on Github or you can send them to me manually. Note that you can help not only translating the plugin, but also the underlying library [_WPDLib_](https://github.com/felixarntz/wpdlib).
 
 == Screenshots ==
 

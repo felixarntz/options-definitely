@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: options-definitely 0.5.0\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/plugins/options-definitely/\n"
-"POT-Creation-Date: 2015-10-04 14:52:03+00:00\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/plugins/options-definitely/\n"
+"POT-Creation-Date: 2015-11-08 14:01:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,72 +22,72 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/WPOD/App.php:154
+#: inc/WPOD/App.php:161
 msgid "This function should never be called manually."
 msgstr ""
 
-#: inc/WPOD/Components/Field.php:122
+#: inc/WPOD/Components/Field.php:139
 msgid "No value was provided for the required field."
 msgstr ""
 
-#: inc/WPOD/Components/Field.php:153
+#: inc/WPOD/Components/Field.php:172
 msgid ""
 "The field type %1$s assigned to the field component %2$s is not a valid "
 "field type."
 msgstr ""
 
-#: inc/WPOD/Components/Field.php:177
+#: inc/WPOD/Components/Field.php:194
 msgid "Field title"
 msgstr ""
 
-#: inc/WPOD/Components/Screen.php:112
+#: inc/WPOD/Components/Screen.php:110
 msgid ""
 "There are no tabs to display for the screen %s. Either add some or adjust "
 "the required capabilities."
 msgstr ""
 
-#: inc/WPOD/Components/Screen.php:169
-msgid "Help tab title"
-msgstr ""
-
-#: inc/WPOD/Components/Screen.php:189
+#: inc/WPOD/Components/Screen.php:166
 msgid "Screen title"
 msgstr ""
 
-#: inc/WPOD/Components/Screen.php:190
+#: inc/WPOD/Components/Screen.php:167
 msgid "Screen label"
 msgstr ""
 
-#: inc/WPOD/Components/Section.php:102
+#: inc/WPOD/Components/Section.php:118
 msgid ""
 "There are no fields to display for section %s. Either add some or provide a "
 "valid callback function instead."
 msgstr ""
 
-#: inc/WPOD/Components/Section.php:143
+#: inc/WPOD/Components/Section.php:159
 msgid "Section title"
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:112
+#: inc/WPOD/Components/Tab.php:90
 msgid ""
 "There are no sections to display for tab %s. Either add some or provide a "
 "valid callback function instead."
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:197
+#: inc/WPOD/Components/Tab.php:246
+msgid "Tab title"
+msgstr ""
+
+#: inc/WPOD/Components/Tab.php:396
 msgid "Settings successfully saved."
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:200
+#: inc/WPOD/Components/Tab.php:399
 msgid "Some errors occurred while trying to save the following settings:"
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:207
+#: inc/WPOD/Components/Tab.php:406
 msgid "Other settings were successfully saved."
 msgstr ""
 
-#: inc/WPOD/Components/Tab.php:271
-msgid "Tab title"
+#: inc/WPOD/Utility.php:103
+msgid "Help tab title"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -95,7 +95,7 @@ msgid "Options Definitely"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "http://wordpress.org/plugins/options-definitely/"
+msgid "https://wordpress.org/plugins/options-definitely/"
 msgstr ""
 
 #. Description of the plugin/theme

@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Options Definitely
-Plugin URI: http://wordpress.org/plugins/options-definitely/
+Plugin URI: https://wordpress.org/plugins/options-definitely/
 Description: This framework plugin makes adding options to the WordPress admin area very simple, yet flexible. It all works using a single action and an array.
 Version: 0.5.0
 Author: Felix Arntz
