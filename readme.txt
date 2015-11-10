@@ -40,6 +40,8 @@ _Options Definitely_ is very easy to use. Although you need to be able to write 
 
 For a detailed guide and reference on how to use this framework, please read the [Wiki on Github](https://github.com/felixarntz/options-definitely/wiki). Once you get familiar with the options you have, you will be able to create complex options interfaces in just a few minutes.
 
+**Note:** This plugin requires PHP 5.3.0 at least.
+
 > _Options Definitely_ is just one among a group of _Definitely_ plugins which allow developers to build their admin interfaces more quickly. You might also wanna check out:
 > * [Post Types Definitely](https://wordpress.org/plugins/post-types-definitely/)
 
