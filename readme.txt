@@ -27,7 +27,7 @@ The library comes with several common field types and validation functions inclu
 For an extensive list of features, please visit the [Features page in the _Options Definitely_ Wiki](https://github.com/felixarntz/options-definitely/wiki/Features).
 
 > <strong>This plugin is a framework.</strong><br>
-> When you activate the plugin, it will not change anything visible in your WordPress site. The plugin is a framework to make things easier for developers.
+> When you activate the plugin, it will not change anything visible in your WordPress site. The plugin is a framework to make things easier for developers.<br>
 > In order to benefit by this framework, you or your developer should use its functionality to do what the framework is supposed to help with.
 
 = Usage =
@@ -42,8 +42,8 @@ For a detailed guide and reference on how to use this framework, please read the
 
 **Note:** This plugin requires PHP 5.3.0 at least.
 
-> _Options Definitely_ is just one among a group of _Definitely_ plugins which allow developers to build their admin interfaces more quickly. You might also wanna check out:
-> * [Post Types Definitely](https://wordpress.org/plugins/post-types-definitely/)
+> _Options Definitely_ is just one among a group of _Definitely_ plugins which allow developers to build their admin interfaces more quickly. You might also wanna check out:<br>
+> - [Post Types Definitely](https://wordpress.org/plugins/post-types-definitely/)
 
 == Installation ==
 
