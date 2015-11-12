@@ -12,9 +12,9 @@ Stable tag:        0.5.0
 Version:           0.5.0
 License:           GPL v2 
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
-Tags:              wordpress, plugin, framework, library, developer, options, admin, backend, ui
+Tags:              wordpress, plugin, definitely, framework, library, developer, admin, backend, structured data, ui, api, cms, options, settings, settings screen, tabs, sections, metaboxes, fields, help tabs
 
-This framework plugin makes adding options to the WordPress admin area very simple, yet flexible. It all works using a single action and an array.
+This framework plugin makes adding options screens with sections and fields to WordPress very simple, yet flexible.
 
 == Description ==
 

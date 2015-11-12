@@ -1,17 +1,28 @@
 {
   "name": "options-definitely",
   "version": "0.5.0",
-  "description": "This framework plugin makes adding options to the WordPress admin area very simple, yet flexible. It all works using a single action and an array.",
+  "description": "This framework plugin makes adding options screens with sections and fields to WordPress very simple, yet flexible.",
   "keywords": [
     "wordpress",
     "plugin",
+    "definitely",
     "framework",
     "library",
     "developer",
-    "options",
     "admin",
     "backend",
-    "ui"
+    "structured data",
+    "ui",
+    "api",
+    "cms",
+    "options",
+    "settings",
+    "settings screen",
+    "tabs",
+    "sections",
+    "metaboxes",
+    "fields",
+    "help tabs"
   ],
   "homepage": "https://wordpress.org/plugins/options-definitely/",
   "authors": [
