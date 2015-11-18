@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WPOD
- * @version 0.5.0
+ * @version 0.5.1
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 

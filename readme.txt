@@ -8,8 +8,8 @@ Donate link:       http://leaves-and-love.net/wordpress-plugins/
 Contributors:      flixos90
 Requires at least: 4.0 
 Tested up to:      4.4-beta3
-Stable tag:        0.5.0
-Version:           0.5.0
+Stable tag:        0.5.1
+Version:           0.5.1
 License:           GPL v2 
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 Tags:              wordpress, plugin, definitely, framework, library, developer, admin, backend, structured data, ui, api, cms, options, settings, settings screen, tabs, sections, metaboxes, fields, help tabs
@@ -77,6 +77,9 @@ You can also contribute to the plugin by translating it. Among the plugin files,
 2. PHP code to create the options page above
 
 == Changelog ==
+
+= 0.5.1 =
+* Fixed: on PHP 5.2 the plugin now terminates appropriately
 
 = 0.5.0 =
 * First stable version

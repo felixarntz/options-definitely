@@ -1,4 +1,7 @@
 == Changelog ==
 
+= 0.5.1 =
+* Fixed: on PHP 5.2 the plugin now terminates appropriately
+
 = 0.5.0 =
 * First stable version
