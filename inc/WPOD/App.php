@@ -66,9 +66,9 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			add_action( 'after_setup_theme', array( $this, 'init' ), 1 );
 
 			add_filter( 'wpdlib_menu_validated', array( $this, 'menu_validated' ), 10, 2 );
-			add_filter( 'wpdlib_screen_validated', array( $this, 'screen_validated' ), 10, 2 );
-			add_filter( 'wpdlib_tab_validated', array( $this, 'tab_validated' ), 10, 2 );
-			add_filter( 'wpdlib_section_validated', array( $this, 'section_validated' ), 10, 2 );
+			add_filter( 'wpod_screen_validated', array( $this, 'screen_validated' ), 10, 2 );
+			add_filter( 'wpod_tab_validated', array( $this, 'tab_validated' ), 10, 2 );
+			add_filter( 'wpod_section_validated', array( $this, 'section_validated' ), 10, 2 );
 		}
 
 		/**
