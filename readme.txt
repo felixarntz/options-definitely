@@ -10,8 +10,8 @@ Requires at least: 4.0
 Tested up to:      4.4-beta3
 Stable tag:        0.5.1
 Version:           0.5.1
-License:           GPL v2 
-License URI:       http://www.gnu.org/licenses/gpl-2.0.html
+License:           GPL v3
+License URI:       http://www.gnu.org/licenses/gpl-3.0.html
 Tags:              wordpress, plugin, definitely, framework, library, developer, admin, backend, structured data, ui, api, cms, options, settings, settings screen, tabs, sections, metaboxes, fields, help tabs
 
 This framework plugin makes adding options screens with sections and fields to WordPress very simple, yet flexible.
