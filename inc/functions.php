@@ -35,7 +35,7 @@ if ( ! function_exists( 'wpod_get_options' ) ) {
 		if ( $tab ) {
 			foreach ( $tab->get_children() as $section ) {
 				foreach ( $section->get_children() as $field ) {
-					$option = \WPOD\Utility::parse_option( ( isset( $_options[ $field->slug ] ) ? $_options[ $field->slug ] : null ), $field, $formatted );
+					$options[ $field->slug ] = \WPOD\Utility::parse_option( ( isset( $_options[ $field->slug ] ) ? $_options[ $field->slug ] : null ), $field, $formatted );
 				}
 			}
 		}
