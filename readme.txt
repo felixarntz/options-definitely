@@ -79,6 +79,7 @@ You can also contribute to the plugin by translating it. Among the plugin files,
 == Changelog ==
 
 = 0.5.1 =
+* Fixed: critical issue in `wpod_get_options()`
 * Fixed: on PHP 5.2 the plugin now terminates appropriately
 
 = 0.5.0 =
