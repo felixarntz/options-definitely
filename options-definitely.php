@@ -22,11 +22,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-if ( ! class_exists( 'WPOD\App' ) && file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
-	if ( version_compare( phpversion(), '5.3.0' ) >= 0 ) {
-		require_once dirname( __FILE__ ) . '/vendor/autoload.php';
-	} else {
-		require_once dirname( __FILE__ ) . '/vendor/felixarntz/leavesandlove-wp-plugin-util/leavesandlove-wp-plugin-loader.php';
+if ( ! class_exists( 'WPOD\App' ) ) {
+	if ( file_exists( dirname( __FILE__ ) . '/options-definitely/vendor/autoload.php' ) ) {
+		if ( version_compare( phpversion(), '5.3.0' ) >= 0 ) {
+			require_once dirname( __FILE__ ) . '/options-definitely/vendor/autoload.php';
+		} else {
+			require_once dirname( __FILE__ ) . '/options-definitely/vendor/felixarntz/leavesandlove-wp-plugin-util/leavesandlove-wp-plugin-loader.php';
+		}
+	} elseif ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
+		if ( version_compare( phpversion(), '5.3.0' ) >= 0 ) {
+			require_once dirname( __FILE__ ) . '/vendor/autoload.php';
+		} else {
+			require_once dirname( __FILE__ ) . '/vendor/felixarntz/leavesandlove-wp-plugin-util/leavesandlove-wp-plugin-loader.php';
+		}
 	}
 }
 
