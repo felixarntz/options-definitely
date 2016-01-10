@@ -121,6 +121,13 @@ if ( ! class_exists( 'WPOD\Admin' ) ) {
 
 			if ( $currents ) {
 				$currents['tab']->enqueue_assets();
+
+				/**
+				 * This action can be used to enqueue additional scripts and stylesheets on a specific settings screen.
+				 *
+				 * @since 0.6.0
+				 */
+				do_action( 'wpod_screen_' . $currents['screen']->slug . '_enqueue_scripts' );
 			}
 		}
 
