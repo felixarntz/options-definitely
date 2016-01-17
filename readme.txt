@@ -80,6 +80,7 @@ You can also contribute to the plugin by translating it. Among the plugin files,
 
 = 0.6.0 =
 * Added: a new action is available to easily enqueue scripts on specific settings pages only
+* Added: new map field type
 * Enhanced: the plugin can now easily be used as a must-use plugin or as a library in any plugin or theme
 
 = 0.5.1 =

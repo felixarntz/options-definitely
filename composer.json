@@ -52,7 +52,7 @@
   },
   "require": {
     "composer/installers": "~1.0",
-    "felixarntz/wpdlib": "0.5.3",
+    "felixarntz/wpdlib": "0.6.0",
     "felixarntz/leavesandlove-wp-plugin-util": "1.7.0"
   }
 }
