@@ -1,10 +1,10 @@
 # Copyright (c) 2014-2015 Felix Arntz
 msgid ""
 msgstr ""
-"Project-Id-Version: options-definitely 0.5.1\n"
+"Project-Id-Version: options-definitely 0.6.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/plugins/options-definitely/\n"
-"POT-Creation-Date: 2015-11-18 11:29-0500\n"
-"PO-Revision-Date: 2015-11-18 11:29-0500\n"
+"POT-Creation-Date: 2016-01-17 23:42+0100\n"
+"PO-Revision-Date: 2016-01-17 23:45+0100\n"
 "Last-Translator: Felix Arntz <felix-arntz@leaves-and-love.net>\n"
 "Language-Team: Felix Arntz <felix-arntz@leaves-and-love.net>\n"
 "Language: de_DE\n"
@@ -22,9 +22,38 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: inc/WPOD/App.php:161
+#: inc/WPOD/App.php:165
 msgid "This function should never be called manually."
 msgstr "Diese Funktion sollte niemals manuell aufgerufen werden."
+
+#: inc/WPOD/App.php:243
+msgid "Guide"
+msgstr "Anleitung"
+
+#: inc/WPOD/App.php:287
+msgid "You have just activated %s."
+msgstr "Du hast gerade %s aktiviert."
+
+#: inc/WPOD/App.php:289
+msgid "You are running the plugin %s on your site."
+msgstr "Auf deiner Seite läuft das Plugin %s."
+
+#: inc/WPOD/App.php:291
+msgid ""
+"This plugin is a framework that developers can leverage to quickly add "
+"settings pages with tabs, meta box sections and fields."
+msgstr ""
+"Dieses Plugin ist ein Framework, welches Entwickler verwenden können, um "
+"schnell erweiterte Einstellungs-Seiten mit Tabs, Metabox-Abschnitten und "
+"Feldern hinzuzufügen."
+
+#: inc/WPOD/App.php:294
+msgid ""
+"For a guide on how to use the framework please read the <a href=\"%s\" "
+"target=\"_blank\">Wiki</a>."
+msgstr ""
+"Für eine Anleitung, wie man das Framework benutzt, lies bitte das <a href="
+"\"%s\" target=\"_blank\">Wiki</a>."
 
 #: inc/WPOD/Components/Field.php:139
 msgid "No value was provided for the required field."

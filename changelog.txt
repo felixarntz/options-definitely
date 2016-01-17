@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 0.6.0 =
+* Added: a new action is available to easily enqueue scripts on specific settings pages only
+* Enhanced: the plugin can now easily be used as a must-use plugin or as a library in any plugin or theme
+
 = 0.5.1 =
 * Fixed: critical issue in `wpod_get_options()`
 * Fixed: on PHP 5.2 the plugin now terminates appropriately

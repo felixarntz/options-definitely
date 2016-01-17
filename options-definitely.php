@@ -3,7 +3,7 @@
 Plugin Name: Options Definitely
 Plugin URI: https://wordpress.org/plugins/options-definitely/
 Description: This framework plugin makes adding options screens with sections and fields to WordPress very simple, yet flexible.
-Version: 0.5.1
+Version: 0.6.0
 Author: Felix Arntz
 Author URI: http://leaves-and-love.net
 License: GNU General Public License v3
@@ -14,7 +14,7 @@ Tags: wordpress, plugin, definitely, framework, library, developer, admin, backe
 */
 /**
  * @package WPOD
- * @version 0.5.1
+ * @version 0.6.0
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
  */
 
@@ -41,7 +41,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 LaL_WP_Plugin_Loader::load_plugin( array(
 	'slug'				=> 'options-definitely',
 	'name'				=> 'Options Definitely',
-	'version'			=> '0.5.1',
+	'version'			=> '0.6.0',
 	'main_file'			=> __FILE__,
 	'namespace'			=> 'WPOD',
 	'textdomain'		=> 'options-definitely',

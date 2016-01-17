@@ -1,6 +1,6 @@
 {
   "name": "options-definitely",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "This framework plugin makes adding options screens with sections and fields to WordPress very simple, yet flexible.",
   "keywords": [
     "wordpress",

@@ -7,9 +7,9 @@ Author:            Felix Arntz
 Donate link:       http://leaves-and-love.net/wordpress-plugins/
 Contributors:      flixos90
 Requires at least: 4.0 
-Tested up to:      4.4-beta3
-Stable tag:        0.5.1
-Version:           0.5.1
+Tested up to:      4.4.1
+Stable tag:        0.6.0
+Version:           0.6.0
 License:           GPL v3
 License URI:       http://www.gnu.org/licenses/gpl-3.0.html
 Tags:              wordpress, plugin, definitely, framework, library, developer, admin, backend, structured data, ui, api, cms, options, settings, settings screen, tabs, sections, metaboxes, fields, help tabs
@@ -77,6 +77,10 @@ You can also contribute to the plugin by translating it. Among the plugin files,
 2. PHP code to create the options page above
 
 == Changelog ==
+
+= 0.6.0 =
+* Added: a new action is available to easily enqueue scripts on specific settings pages only
+* Enhanced: the plugin can now easily be used as a must-use plugin or as a library in any plugin or theme
 
 = 0.5.1 =
 * Fixed: critical issue in `wpod_get_options()`
