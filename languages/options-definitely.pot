@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: options-definitely 0.6.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/plugins/options-definitely/\n"
-"POT-Creation-Date: 2016-01-17 22:41:34+00:00\n"
+"POT-Creation-Date: 2016-01-19 22:26:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,29 +22,29 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/WPOD/App.php:165
+#: inc/WPOD/App.php:168
 msgid "This function should never be called manually."
 msgstr ""
 
-#: inc/WPOD/App.php:243
+#: inc/WPOD/App.php:246
 msgid "Guide"
 msgstr ""
 
-#: inc/WPOD/App.php:287
+#: inc/WPOD/App.php:290
 msgid "You have just activated %s."
 msgstr ""
 
-#: inc/WPOD/App.php:289
+#: inc/WPOD/App.php:292
 msgid "You are running the plugin %s on your site."
 msgstr ""
 
-#: inc/WPOD/App.php:291
+#: inc/WPOD/App.php:294
 msgid ""
 "This plugin is a framework that developers can leverage to quickly add "
 "settings pages with tabs, meta box sections and fields."
 msgstr ""
 
-#: inc/WPOD/App.php:294
+#: inc/WPOD/App.php:297
 msgid ""
 "For a guide on how to use the framework please read the <a href=\"%s\" "
 "target=\"_blank\">Wiki</a>."

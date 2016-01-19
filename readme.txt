@@ -80,8 +80,13 @@ You can also contribute to the plugin by translating it. Among the plugin files,
 
 = 0.6.0 =
 * Added: a new action is available to easily enqueue scripts on specific settings pages only
-* Added: new map field type
+* Added: new field type map (can store either address or latitude and longitude)
 * Enhanced: the plugin can now easily be used as a must-use plugin or as a library in any plugin or theme
+* Enhanced: media field type can now alternatively store URL instead of attachment ID
+* Enhanced: options keys 'terms' and 'users' (for related objects) now accept 'any' as value (similar to 'posts')
+* Fixed: critical validation bug in WYSIWYG
+* Fixed: step validation for decimal numbers
+* Fixed: images now display correctly in media preview
 
 = 0.5.1 =
 * Fixed: critical issue in `wpod_get_options()`

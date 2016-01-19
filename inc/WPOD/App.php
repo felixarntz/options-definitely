@@ -14,6 +14,7 @@ use WPOD\Components\Section as Section;
 use WPOD\Components\Field as Field;
 use WPDLib\Components\Manager as ComponentManager;
 use WPDLib\Components\Menu as Menu;
+use WPDLib\FieldTypes\Manager as FieldManager;
 use LaL_WP_Plugin as Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -58,6 +59,8 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * @param array $args array of class arguments (passed by the plugin utility class)
 		 */
 		protected function run() {
+			FieldManager::init();
+
 			if ( is_admin() ) {
 				Admin::instance();
 			}
