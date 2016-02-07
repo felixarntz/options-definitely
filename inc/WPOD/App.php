@@ -84,6 +84,8 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 
 			add_action( 'admin_notices', array( $this, 'display_admin_notice' ) );
 			add_action( 'network_admin_notices', array( $this, 'display_admin_notice' ) );
+
+			// valid for both site and network admin
 			add_action( 'wp_ajax_wpod_dismiss_notice', array( $this, 'ajax_dismiss_notice' ) );
 		}
 
@@ -268,12 +270,15 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * @since 0.6.0
 		 */
 		public function display_admin_notice() {
-			$setting = get_option( 'options_definitely_notice' );
-			if ( ! $setting ) {
-				return;
+			if ( is_network_admin() ) {
+				$setting = get_site_option( 'options_definitely_notice' );
+				$permission = 'manage_network_options';
+			} else {
+				$setting = get_option( 'options_definitely_notice' );
+				$permission = 'manage_options';
 			}
 
-			if ( ! current_user_can( 'manage_options' ) ) {
+			if ( ! $setting || ! current_user_can( $permission ) ) {
 				return;
 			}
 
@@ -283,7 +288,8 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 					$( document ).on( 'click', '#options-definitely-notice .notice-dismiss', function( e ) {
 						$.ajax( '<?php echo admin_url( "admin-ajax.php" ); ?>', {
 							data: {
-								action: 'wpod_dismiss_notice'
+								action: 'wpod_dismiss_notice',
+								context: '<?php echo is_network_admin() ? "network" : "site"; ?>'
 							},
 							dataType: 'json',
 							method: 'POST'
@@ -309,7 +315,11 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			<?php
 
 			if ( 'activated' === $setting ) {
-				update_option( 'options_definitely_notice', 'active' );
+				if ( is_network_admin() ) {
+					update_site_option( 'options_definitely_notice', 'active' );
+				} else {
+					update_option( 'options_definitely_notice', 'active' );
+				}
 			}
 		}
 
@@ -322,7 +332,11 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * @since 0.6.0
 		 */
 		public function ajax_dismiss_notice() {
-			delete_option( 'options_definitely_notice' );
+			if ( isset( $_REQUEST['context'] ) && 'network' === $_REQUEST['context'] ) {
+				delete_site_option( 'options_definitely_notice' );
+			} else {
+				delete_option( 'options_definitely_notice' );
+			}
 
 			wp_send_json_success();
 		}
