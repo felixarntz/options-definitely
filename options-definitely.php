@@ -9,7 +9,6 @@ Author URI: http://leaves-and-love.net
 License: GNU General Public License v3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: options-definitely
-Domain Path: /languages/
 Tags: wordpress, plugin, definitely, framework, library, developer, admin, backend, structured data, ui, api, cms, options, settings, settings screen, tabs, sections, metaboxes, fields, help tabs
 */
 /**
@@ -39,13 +38,14 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 }
 
 LaL_WP_Plugin_Loader::load_plugin( array(
-	'slug'				=> 'options-definitely',
-	'name'				=> 'Options Definitely',
-	'version'			=> '0.6.0',
-	'main_file'			=> __FILE__,
-	'namespace'			=> 'WPOD',
-	'textdomain'		=> 'options-definitely',
+	'slug'					=> 'options-definitely',
+	'name'					=> 'Options Definitely',
+	'version'				=> '0.6.0',
+	'main_file'				=> __FILE__,
+	'namespace'				=> 'WPOD',
+	'textdomain'			=> 'options-definitely',
+	'use_language_packs'	=> true,
 ), array(
-	'phpversion'		=> '5.3.0',
-	'wpversion'			=> '4.0',
+	'phpversion'			=> '5.3.0',
+	'wpversion'				=> '4.0',
 ) );

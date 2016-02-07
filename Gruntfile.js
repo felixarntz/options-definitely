@@ -12,7 +12,6 @@ module.exports = function(grunt) {
 						'License: <%= pkg.license.name %>\n' +
 						'License URI: <%= pkg.license.url %>\n' +
 						'Text Domain: options-definitely\n' +
-						'Domain Path: /languages/\n' +
 						'Tags: <%= pkg.keywords.join(", ") %>\n' +
 						'*/',
 		fileheader:		'/**\n' +
@@ -20,12 +19,6 @@ module.exports = function(grunt) {
 						' * @version <%= pkg.version %>\n' +
 						' * @author <%= pkg.author.name %> <<%= pkg.author.email %>>\n' +
 						' */',
-
-		clean: {
-			translation: [
-				'languages/options-definitely.pot'
-			]
-		},
 
 		replace: {
 			header: {
@@ -49,58 +42,18 @@ module.exports = function(grunt) {
 					to: '<%= fileheader %>'
 				}]
 			}
-		},
-
-		makepot: {
-			translation: {
-				options: {
-					mainFile: 'options-definitely.php',
-					domainPath: '/languages',
-					exclude: [ 'vendor/.*' ],
-					potComments: 'Copyright (c) 2014-<%= grunt.template.today("yyyy") %> <%= pkg.author.name %>',
-					potFilename: 'options-definitely.pot',
-					potHeaders: {
-						'language-team': '<%= pkg.author.name %> <<%= pkg.author.email %>>',
-						'last-translator': '<%= pkg.author.name %> <<%= pkg.author.email %>>',
-						'project-id-version': '<%= pkg.name %> <%= pkg.version %>',
-						'report-msgid-bugs-to': '<%= pkg.homepage %>',
-						'x-generator': 'grunt-wp-i18n 0.5.3',
-						'x-poedit-basepath': '.',
-						'x-poedit-language': 'English',
-						'x-poedit-country': 'UNITED STATES',
-						'x-poedit-sourcecharset': 'uft-8',
-						'x-poedit-keywordslist': '__;_e;_x:1,2c;_ex:1,2c;_n:1,2; _nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__; esc_html__;esc_attr_e; esc_html_e;esc_attr_x:1,2c; esc_html_x:1,2c;',
-						'x-poedit-bookmars': '',
-						'x-poedit-searchpath-0': '.',
-						'x-textdomain-support': 'yes'
-					},
-					type: 'wp-plugin'
-				}
-			}
 		}
 
  	});
 
-	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-text-replace');
-	grunt.loadNpmTasks('grunt-wp-i18n');
-
-	grunt.registerTask('translation', [
-		'clean:translation',
-		'makepot:translation'
-	]);
 
 	grunt.registerTask('plugin', [
 		'replace:version',
 		'replace:header'
 	]);
 
-	grunt.registerTask('default', [
-		'translation'
-	]);
-
 	grunt.registerTask('build', [
-		'translation',
 		'plugin'
 	]);
 };
