@@ -38,6 +38,12 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		protected static $_args = array();
 
 		/**
+		 * @since 0.6.1
+		 * @var boolean Temporarily stores whether the activation is network wide.
+		 */
+		protected static $_temp_network_wide = false;
+
+		/**
 		 * Class constructor.
 		 *
 		 * This is protected on purpose since it is called by the parent class' singleton.
@@ -74,7 +80,10 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			add_filter( 'wpod_section_validated', array( $this, 'section_validated' ), 10, 2 );
 
 			add_filter( 'plugin_action_links_' . plugin_basename( self::get_info( 'main_file' ) ), array( $this, 'add_action_link' ) );
+			add_filter( 'network_admin_plugin_action_links_' . plugin_basename( self::get_info( 'main_file' ) ), array( $this, 'add_action_link' ) );
+
 			add_action( 'admin_notices', array( $this, 'display_admin_notice' ) );
+			add_action( 'network_admin_notices', array( $this, 'display_admin_notice' ) );
 			add_action( 'wp_ajax_wpod_dismiss_notice', array( $this, 'ajax_dismiss_notice' ) );
 		}
 
@@ -243,7 +252,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 */
 		public function add_action_link( $links = array() ) {
 			$custom_links = array(
-				'<a href="' . 'https://github.com/felixarntz/options-definitely/wiki' . '" target="_blank">' . __( 'Guide', 'options-definitely' ) . '</a>',
+				'<a href="' . 'https://github.com/felixarntz/options-definitely/wiki' . '">' . __( 'Guide', 'options-definitely' ) . '</a>',
 			);
 
 			return array_merge( $custom_links, $links );
@@ -294,7 +303,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 					<?php _e( 'This plugin is a framework that developers can leverage to quickly add settings pages with tabs, meta box sections and fields.', 'options-definitely' ); ?>
 				</p>
 				<p>
-					<?php printf( __( 'For a guide on how to use the framework please read the <a href="%s" target="_blank">Wiki</a>.', 'options-definitely' ), 'https://github.com/felixarntz/options-definitely/wiki' ); ?>
+					<?php printf( __( 'For a guide on how to use the framework please read the <a href="%s">Wiki</a>.', 'options-definitely' ), 'https://github.com/felixarntz/options-definitely/wiki' ); ?>
 				</p>
 			</div>
 			<?php
@@ -419,7 +428,27 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		 * @since 0.6.0
 		 */
 		public static function activate() {
-			add_option( 'options_definitely_notice', 'activated' );
+			if ( ! self::$_temp_network_wide ) {
+				add_option( 'options_definitely_notice', 'activated' );
+			}
+
+			return true;
+		}
+
+		/**
+		 * Network activation function.
+		 *
+		 * This function is run automatically when the plugin is activated network wide.
+		 *
+		 * @internal
+		 * @since 0.6.1
+		 */
+		public static function network_activate() {
+			self::$_temp_network_wide = true;
+
+			add_site_option( 'options_definitely_notice', 'activated' );
+
+			return true;
 		}
 	}
 }
