@@ -38,12 +38,6 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		protected static $_args = array();
 
 		/**
-		 * @since 0.6.1
-		 * @var boolean Temporarily stores whether the activation is network wide.
-		 */
-		protected static $_temp_network_wide = false;
-
-		/**
 		 * Class constructor.
 		 *
 		 * This is protected on purpose since it is called by the parent class' singleton.
@@ -78,15 +72,6 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 			add_filter( 'wpod_screen_validated', array( $this, 'screen_validated' ), 10, 2 );
 			add_filter( 'wpod_tab_validated', array( $this, 'tab_validated' ), 10, 2 );
 			add_filter( 'wpod_section_validated', array( $this, 'section_validated' ), 10, 2 );
-
-			add_filter( 'plugin_action_links_' . plugin_basename( self::get_info( 'main_file' ) ), array( $this, 'add_action_link' ) );
-			add_filter( 'network_admin_plugin_action_links_' . plugin_basename( self::get_info( 'main_file' ) ), array( $this, 'add_action_link' ) );
-
-			add_action( 'admin_notices', array( $this, 'display_admin_notice' ) );
-			add_action( 'network_admin_notices', array( $this, 'display_admin_notice' ) );
-
-			// valid for both site and network admin
-			add_action( 'wp_ajax_wpod_dismiss_notice', array( $this, 'ajax_dismiss_notice' ) );
 		}
 
 		/**
@@ -245,103 +230,6 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		}
 
 		/**
-		 * This filter adds a link to the framework guide to the plugins table.
-		 *
-		 * @internal
-		 * @since 0.6.0
-		 * @param array $links the original links
-		 * @return array the modified links
-		 */
-		public function add_action_link( $links = array() ) {
-			$custom_links = array(
-				'<a href="' . 'https://github.com/felixarntz/options-definitely/wiki' . '">' . __( 'Guide', 'options-definitely' ) . '</a>',
-			);
-
-			return array_merge( $custom_links, $links );
-		}
-
-		/**
-		 * This function displays and admin notice that the framework is active.
-		 *
-		 * The notice will only be shown if the corresponding option is set.
-		 * Once the notice is hidden, it will not show again until the plugin is deactivated and then activated again.
-		 *
-		 * @internal
-		 * @since 0.6.0
-		 */
-		public function display_admin_notice() {
-			if ( is_network_admin() ) {
-				$setting = get_site_option( 'options_definitely_notice' );
-				$permission = 'manage_network_options';
-			} else {
-				$setting = get_option( 'options_definitely_notice' );
-				$permission = 'manage_options';
-			}
-
-			if ( ! $setting || ! current_user_can( $permission ) ) {
-				return;
-			}
-
-			?>
-			<script type="text/javascript">
-				jQuery( document ).ready( function( $ ) {
-					$( document ).on( 'click', '#options-definitely-notice .notice-dismiss', function( e ) {
-						$.ajax( '<?php echo admin_url( "admin-ajax.php" ); ?>', {
-							data: {
-								action: 'wpod_dismiss_notice',
-								context: '<?php echo is_network_admin() ? "network" : "site"; ?>'
-							},
-							dataType: 'json',
-							method: 'POST'
-						});
-					});
-				});
-			</script>
-
-			</script>
-			<div id="options-definitely-notice" class="notice updated is-dismissible hide-if-no-js">
-				<p>
-					<?php if ( 'activated' === $setting ) : ?>
-						<?php printf( __( 'You have just activated %s.', 'options-definitely' ), '<strong>' . self::get_info( 'name' ) . '</strong>' ); ?>
-					<?php else : ?>
-						<?php printf( __( 'You are running the plugin %s on your site.', 'options-definitely' ), '<strong>' . self::get_info( 'name' ) . '</strong>' ); ?>
-					<?php endif; ?>
-					<?php _e( 'This plugin is a framework that developers can leverage to quickly add settings pages with tabs, meta box sections and fields.', 'options-definitely' ); ?>
-				</p>
-				<p>
-					<?php printf( __( 'For a guide on how to use the framework please read the <a href="%s">Wiki</a>.', 'options-definitely' ), 'https://github.com/felixarntz/options-definitely/wiki' ); ?>
-				</p>
-			</div>
-			<?php
-
-			if ( 'activated' === $setting ) {
-				if ( is_network_admin() ) {
-					update_site_option( 'options_definitely_notice', 'active' );
-				} else {
-					update_option( 'options_definitely_notice', 'active' );
-				}
-			}
-		}
-
-		/**
-		 * This function is an AJAX function that is run when the plugin's admin notice is dismissed.
-		 *
-		 * The function ensures that the notice is dismissed permanently.
-		 *
-		 * @internal
-		 * @since 0.6.0
-		 */
-		public function ajax_dismiss_notice() {
-			if ( isset( $_REQUEST['context'] ) && 'network' === $_REQUEST['context'] ) {
-				delete_site_option( 'options_definitely_notice' );
-			} else {
-				delete_option( 'options_definitely_notice' );
-			}
-
-			wp_send_json_success();
-		}
-
-		/**
 		 * Adds menus and their subcomponents.
 		 *
 		 * @internal
@@ -434,35 +322,69 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		}
 
 		/**
-		 * Activation function.
-		 *
-		 * This function is run automatically when the plugin is activated.
-		 *
-		 * @internal
-		 * @since 0.6.0
-		 */
-		public static function activate() {
-			if ( ! self::$_temp_network_wide ) {
-				add_option( 'options_definitely_notice', 'activated' );
-			}
-
-			return true;
-		}
-
-		/**
-		 * Network activation function.
-		 *
-		 * This function is run automatically when the plugin is activated network wide.
+		 * Adds a link to the framework guide to the plugins table.
 		 *
 		 * @internal
 		 * @since 0.6.1
+		 * @param array $links the original links
+		 * @return array the modified links
 		 */
-		public static function network_activate() {
-			self::$_temp_network_wide = true;
+		public static function filter_plugin_links( $links = array() ) {
+			$custom_links = array(
+				'<a href="' . 'https://github.com/felixarntz/options-definitely/wiki' . '">' . __( 'Guide', 'options-definitely' ) . '</a>',
+			);
 
-			add_site_option( 'options_definitely_notice', 'activated' );
+			return array_merge( $custom_links, $links );
+		}
 
-			return true;
+		/**
+		 * Adds a link to the framework guide to the network plugins table.
+		 *
+		 * @internal
+		 * @since 0.6.1
+		 * @param array $links the original links
+		 * @return array the modified links
+		 */
+		public static function filter_network_plugin_links( $links = array() ) {
+			return self::filter_plugin_links( $links );
+		}
+
+		/**
+		 * Renders a plugin information message.
+		 *
+		 * @internal
+		 * @since 0.6.1
+		 * @param string $status either 'activated' or 'active'
+		 * @param string $context either 'site' or 'network'
+		 */
+		public static function render_status_message( $status, $context = 'site' ) {
+			?>
+			<p>
+				<?php if ( 'activated' === $status ) : ?>
+					<?php printf( __( 'You have just activated %s.', 'options-definitely' ), '<strong>' . self::get_info( 'name' ) . '</strong>' ); ?>
+				<?php elseif ( 'network' === $context ) : ?>
+					<?php printf( __( 'You are running the plugin %s on your network.', 'options-definitely' ), '<strong>' . self::get_info( 'name' ) . '</strong>' ); ?>
+				<?php else : ?>
+					<?php printf( __( 'You are running the plugin %s on your site.', 'options-definitely' ), '<strong>' . self::get_info( 'name' ) . '</strong>' ); ?>
+				<?php endif; ?>
+				<?php _e( 'This plugin is a framework that developers can leverage to quickly add settings pages with tabs, meta box sections and fields.', 'options-definitely' ); ?>
+			</p>
+			<p>
+				<?php printf( __( 'For a guide on how to use the framework please read the <a href="%s">Wiki</a>.', 'options-definitely' ), 'https://github.com/felixarntz/options-definitely/wiki' ); ?>
+			</p>
+			<?php
+		}
+
+		/**
+		 * Renders a network plugin information message.
+		 *
+		 * @internal
+		 * @since 0.6.1
+		 * @param string $status either 'activated' or 'active'
+		 * @param string $context either 'site' or 'network'
+		 */
+		public static function render_network_status_message( $status, $context = 'network' ) {
+			self::render_status_message( $status, $context );
 		}
 	}
 }
