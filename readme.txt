@@ -80,6 +80,7 @@ You can also contribute to the plugin by translating it. Simply visit [translate
 
 = 0.6.1 =
 * Tweaked: plugin now uses wordpress.org language packs
+* Tweaked: updated plugin initialization library
 * Fixed: "Settings saved" message does not show twice anymore on an options screen
 * Fixed: admin notice no longer shows on each site when the plugin is activated network-wide
 * Fixed: numeric validation of floating point numbers
