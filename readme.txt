@@ -8,8 +8,8 @@ Donate link:       http://leaves-and-love.net/wordpress-plugins/
 Contributors:      flixos90
 Requires at least: 4.0 
 Tested up to:      4.4.2
-Stable tag:        0.6.0
-Version:           0.6.0
+Stable tag:        0.6.1
+Version:           0.6.1
 License:           GPL v3
 License URI:       http://www.gnu.org/licenses/gpl-3.0.html
 Tags:              wordpress, plugin, definitely, framework, library, developer, admin, backend, structured data, ui, api, cms, options, settings, settings screen, tabs, sections, metaboxes, fields, help tabs
@@ -69,7 +69,7 @@ I preferably take support requests as [issues on Github](https://github.com/feli
 
 If you're a developer and you have some ideas to improve the plugin or to solve a bug, feel free to raise an issue or submit a pull request in the [Github repository for the plugin](https://github.com/felixarntz/options-definitely).
 
-You can also contribute to the plugin by translating it. Among the plugin files, there is a `.pot` file which you can use as a starting point. When you're done with a translation, you can either create a pull request with the new translation files on Github or you can send them to me manually. Note that you can help not only translating the plugin, but also the underlying library [_WPDLib_](https://github.com/felixarntz/wpdlib).
+You can also contribute to the plugin by translating it. Simply visit [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/options-definitely) to get started. Note that you can help not only translating the plugin, but also the underlying library [_WPDLib_](https://github.com/felixarntz/wpdlib).
 
 == Screenshots ==
 
@@ -77,6 +77,13 @@ You can also contribute to the plugin by translating it. Among the plugin files,
 2. PHP code to create the options page above
 
 == Changelog ==
+
+= 0.6.1 =
+* Tweaked: plugin now uses wordpress.org language packs
+* Fixed: "Settings saved" message does not show twice anymore on an options screen
+* Fixed: admin notice no longer shows on each site when the plugin is activated network-wide
+* Fixed: numeric validation of floating point numbers
+* Fixed: formatting floating point numbers more precise than 2 digits
 
 = 0.6.0 =
 * Added: a new action is available to easily enqueue scripts on specific settings pages only

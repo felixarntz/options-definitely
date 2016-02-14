@@ -1,5 +1,12 @@
 == Changelog ==
 
+= 0.6.1 =
+* Tweaked: plugin now uses wordpress.org language packs
+* Fixed: "Settings saved" message does not show twice anymore on an options screen
+* Fixed: admin notice no longer shows on each site when the plugin is activated network-wide
+* Fixed: numeric validation of floating point numbers
+* Fixed: formatting floating point numbers more precise than 2 digits
+
 = 0.6.0 =
 * Added: a new action is available to easily enqueue scripts on specific settings pages only
 * Added: new field type map (can store either address or latitude and longitude)
