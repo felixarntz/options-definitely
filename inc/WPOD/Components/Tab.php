@@ -65,8 +65,11 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 		 */
 		public function render() {
 			$parent_screen = $this->get_parent();
+			$parent_menu = $parent_screen->get_parent();
 
-			settings_errors( $this->slug );
+			if ( 'options-general.php' !== $parent_menu->menu_slug ) {
+				settings_errors( $this->slug );
+			}
 
 			/**
 			 * This action can be used to display additional content on top of this tab.
