@@ -1,5 +1,13 @@
 == Changelog ==
 
+= 0.6.2 =
+* Enhanced: WYSIWYG field experience is now more similar to the default post editor, including media and link buttons
+* Tweaked: updated the Select2 and Datetimepicker JavaScript plugins
+* Fixed: the selected value of a multiselect field is now properly displayed
+* Fixed: the `rows` attribute now works correctly for textareas and WYSIWYG
+* Fixed: updated the media picker JavaScript plugin for more flexibility and some bug fixes
+* Fixed: updated the map picker JavaScript plugin for more flexibility and some bug fixes
+
 = 0.6.1 =
 * Tweaked: plugin now uses wordpress.org language packs
 * Tweaked: updated plugin initialization library
