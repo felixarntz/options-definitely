@@ -7,9 +7,9 @@ Author:            Felix Arntz
 Donate link:       http://leaves-and-love.net/wordpress-plugins/
 Contributors:      flixos90
 Requires at least: 4.0 
-Tested up to:      4.5beta4
-Stable tag:        0.6.2
-Version:           0.6.2
+Tested up to:      4.5.1
+Stable tag:        0.6.3
+Version:           0.6.3
 License:           GPL v3
 License URI:       http://www.gnu.org/licenses/gpl-3.0.html
 Tags:              wordpress, plugin, definitely, framework, library, developer, admin, backend, structured data, ui, api, cms, options, settings, settings screen, tabs, sections, metaboxes, fields, help tabs
@@ -77,6 +77,9 @@ You can also contribute to the plugin by translating it. Simply visit [translate
 2. PHP code to create the options page above
 
 == Changelog ==
+
+= 0.6.3 =
+* Fixed: uncaught JavaScript error with datetimepicker
 
 = 0.6.2 =
 * Enhanced: WYSIWYG field experience is now more similar to the default post editor, including media and link buttons

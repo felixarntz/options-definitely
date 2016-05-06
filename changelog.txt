@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 0.6.3 =
+* Fixed: uncaught JavaScript error with datetimepicker
+
 = 0.6.2 =
 * Enhanced: WYSIWYG field experience is now more similar to the default post editor, including media and link buttons
 * Tweaked: updated the Select2 and Datetimepicker JavaScript plugins
