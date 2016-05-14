@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 0.6.4 =
+* Fixed: WPDLib now has type "wordpress-muplugin" so that it is not loaded outside of a project
+
 = 0.6.3 =
 * Fixed: uncaught JavaScript error with datetimepicker
 
