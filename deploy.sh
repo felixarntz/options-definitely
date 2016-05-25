@@ -101,7 +101,8 @@ deploy.sh
 Gruntfile.js
 package.json
 phpunit.xml
-README.md" .
+README.md
+tests" .
 echo "Done."
 
 printf "Adding new files..."
