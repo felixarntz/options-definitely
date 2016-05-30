@@ -1,20 +1,22 @@
 <?php
 /*
 Plugin Name: Options Definitely
-Plugin URI: https://wordpress.org/plugins/options-definitely/
+Plugin URI:  https://wordpress.org/plugins/options-definitely/
 Description: This framework plugin makes adding options screens with sections and fields to WordPress very simple, yet flexible.
-Version: 0.6.4
-Author: Felix Arntz
-Author URI: http://leaves-and-love.net
-License: GNU General Public License v3
+Version:     0.6.4
+Author:      Felix Arntz
+Author URI:  https://leaves-and-love.net
+License:     GNU General Public License v3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: options-definitely
-Tags: wordpress, plugin, definitely, framework, library, developer, admin, backend, structured data, ui, api, cms, options, settings, settings screen, tabs, sections, metaboxes, fields, help tabs
+Tags:        definitely, framework, library, developer, admin, backend, structured data, ui, api, cms, options, settings, settings screen, tabs, sections, metaboxes, fields, help tabs
 */
 /**
+ * Plugin initialization file
+ *
  * @package WPOD
- * @version 0.6.4
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
+ * @since 0.5.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

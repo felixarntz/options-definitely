@@ -1,8 +1,11 @@
 <?php
 /**
+ * WPOD\Components\Field class
+ *
  * @package WPOD
- * @version 0.6.4
+ * @subpackage Components
  * @author Felix Arntz <felix-arntz@leaves-and-love.net>
+ * @since 0.5.0
  */
 
 namespace WPOD\Components;

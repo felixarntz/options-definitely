@@ -9,29 +9,20 @@
     "plugin",
     "definitely",
     "framework",
-    "library",
-    "developer",
     "admin",
-    "backend",
-    "structured data",
-    "ui",
-    "api",
-    "cms",
     "options",
     "settings",
     "settings screen",
     "tabs",
     "sections",
-    "metaboxes",
-    "fields",
-    "help tabs"
+    "metaboxes"
   ],
   "homepage": "https://wordpress.org/plugins/options-definitely/",
   "authors": [
     {
       "name": "Felix Arntz",
       "email": "felix-arntz@leaves-and-love.net",
-      "homepage": "http://leaves-and-love.net",
+      "homepage": "https://leaves-and-love.net",
       "role": "Developer"
     }
   ],
