@@ -5,6 +5,7 @@ Plugin URI:        https://wordpress.org/plugins/options-definitely/
 Author:            Felix Arntz
 Author URI:        https://leaves-and-love.net
 Contributors:      flixos90
+Donate link:       https://leaves-and-love.net/wordpress-plugins/
 Requires at least: 4.0
 Tested up to:      4.5.2
 Stable tag:        0.6.4
