@@ -7,9 +7,9 @@ Author URI:        https://leaves-and-love.net
 Contributors:      flixos90
 Donate link:       https://leaves-and-love.net/wordpress-plugins/
 Requires at least: 4.0
-Tested up to:      4.5.2
-Stable tag:        0.6.4
-Version:           0.6.4
+Tested up to:      4.5.3
+Stable tag:        0.6.5
+Version:           0.6.5
 License:           GNU General Public License v3
 License URI:       http://www.gnu.org/licenses/gpl-3.0.html
 Tags:              definitely, framework, library, developer, admin, backend, structured data, ui, api, cms, options, settings, settings screen, tabs, sections, metaboxes, fields, help tabs
