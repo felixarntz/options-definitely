@@ -78,6 +78,11 @@ You can also contribute to the plugin by translating it. Simply visit [translate
 
 == Changelog ==
 
+= 0.6.5 =
+* Tweaked: updated the plugin initialization library
+* Tweaked: updated the Select2 and Datetimepicker JavaScript plugins
+* Fixed: dropdowns no longer close immediately after opening them
+
 = 0.6.4 =
 * Fixed: WPDLib now has type "wordpress-muplugin" so that it is not loaded outside of a project
 
