@@ -1,3 +1,5 @@
+[![WordPress plugin](https://img.shields.io/wordpress/plugin/v/options-definitely.svg?maxAge=2592000)](https://wordpress.org/plugins/options-definitely/)
+[![WordPress](https://img.shields.io/wordpress/v/options-definitely.svg?maxAge=2592000)](https://wordpress.org/plugins/options-definitely/)
 [![Code Climate](https://codeclimate.com/github/felixarntz/options-definitely/badges/gpa.svg)](https://codeclimate.com/github/felixarntz/options-definitely)
 [![Latest Stable Version](https://poser.pugx.org/felixarntz/options-definitely/version)](https://packagist.org/packages/felixarntz/options-definitely)
 [![License](https://poser.pugx.org/felixarntz/options-definitely/license)](https://packagist.org/packages/felixarntz/options-definitely)
