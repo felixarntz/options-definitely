@@ -7,12 +7,12 @@ Author URI:        https://leaves-and-love.net
 Contributors:      flixos90
 Donate link:       https://leaves-and-love.net/wordpress-plugins/
 Requires at least: 4.0
-Tested up to:      4.5.3
-Stable tag:        0.6.5
-Version:           0.6.5
+Tested up to:      4.6
+Stable tag:        0.6.6
+Version:           0.6.6
 License:           GNU General Public License v3
 License URI:       http://www.gnu.org/licenses/gpl-3.0.html
-Tags:              definitely, framework, library, developer, admin, backend, structured data, ui, api, cms, options, settings, settings screen, tabs, sections, metaboxes, fields, help tabs
+Tags:              definitely, framework, admin, options, settings, settings screen, tabs, sections, metaboxes
 
 This framework plugin makes adding options screens with sections and fields to WordPress very simple, yet flexible.
 
@@ -77,6 +77,9 @@ You can also contribute to the plugin by translating it. Simply visit [translate
 2. PHP code to create the options page above
 
 == Changelog ==
+
+= 0.6.6 =
+* Fixed: select fields no longer show twice when a placeholder is specified
 
 = 0.6.5 =
 * Tweaked: updated the plugin initialization library

@@ -28,13 +28,13 @@ var config = {
 	authorEmail: pkg.author.email,
 	description: pkg.description,
 	version: pkg.version,
-	license: pkg.license.name,
-	licenseURI: pkg.license.url,
+	license: 'GNU General Public License v3',
+	licenseURI: 'http://www.gnu.org/licenses/gpl-3.0.html',
 	tags: keywords.join( ', ' ),
 	contributors: [ 'flixos90' ].join( ', ' ),
 	donateLink: 'https://leaves-and-love.net/wordpress-plugins/',
 	minRequired: '4.0',
-	testedUpTo: '4.5.3',
+	testedUpTo: '4.6',
 	translateURI: 'https://translate.wordpress.org/projects/wp-plugins/' + pkg.name,
 	network: false
 };

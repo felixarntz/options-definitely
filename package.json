@@ -1,28 +1,19 @@
 {
   "name": "options-definitely",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "This framework plugin makes adding options screens with sections and fields to WordPress very simple, yet flexible.",
   "keywords": [
     "wordpress",
     "plugin",
     "definitely",
     "framework",
-    "library",
-    "developer",
     "admin",
-    "backend",
-    "structured data",
-    "ui",
-    "api",
-    "cms",
     "options",
     "settings",
     "settings screen",
     "tabs",
     "sections",
-    "metaboxes",
-    "fields",
-    "help tabs"
+    "metaboxes"
   ],
   "author": {
     "name": "Felix Arntz",
@@ -37,11 +28,7 @@
   "bugs": {
     "url" : "https://github.com/felixarntz/options-definitely/issues"
   },
-  "license": {
-    "type": "GPL-3.0",
-    "name": "GNU General Public License v3",
-    "url": "http://www.gnu.org/licenses/gpl-3.0.html"
-  },
+  "license": "GPL-3.0",
   "engines": {
     "node": ">= 0.10.0"
   },

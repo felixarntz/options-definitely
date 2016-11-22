@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 0.6.6 =
+* Fixed: select fields no longer show twice when a placeholder is specified
+
 = 0.6.5 =
 * Tweaked: updated the plugin initialization library
 * Tweaked: updated the Select2 and Datetimepicker JavaScript plugins
