@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 0.6.7 =
+* Enhanced: on WordPress 4.7 settings are now registered globally using the enhanced `register_meta()` implementation
+
 = 0.6.6 =
 * Fixed: select fields no longer show twice when a placeholder is specified
 

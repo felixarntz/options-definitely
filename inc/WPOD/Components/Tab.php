@@ -50,7 +50,16 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 		 */
 		public function register() {
 			if ( count( $this->get_children() ) > 0 ) {
-				register_setting( $this->slug, $this->slug, array( $this, 'validate_options' ) );
+				if ( version_compare( get_bloginfo( 'version' ), '4.7', '<' ) ) {
+					register_setting( $this->slug, $this->slug, array( $this, 'validate_options' ) );
+				} else {
+					register_setting( $this->slug, $this->slug, array(
+						'type'              => 'array',
+						'description'       => ( ! empty( $this->args['rest_description'] ) ? $this->args['rest_description'] : $this->args['description'] ),
+						'sanitize_callback' => array( $this, 'validate_options' ),
+						'show_in_rest'      => $this->args['show_in_rest'],
+					) );
+				}
 			}
 		}
 
@@ -249,12 +258,14 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 		 */
 		protected function get_defaults() {
 			$defaults = array(
-				'title'			=> __( 'Tab title', 'options-definitely' ),
-				'description'	=> '',
-				'capability'	=> 'manage_options',
-				'mode'			=> 'default',
-				'callback'		=> false, //only used if no sections are attached to this tab
-				'position'		=> null,
+				'title'            => __( 'Tab title', 'options-definitely' ),
+				'description'      => '',
+				'capability'       => 'manage_options',
+				'mode'             => 'default',
+				'callback'         => false, //only used if no sections are attached to this tab
+				'position'         => null,
+				'show_in_rest'     => false,
+				'rest_description' => '',
 			);
 
 			/**
@@ -299,10 +310,10 @@ if ( ! class_exists( 'WPOD\Components\Tab' ) ) {
 		 */
 		protected function render_sections() {
 			$form_atts = array(
-				'id'			=> $this->slug,
-				'action'		=> admin_url( 'options.php' ),
-				'method'		=> 'post',
-				'novalidate'	=> true,
+				'id'         => $this->slug,
+				'action'     => admin_url( 'options.php' ),
+				'method'     => 'post',
+				'novalidate' => true,
 			);
 
 			/**

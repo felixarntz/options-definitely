@@ -166,14 +166,14 @@ if ( ! class_exists( 'WPOD\Components\Screen' ) ) {
 		 */
 		protected function get_defaults() {
 			$defaults = array(
-				'title'			=> __( 'Screen title', 'options-definitely' ),
-				'label'			=> __( 'Screen label', 'options-definitely' ),
-				'description'	=> '',
-				'capability'	=> 'manage_options',
-				'position'		=> null,
-				'help'			=> array(
-					'tabs'			=> array(),
-					'sidebar'		=> '',
+				'title'       => __( 'Screen title', 'options-definitely' ),
+				'label'       => __( 'Screen label', 'options-definitely' ),
+				'description' => '',
+				'capability'  => 'manage_options',
+				'position'    => null,
+				'help'        => array(
+					'tabs'        => array(),
+					'sidebar'     => '',
 				),
 			);
 

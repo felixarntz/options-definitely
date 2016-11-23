@@ -82,7 +82,10 @@ if ( ! class_exists( 'WPOD\Admin' ) ) {
 		public function register_settings() {
 			$tabs = ComponentManager::get( '*.*.*', 'WPDLib\Components\Menu.WPOD\Components\Screen' );
 			foreach ( $tabs as $tab ) {
-				$tab->register();
+				/* Settings are registered globally in WordPress >= 4.7. */
+				if ( version_compare( get_bloginfo( 'version' ), '4.7', '<' ) ) {
+					$tab->register();
+				}
 				foreach ( $tab->get_children() as $section ) {
 					$section->register( $tab );
 					foreach ( $section->get_children() as $field ) {

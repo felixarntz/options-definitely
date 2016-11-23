@@ -63,6 +63,7 @@ if ( ! class_exists( 'WPOD\App' ) ) {
 		protected function run() {
 			FieldManager::init();
 
+			General::instance();
 			if ( is_admin() ) {
 				Admin::instance();
 			}

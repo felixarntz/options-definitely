@@ -159,10 +159,10 @@ if ( ! class_exists( 'WPOD\Components\Section' ) ) {
 		 */
 		protected function get_defaults() {
 			$defaults = array(
-				'title'			=> __( 'Section title', 'options-definitely' ),
-				'description'	=> '',
-				'callback'		=> false, //only used if no fields are attached to this section
-				'position'		=> null,
+				'title'       => __( 'Section title', 'options-definitely' ),
+				'description' => '',
+				'callback'    => false, //only used if no fields are attached to this section
+				'position'    => null,
 			);
 
 			/**

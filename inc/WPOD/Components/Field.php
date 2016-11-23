@@ -194,13 +194,13 @@ if ( ! class_exists( 'WPOD\Components\Field' ) ) {
 		 */
 		protected function get_defaults() {
 			$defaults = array(
-				'title'				=> __( 'Field title', 'options-definitely' ),
-				'description'		=> '',
-				'type'				=> 'text',
-				'class'				=> '',
-				'default'			=> null,
-				'required'			=> false,
-				'position'			=> null,
+				'title'       => __( 'Field title', 'options-definitely' ),
+				'description' => '',
+				'type'        => 'text',
+				'class'       => '',
+				'default'     => null,
+				'required'    => false,
+				'position'    => null,
 			);
 
 			/**
