@@ -7,9 +7,9 @@ Author URI:        https://leaves-and-love.net
 Contributors:      flixos90
 Donate link:       https://leaves-and-love.net/wordpress-plugins/
 Requires at least: 4.0
-Tested up to:      4.6
-Stable tag:        0.6.6
-Version:           0.6.6
+Tested up to:      4.7
+Stable tag:        0.6.7
+Version:           0.6.7
 License:           GNU General Public License v3
 License URI:       http://www.gnu.org/licenses/gpl-3.0.html
 Tags:              definitely, framework, admin, options, settings, settings screen, tabs, sections, metaboxes
@@ -77,6 +77,12 @@ You can also contribute to the plugin by translating it. Simply visit [translate
 2. PHP code to create the options page above
 
 == Changelog ==
+
+= 0.6.7 =
+* Enhanced: on WordPress 4.7 settings are now registered globally using the enhanced `register_meta()` implementation
+* Fixed: datetime and time fields no longer switch the time back by an hour automatically
+* Fixed: in datetime and date fields it is no longer possible to accidentally change the month by scrolling
+* Fixed: datetime and date fields better support locale special characters
 
 = 0.6.6 =
 * Fixed: select fields no longer show twice when a placeholder is specified

@@ -2,6 +2,9 @@
 
 = 0.6.7 =
 * Enhanced: on WordPress 4.7 settings are now registered globally using the enhanced `register_meta()` implementation
+* Fixed: datetime and time fields no longer switch the time back by an hour automatically
+* Fixed: in datetime and date fields it is no longer possible to accidentally change the month by scrolling
+* Fixed: datetime and date fields better support locale special characters
 
 = 0.6.6 =
 * Fixed: select fields no longer show twice when a placeholder is specified
